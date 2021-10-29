@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $handle = fopen("/home/zuma/Desktop/dekk/dekkProjekt/okresy_data.txt", "r");
+        $handle = fopen("database/seeders/okresy_data.txt", "r");
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
                 $data = explode(',', $line);
