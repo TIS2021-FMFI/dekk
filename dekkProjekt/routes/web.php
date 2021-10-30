@@ -15,3 +15,5 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [HomeController::class, 'home']);
+
+Route::get('/loadData/{id1}/{id2}', [HomeController::class, 'load'])->name('load_data');
