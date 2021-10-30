@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
+    // default page (index)
     public function home()
     {
         return view("map_leaflet");
     }
-    //
 
+    // loads data from database
     public function load($dataset1, $dataset2)
     {
         $ret = DB::table('data')

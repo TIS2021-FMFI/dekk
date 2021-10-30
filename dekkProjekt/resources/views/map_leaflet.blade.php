@@ -11,17 +11,27 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
     #map { 
-			/* width: 600px; */
 			height: 400px;
 		} 
     </style>
 </head>
+
 <body>
 
 <div class="row">
-    <div class="col-md-2">bababababab</div>
+    <div class="col-md-2">
+        <label class="container">One
+        <input type="checkbox" id="checkData1">
+        </label>
+
+        <label class="container">Two
+        <input type="checkbox" id="checkData2">
+        </label>
+    <button type="button" onclick="sendRequest()">Click Me!</button> 
+    </div>
+
     <div class="col-md-6" id='map'></div>
-    <div class="col-md-4"></div>
+    <div class="col-md-4" id="odpoved"></div>
   </div> 
 
 <script type="text/javascript" src="js/okresy.js"></script>
@@ -32,6 +42,6 @@
     geojson = L.geoJson(okresy).addTo(map);
 
 </script>
-
+<script src="js/load_data.js"></script> 
 </body>
 </html>
