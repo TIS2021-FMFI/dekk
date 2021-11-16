@@ -44,18 +44,18 @@ your app should be running on localhost:8000
 # where is what
 - laravel has many files and folders, here are the most important for us, in which or code will be:
 
-> app > Http > Controllers - here we define functions, which are called from routing based on frontend requests
+-> app > Http > Controllers - here we define functions, which are called from routing based on frontend requests
 
-> database > migrations - place to define db scheme (create script)
+-> database > migrations - place to define db scheme (create script)
 
-> database > seeders - 'generate script' put data in database
+-> database > seeders - 'generate script' put data in database
 
-> public > js - javascript scripts for frontend
+-> public > js - javascript scripts for frontend
 
-> resources > views > mao_leaflet.blade.php - this is our html page
+-> resources > views > mao_leaflet.blade.php - this is our html page
 
-> routes > web.php - routing, from URL it determines action - which controller and method to run as a response
+-> routes > web.php - routing, from URL it determines action - which controller and method to run as a response
 
-> .env - config file for configuring connection to db
+-> .env - config file for configuring connection to db
 
-> .gitignore - file for files which you dont want to commit
+-> .gitignore - file for files which you dont want to commit
