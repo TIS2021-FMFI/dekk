@@ -1,6 +1,10 @@
 # dekk
 Studentsky projekt TIS 2021 - World  Value Survey
 
+Project has 2 main parts:
+- dekkProjekt -> web app, that uses laravel
+- importScripts -> which lets admin user import data to database (run in terminal)
+
 How to run app
 
 php artisan serve
