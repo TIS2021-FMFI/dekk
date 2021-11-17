@@ -56,7 +56,7 @@ your app should be running on localhost:8000
 
 -> public > js - javascript scripts for frontend
 
--> resources > views > mao_leaflet.blade.php - this is our html page
+-> resources > views > map_leaflet.blade.php - this is our html page
 
 -> routes > web.php - routing, from URL it determines action - which controller and method to run as a response
 
