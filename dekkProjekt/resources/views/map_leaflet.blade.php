@@ -14,6 +14,10 @@
 			height: 400px;
 		} 
     </style>
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="js/scripts.js"></script>
 </head>
 
 <body>
@@ -32,15 +36,33 @@
 
     <div class="col-md-6" id='map'></div>
     <div class="col-md-4" id="odpoved"></div>
-  </div> 
+</div> 
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz1">
+  <h1>Basic demo</h1>
+</div>
+
+<div id="my_dataviz2">
+  <h1>Basic demo with tooltips</h1>
+</div>
+
+<div id="my_dataviz3">
+  <h1>Interactive grouped demo</h1>
+</div>
 
 <script type="text/javascript" src="js/okresy.js"></script>
 
 <script type="text/javascript">
-
+    // Leaflet map init
 	var map = L.map('map').setView([48.6, 19.5 ], 7);
     geojson = L.geoJson(okresy).addTo(map);
+    
+    // D3 graphs init
 
+    basic();
+    basic_with_tooltips();  
+    interactive_grouped();
 </script>
 <script src="js/load_data.js"></script> 
 </body>
