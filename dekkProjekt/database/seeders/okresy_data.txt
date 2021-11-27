@@ -1,79 +1,79 @@
-Bratislava I,2912493
-Bratislava II,1400406
-Bratislava III,1512087
-Bratislava IV,2908764
-Bratislava V,1398668
-Malacky,1510096
-Pezinok,2902097
-Senec,1395156
-Dunajská Streda,1506941
-Galanta,437726
-Hlohovec,206442
-Piešťany,231284
-Senica,439146
-Skalica,207260
-Trnava,231886
-Bánovce nad Bebravou,440948
-Ilava,208132
-Myjava,232816
-Nové Mesto nad Váhom,5457873
-Partizánske,2665350
-Považská Bystrica,2792523
-Prievidza,5460136
-Púchov,2666676
-Trenčín,2793460
-Komárno,5459781
-Levice,2666486
-Nitra,2793295
-Nové Zámky,669592
-Šaľa,319112
-Topoľčany,350480
-Zlaté Moravce,673299
-Bytča,321041
-Čadca,352258
-Dolný Kubín,677024
-Kysucké Nové Mesto,322823
-Liptovský Mikuláš,354201
-Martin,669592
-Námestovo,319112
-Ružomberok,350480
-Turčianske Teplice,673299
-Tvrdošín,321041
-Žilina,352258
-Banská Bystrica,677024
-Banská Štiavnica,322823
-Brezno,354201
-Detva,41893
-Krupina,20021
-Lučenec,21872
-Poltár,42192
-Revúca,20200
-Rimavská Sobota,21992
-Veľký Krtíš,42546
-Zvolen,20363
-Žarnovica,22183
-Žiar nad Hronom,116223
-Bardejov,53805
-Humenné,62418
-Kežmarok,116457
-Levoča,53958
-Medzilaborce,62499
-Poprad,116669
-Prešov,54042
-Sabinov,62627
-Snina,69479
-Stará Ľubovňa,32950
-Stropkov,36529
-Svidník,70042
-Vranov nad Topľou,33262
-Gelnica,36780
-Košice I,70641
-Košice II,33581
-Košice III,37060
-Košice IV,97792
-Košice - okolie,46219
-Michalovce,51573
-Rožňava,98105
-Sobrance,46363
-Spišská Nová Ves,51742
-Trebišov,98404
+Bratislava I
+Bratislava II
+Bratislava III
+Bratislava IV
+Bratislava V
+Malacky
+Pezinok
+Senec
+Dunajská Streda
+Galanta
+Hlohovec
+Piešťany
+Senica
+Skalica
+Trnava
+Bánovce nad Bebravou
+Ilava
+Myjava
+Nové Mesto nad Váhom
+Partizánsk
+Považská Bystrica
+Prievidza
+Púchov
+Trenčín
+Komárno
+Levice
+Nitra
+Nové Zámky
+Šaľa
+Topoľčany
+Zlaté Moravce
+Bytča
+Čadca
+Dolný Kubín
+Kysucké Nové Mesto
+Liptovský Mikuláš
+Martin
+Námestovo
+Ružomberok
+Turčianske Teplice
+Tvrdošín
+Žilina
+Banská Bystrica
+Banská Štiavnica
+Brezno
+Detva
+Krupina
+Lučenec
+Poltár
+Revúca
+Rimavská Sobota
+Veľký Krtíš
+Zvolen
+Žarnovica
+Žiar nad Hronom
+Bardejov
+Humenné
+Kežmarok
+Levoča
+Medzilaborce
+Poprad
+Prešov
+Sabinov
+Snina
+Stará Ľubovňa
+Stropkov
+Svidník
+Vranov nad Topľou
+Gelnica
+Košice I
+Košice II
+Košice III
+Košice IV
+Košice - okolie
+Michalovce
+Rožňava
+Sobrance
+Spišská Nová Ves
+Trebišov

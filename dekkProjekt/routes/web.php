@@ -16,4 +16,6 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'home']);
 
-Route::get('/loadData/{id1}/{id2}', [HomeController::class, 'load'])->name('load_data');
+Route::get('/loadData/{id1}/{id2}', [HomeController::class, 'load']);
+
+Route::get('/params/{dataset_id}', [HomeController::class, 'get_dataset_parameters'])->name('getParams');

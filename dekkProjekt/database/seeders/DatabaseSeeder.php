@@ -14,23 +14,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $handle = fopen("database/seeders/okresy_data.txt", "r");
-        if ($handle) {
-            while (($line = fgets($handle)) !== false) {
-                $data = explode(',', $line);
-                DB::table('data')->insert([
-                    'okres' => $data[0],
-                    'hodnota'=> floatval($data[1]),
-                    'dataset_id'=> 1,
-                ]);
-                
-                // process the line read.
-            }
 
-            fclose($handle);
-        } else {
-            // error opening the file.
-        }
-        // \App\Models\User::factory(10)->create();
+        $this->call([
+            dataset_types::class,
+            districts::class,
+            parameters::class,
+            parameter_values::class,
+            specific_year_datasets::class,
+            values::class,
+            belongs::class
+        ]);
+        
     }
 }
