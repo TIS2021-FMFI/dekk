@@ -66,15 +66,15 @@ your app should be running on localhost:8000
 
 # SETUP PROJECT ON WINDOWS IF YOU ALREADY HAVE XAMPP
 
-Install composer(You can download composer from https://getcomposer.org/download/)
-Open cmd(make sure your path is the same as C:\xampp\htdocs>) then
-Install laravel GLOBALLY by the command: composer global require laravel/installer
-put a laravel project folder at htdocs(unzip if it's .zip file)
-In http://localhost/phpmyadmin/ create a database name 'datasets'
-Go to project root and find .env file and change DB_HOST=localhost, DB_USERNAME=root and set password empty DB_PASSWORD=
-Now run CMD (command line) go to project root directory and run php artisan cache:clear
-Next run php artisan migrate:install
-And now run php artisan serve
-Now you are good to go
-Go to localhost:8000
+Install composer(You can download composer from https://getcomposer.org/download/)<br />
+Open cmd(make sure your path is the same as C:\xampp\htdocs>) then<br />
+Install laravel GLOBALLY by the command: composer global require laravel/installer<br />
+put a laravel project folder at htdocs(unzip if it's .zip file)<br />
+In http://localhost/phpmyadmin/ create a database name 'datasets'<br />
+Go to project root and find .env file and change DB_HOST=localhost, DB_USERNAME=root and set password empty DB_PASSWORD=<br />
+Now run CMD (command line) go to project root directory and run php artisan cache:clear<br />
+Next run php artisan migrate:install<br />
+And now run php artisan serve<br />
+Now you are good to go<br />
+Go to localhost:8000<br />
 
