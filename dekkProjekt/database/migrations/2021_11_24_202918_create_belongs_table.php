@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDataTable extends Migration
+class CreateBelongsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('data', function (Blueprint $table) {
-            $table->id();
-            $table->string('okres');
-            $table->double('hodnota');
-            $table->integer('dataset_id');
+        Schema::create('belongs', function (Blueprint $table) {
+            $table->foreignId("parameter_value_id")->constrained("parameter_values");
+            $table->foreignId("specific_dataset_id")->constrained("specific_year_datasets");
         });
     }
 
@@ -28,6 +26,6 @@ class CreateDataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('data');
+        Schema::dropIfExists('belongs');
     }
 }

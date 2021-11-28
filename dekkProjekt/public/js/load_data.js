@@ -10,17 +10,17 @@ function sendRequest() {
 
         url = "/loadData/" + id1.id.replace("checkData", "") + "/" + id2.id.replace("checkData", "");
         console.log(url);
-        xmlHttp.onreadystatechange = onResponse;
+        xmlHttp.onreadystatechange = onResponse1;
         xmlHttp.open("GET", url);
         xmlHttp.send();
     }
 }
 
 
-function onResponse() {
+function onResponse1() {
     // handles response
     if(xmlHttp.readyState == 4 && xmlHttp.status == 200)   {
-        document.getElementById('odpoved').innerHTML = xmlHttp.responseText;
+        // document.getElementById('odpoved').innerHTML = xmlHttp.responseText;
         console.log('naspaky odpoved');
         
         L.geoJson(okresy, {style: style}).addTo(map);

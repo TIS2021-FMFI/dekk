@@ -5,10 +5,12 @@
 
     <meta charset="utf-8" />
     
+    <!-- load leaflet.js -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <
     <style>
     #map { 
 			height: 400px;
@@ -34,9 +36,25 @@
     <button type="button" onclick="sendRequest()">Click Me!</button> 
     </div>
 
+
+
     <div class="col-md-6" id='map'></div>
     <div class="col-md-4" id="odpoved"></div>
 </div> 
+
+
+@foreach($dataset_types as $dataset_type)
+
+<div class="row">
+    <div>
+      <button type="button" onclick="getParams({{ $dataset_type->id }})">{{ $dataset_type->name }}</button>
+
+    </div>
+</div>
+
+@endforeach
+
+
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz1">
@@ -64,6 +82,7 @@
     basic_with_tooltips();  
     interactive_grouped();
 </script>
-<script src="js/load_data.js"></script> 
+<script src="js/load_data.js"></script>
+<script src="js/get_params.js"></script> 
 </body>
 </html>
