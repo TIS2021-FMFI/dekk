@@ -20,6 +20,11 @@
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v6.js"></script>
     <script src="js/scripts.js"></script>
+    <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. -->
+    <script src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js"></script>
+    <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
+    <!-- Load save btn script -->
+    <script src="js/save_btn.js"></script>
 </head>
 
 <body>
@@ -35,8 +40,6 @@
         </label>
     <button type="button" onclick="sendRequest()">Click Me!</button> 
     </div>
-
-
 
     <div class="col-md-6" id='map'></div>
     <div class="col-md-4" id="odpoved"></div>
@@ -57,16 +60,13 @@
 
 
 <!-- Create a div where the graph will take place -->
-<div id="my_dataviz1">
-  <h1>Basic demo</h1>
-</div>
-
-<div id="my_dataviz2">
-  <h1>Basic demo with tooltips</h1>
-</div>
-
 <div id="my_dataviz3">
   <h1>Interactive grouped demo</h1>
+</div>
+
+<!-- Save button -->
+<div>
+    <button id='saveButton'>Export my D3 visualization to PNG</button>
 </div>
 
 <script type="text/javascript" src="js/okresy.js"></script>
@@ -76,11 +76,11 @@
 	var map = L.map('map').setView([48.6, 19.5 ], 7);
     geojson = L.geoJson(okresy).addTo(map);
     
-    // D3 graphs init
-
-    basic();
-    basic_with_tooltips();  
+    // D3 graph init
     interactive_grouped();
+
+    // save btn init
+    save_to_img();
 </script>
 <script src="js/load_data.js"></script>
 <script src="js/get_params.js"></script> 
