@@ -1,79 +1,79 @@
-Bratislava I
-Bratislava II
-Bratislava III
-Bratislava IV
-Bratislava V
-Malacky
-Pezinok
-Senec
-Dunajská Streda
-Galanta
-Hlohovec
-Piešťany
-Senica
-Skalica
-Trnava
-Bánovce nad Bebravou
-Ilava
-Myjava
-Nové Mesto nad Váhom
-Partizánsk
-Považská Bystrica
-Prievidza
-Púchov
-Trenčín
-Komárno
-Levice
-Nitra
-Nové Zámky
-Šaľa
-Topoľčany
-Zlaté Moravce
-Bytča
-Čadca
-Dolný Kubín
-Kysucké Nové Mesto
-Liptovský Mikuláš
-Martin
-Námestovo
-Ružomberok
-Turčianske Teplice
-Tvrdošín
-Žilina
-Banská Bystrica
-Banská Štiavnica
-Brezno
-Detva
-Krupina
-Lučenec
-Poltár
-Revúca
-Rimavská Sobota
-Veľký Krtíš
-Zvolen
-Žarnovica
-Žiar nad Hronom
-Bardejov
-Humenné
-Kežmarok
-Levoča
-Medzilaborce
-Poprad
-Prešov
-Sabinov
-Snina
-Stará Ľubovňa
-Stropkov
-Svidník
-Vranov nad Topľou
-Gelnica
-Košice I
-Košice II
-Košice III
-Košice IV
-Košice - okolie
-Michalovce
-Rožňava
-Sobrance
-Spišská Nová Ves
-Trebišov
+Bratislava I,SK0101	
+Bratislava II,SK0102	
+Bratislava III,SK0103	
+Bratislava IV,SK0104	
+Bratislava V,SK0105	
+Malacky,SK0106	
+Pezinok,SK0107	
+Senec,SK0108	
+Dunajská Streda,SK0211	
+Galanta,SK0212	
+Hlohovec,SK0213	
+Piešťany,SK0214	
+Senica,SK0215	
+Skalica,SK0216	
+Trnava,SK0217	
+Bánovce nad Bebravou,SK0221	
+Ilava,SK0222	
+Myjava,SK0223	
+Nové Mesto nad Váhom,SK0224	
+Partizánske,SK0225	
+Považská Bystrica,SK0226	
+Prievidza,SK0227	
+Púchov,SK0228	
+Trenčín,SK0229	
+Komárno,SK0231	
+Levice,SK0232	
+Nitra,SK0233	
+Nové Zámky,SK0234	
+Šaľa,SK0235	
+Topoľčany,SK0236	
+Zlaté Moravce,SK0237	
+Bytča,SK0311	
+Čadca,SK0312	
+Dolný Kubín,SK0313	
+Kysucké Nové Mesto,SK0314	
+Liptovský Mikuláš,SK0315	
+Martin,SK0316	
+Námestovo,SK0317	
+Ružomberok,SK0318	
+Turčianske Teplice,SK0319	
+Tvrdošín,SK031A	
+Žilina,SK031B	
+Banská Bystrica,SK0321	
+Banská Štiavnica,SK0322	
+Brezno,SK0323	
+Detva,SK0324	
+Krupina,SK0325	
+Lučenec,SK0326	
+Poltár,SK0327	
+Revúca,SK0328	
+Rimavská Sobota,SK0329	
+Veľký Krtíš,SK032A	
+Zvolen,SK032B	
+Žarnovica,SK032C	
+Žiar nad Hronom,SK032D	
+Bardejov,SK0411	
+Humenné,SK0412	
+Kežmarok,SK0413	
+Levoča,SK0414	
+Medzilaborce,SK0415	
+Poprad,SK0416	
+Prešov,SK0417	
+Sabinov,SK0418	
+Snina,SK0419	
+Stará Ľubovňa,SK041A	
+Stropkov,SK041B	
+Svidník,SK041C	
+Vranov nad Topľou,SK041D	
+Gelnica,SK0421	
+Košice I,SK0422	
+Košice II,SK0423	
+Košice III,SK0424	
+Košice IV,SK0425	
+Košice - okolie,SK0426	
+Michalovce,SK0427	
+Rožňava,SK0428	
+Sobrance,SK0429	
+Spišská Nová Ves,SK042A	
+Trebišov,SK042B	

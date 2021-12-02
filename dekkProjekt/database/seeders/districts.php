@@ -17,9 +17,12 @@ class districts extends Seeder
         $handle = fopen("database/seeders/okresy_data.txt", "r");
         if ($handle) {
             //read line by line
+
             while (($line = fgets($handle)) !== false) {
+                $data = explode(",", $line);
                 DB::table('districts')->insert([
-                    'name' => $line,
+                    'name' => $data[0],
+                    'datacube_code' => $data[1],
                 ]);
             }
 
