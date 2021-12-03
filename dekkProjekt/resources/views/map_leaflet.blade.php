@@ -39,13 +39,12 @@
                     <h3>Datasets & parameters:</h3>
                     <div class="datasets_parameters">
 
-                        <!--
+                        <!--multichoice picker with search, NOT WORKING YET! -->
                         <select class="selectpicker" multiple data-live-search="true">
                             <?php for($i=1; $i<3; $i++) :?>
                                 <option><?=$i?><label class="container" id="checkData<?=$i?>"></label></option>
                             <?php endfor;?>
                         </select>
-                        -->
                         
                         <?php for($i=1; $i<3; $i++) :?>
                             <label class="container">
@@ -55,20 +54,22 @@
 
                     </div>
 
-                    
+                    <!-- Slider (value needed for year pick) -->
                     <div class="slidecontainer">
                         <h3>Year: <span id="sliderYear"></span></h3>
                         <input type="range" min="1990" max="2020" value="2005" class="slider" id="myRange">
-                    </div>
 
-                    <script>
-                        var slider = document.getElementById("myRange");
-                        var output = document.getElementById("sliderYear");
-                        output.innerHTML = slider.value;
-                        slider.oninput = function() {
-                            output.innerHTML = this.value;
-                        }
-                    </script>
+                        <script>
+                            var slider = document.getElementById("myRange");
+                            var output = document.getElementById("sliderYear");
+                            output.innerHTML = slider.value;
+                            slider.oninput = function() {
+                                output.innerHTML = this.value;
+                            }
+                        </script>
+                    </div>
+                    
+
                     <!-- Send requested datasets -->
                     <div class="align-self-end ml-auto">
                         <button type="button" class="btn btn-dark" onclick="sendRequest()">Reload</button>
@@ -76,8 +77,14 @@
                 </div>
 
                 <!-- Map -->
-                <div class="col-xl-5 col-lg-12" id='map'></div>
-        
+                <div class="col-xl-5 col-lg-12" id='map'>
+                    <!-- Map save button -->
+                    <div class="align-self-end ml-auto">
+                        <button id='saveButton' type="button" class="btn btn-dark">Export map to PNG</button>
+                    </div> 
+                </div>
+                
+                
                 <!-- BEFORE : <div class="col-md-4" id="odpoved"></div> -->
                 <div class="col-xl-4 col-lg-12" id="sidePanel">
                     <!-- Graph -->
