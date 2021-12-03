@@ -1,0 +1,70 @@
+body {
+    color: white;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    font-weight: 500;
+}
+h3 {
+    padding-top: 1em;
+}
+.leaflet-container {
+    background: white;
+}
+.btn.btn-dark {
+    background-color: #ed3833;
+    position: absolute;
+    bottom: 10%;
+}
+.slidecontainer {
+    width: 100%;
+}
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 13px;
+    height: 20px;
+    border: 0;
+    background-color: #ed3833;
+    cursor: pointer;
+}
+.slider::-moz-range-thumb {
+    width: 13px;
+    height: 20px;
+    border: 0;
+    background-color: #ed3833;
+    cursor: pointer;
+}
+.correlation_meaning {
+    padding-top: 2em;
+}
+.container {
+    padding: 0;
+}
+.datasets_parameters {
+    padding-top: 2em;
+}
+#my_dataviz3 svg {
+    background-color: white;
+    color: black;
+    border: 5px;
+    border-style: solid;
+    border-color: #ed3833;
+}
+#map {
+    min-height: 1000px;
+}
+#sidePanel {
+    background-color: #2f2963;
+    padding: 3em;
+}
