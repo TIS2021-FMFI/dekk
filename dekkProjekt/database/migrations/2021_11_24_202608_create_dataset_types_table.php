@@ -16,6 +16,7 @@ class CreateDatasetTypesTable extends Migration
         Schema::create('dataset_types', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->string("datacube_code")->nullable();
         });
     }
 
