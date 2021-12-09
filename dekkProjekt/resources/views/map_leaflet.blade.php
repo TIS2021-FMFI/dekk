@@ -57,16 +57,19 @@
 
 @endforeach
 
-
+<!-- Save button Map -->
+<div>
+    <button id='saveButtonMap'>Download map</button>
+</div>
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz3">
   <h1>Interactive grouped demo</h1>
 </div>
 
-<!-- Save button -->
+<!-- Save button Graph -->
 <div>
-    <button id='saveButton'>Export my D3 visualization to PNG</button>
+    <button id='saveButtonGraph'>Download graph</button>
 </div>
 
 <script type="text/javascript" src="js/okresy.js"></script>
@@ -79,8 +82,10 @@
     // D3 graph init
     interactive_grouped();
 
-    // save btn init
-    save_to_img();
+    // save btn init map width 970 heigth 400
+    save_to_img('map', d3.select('#map').select("svg").node(), '#saveButtonMap', 970, 400)
+    // save btn init graph width 370 height 360
+    save_to_img('graph', d3.select("#my_dataviz3").select("svg").node(), '#saveButtonGraph', 370, 360);
 </script>
 <script src="js/load_data.js"></script>
 <script src="js/get_params.js"></script> 
