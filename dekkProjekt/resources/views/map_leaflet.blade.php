@@ -101,12 +101,21 @@
 </div>
 
 <script type="text/javascript" src="js/okresy.js"></script>
+<script src="js/load_data.js"></script>
 
 <script type="text/javascript">
     // Leaflet map init
 	var map = L.map('map').setView([48.6, 19.5 ], 7);
-    geojson = L.geoJson(okresy).addTo(map);
+    geojson = L.geoJson(okresy, {
+        style: style
+    }).addTo(map);
     
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+        maxZoom: 20,
+        id: 'tileset',
+        attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
     // D3 graph init
     interactive_grouped();
 
@@ -115,7 +124,6 @@
     // save btn init graph width 370 height 360
     save_to_img('graph', d3.select("#my_dataviz3").select("svg").node(), '#saveButtonGraph', 370, 360);
 </script>
-<script src="js/load_data.js"></script>
 <script src="js/get_params.js"></script> 
 </body>
 </html>
