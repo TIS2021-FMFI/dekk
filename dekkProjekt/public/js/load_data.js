@@ -68,7 +68,7 @@ function onResponse1() {
             legend.onAdd = function (map) {
                 let x = Math.floor(maxValue / 7);
                 let div = L.DomUtil.create('div', 'info legend'),
-                    grades = [0, 3*x, 4*x, 5*x, 6*x, 7*x, 8*x, 9*x],
+                    grades = [0, 1*x, 2*x, 3*x, 4*x, 5*x, 6*x, 7*x],
                     labels = [];
 
                     // loop through our density intervals and generate a label with a colored square for each interval
@@ -90,13 +90,13 @@ function onResponse1() {
 function getColor(d){
 
     let x = Math.floor(maxValue / 7); // colors are evenly split between 0 and maxValue
-    return d > 9*x  ? '#800026' :
-            d > 8*x ? '#BD0026' :
-            d > 7*x ? '#E31A1C' :
-            d > 6*x ? '#FC4E2A' :
-            d > 5*x ? '#FD8D3C' :
-            d > 4*x ? '#FEB24C' :
-            d > 3*x ? '#FED976' :
+    return d > 7*x  ? '#800026' :
+            d > 6*x ? '#BD0026' :
+            d > 5*x ? '#E31A1C' :
+            d > 4*x ? '#FC4E2A' :
+            d > 3*x ? '#FD8D3C' :
+            d > 2*x ? '#FEB24C' :
+            d > 1*x ? '#FED976' :
                       '#FFEDA0';
 }
 
