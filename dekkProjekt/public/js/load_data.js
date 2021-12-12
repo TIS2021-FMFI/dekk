@@ -22,7 +22,9 @@ function onResponse1() {
     if(xmlHttp.readyState == 4 && xmlHttp.status == 200)   {
         // document.getElementById('odpoved').innerHTML = xmlHttp.responseText;
         console.log('naspaky odpoved');
-        
+        response = JSON.parse(xmlHttp.responseText);
+
+        console.log(response);
         L.geoJson(okresy, {style: style}).addTo(map);
     }
 }
