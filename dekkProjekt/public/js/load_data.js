@@ -30,7 +30,7 @@ function onResponse1() {
         // document.getElementById('odpoved').innerHTML = xmlHttp.responseText;
 
         // remove any previous layers
-        map.eachLayer(layer => map.removeLayer(layer));
+        map.eachLayer(layer => { if (layer.id == 'tileset') map.removeLayer(layer)});
 
         districts = addValueProperty(csvToDict());
         maxValue = d3.max(districts['features'], o => o.properties.value);
