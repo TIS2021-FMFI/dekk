@@ -3,25 +3,26 @@ function sendRequest() {
     // send request to backend if 2 datasets are selected
     xmlHttp = new XMLHttpRequest();
 
-    id1 = document.getElementById("checkData1");
-    id2 = document.getElementById("checkData2");
+    //TODO: naplnit tieto IDCKA zmysluplnymi hodnotami
+    id1 = 1;
+    id2 = 2;
 
-    if (id1.checked && id2.checked) {
-
-        url = "/loadData/" + id1.id.replace("checkData", "") + "/" + id2.id.replace("checkData", "");
-        console.log(url);
-        xmlHttp.onreadystatechange = onResponse1;
-        xmlHttp.open("GET", url);
-        xmlHttp.send();
-    }
+    // url = "/loadData/" + id1.id.replace("checkData", "") + "/" + id2.id.replace("checkData", "");
+    url = "/loadData/" + id1 + "/" + id2;
+    console.log(url);
+    xmlHttp.onreadystatechange = onResponse1;
+    xmlHttp.open("GET", url);
+    xmlHttp.send();
 }
 
 
 function onResponse1() {
     // handles response
     if(xmlHttp.readyState == 4 && xmlHttp.status == 200)   {
-        // document.getElementById('odpoved').innerHTML = xmlHttp.responseText;
-        console.log('naspaky odpoved');
+
+        responnse = JSON.parse(xmlHttp.responseText);
+
+        console.log(responnse);
         
         L.geoJson(okresy, {style: style}).addTo(map);
     }
