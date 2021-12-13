@@ -1,19 +1,15 @@
 
 
 
-function save_to_img() {
+function save_to_img(name, svgNode, btn, width, height) {
     // Set-up the export button
-    d3.select('#saveButton').on('click', function(){
-        // dimensions of the graph to be saved TODO -> pass dimensions as function args
-        const margin = {top: 10, right: 30, bottom: 30, left: 60},
-        width = 460 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+    d3.select(btn).on('click', function(){
 
-        let svgString = getSVGString(d3.select("#my_dataviz3").select("svg").node());
+        let svgString = getSVGString(svgNode);
         svgString2Image( svgString, 2*width, 2*height, 'png', save ); // passes Blob and filesize String to the callback
 
         function save( dataBlob, filesize ){
-            saveAs( dataBlob, 'D3 vis exported to PNG.png' ); // FileSaver.js function
+            saveAs( dataBlob, name + '.png' ); // FileSaver.js function
         }
     });
 
