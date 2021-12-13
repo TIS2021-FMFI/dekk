@@ -20,9 +20,39 @@
     <link rel="stylesheet" href="css/app.css" />
 
     <style>
-    #map {
-        height: 400px;
+
+    #map { 
+			height: 600px;
+		 }
+
+    .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255,255,255,0.8);
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 5px;
     }
+
+    .info h4 {
+        margin: 0 0 5px;
+        color: #777;
+    }
+
+    .legend {
+        line-height: 18px;
+        color: #555;
+    }
+
+    .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+    }
+
+
     </style>
 
     <!-- Load d3.js -->
@@ -161,61 +191,41 @@
     @endforeach
 
 
+<script type="text/javascript" src="js/okresy.js"></script>
+<script src="js/load_data.js"></script>
 
-    <script type="text/javascript" src="js/okresy.js"></script>
 
     <script type="text/javascript">
     // Leaflet map init
-    var map = L.map('map', {
-        wheelPxPerZoomLevel: 200,
-        zoomDelta: 0.25,
-        zoomSnap: 0
-    }).setView([48.7, 19.7], 7.5);
-    geojson = L.geoJson(okresy).addTo(map);
+    let bounds = new L.LatLngBounds(new L.LatLng(50.16962074944367, 16.3865741126029432), new L.LatLng(46.94733587652772, 23.45591532167501));
+	let map = L.map('map', {
+        center: [48.6, 19.5 ],
+        maxBounds: bounds,
+        maxBoundsViscosity: 0.5
+    }).setView([48.6, 19.5 ], 7);
+
+    geojson = L.geoJson(okresy, {
+        style: style,
+    }).addTo(map);
+    
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+        maxZoom: 20,
+        id: 'tileset',
+        attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
 
     // D3 graph init
     interactive_grouped();
 
-    // save btn init map width 970 heigth 400
-    save_to_img('map', d3.select('#map').select("svg").node(), '#saveButtonMap', 970, 400)
+    // save btn init map width 970 heigth 600
+    save_to_img('map', d3.select('#map').select("svg").node(), '#saveButtonMap', 970, 600)
     // save btn init graph width 370 height 360
     save_to_img('graph', d3.select("#my_dataviz3").select("svg").node(), '#saveButtonGraph', 370, 360);
-    
-    </script>
 
-    <!-- to change map color based on : -->
-    <!--
-    <script>
-        function getColor(d) {
-            return d > 1000 ? '#800026' :
-                d > 500  ? '#BD0026' :
-                d > 200  ? '#E31A1C' :
-                d > 100  ? '#FC4E2A' :
-                d > 50   ? '#FD8D3C' :
-                d > 20   ? '#FEB24C' :
-                d > 10   ? '#FED976' :
-                            '#FFEDA0';
-            }
-            
-    </script>
-    <script>
-        function style(feature) {
-            return {
-                fillColor: getColor('#00FF00'),
-                weight: 2,
-                opacity: 1,
-                color: 'white',
-                dashArray: '3',
-                fillOpacity: 0.7
-            };
-        }
-        L.geoJson(okresy, {style: style}).addTo(map);
-    </script>
-    -->
+</script>
+<script src="js/get_params.js"></script> 
 
-    <script src="js/load_data.js"></script>
-    <script src="js/get_params.js"></script>
 </body>
 
 </html>
