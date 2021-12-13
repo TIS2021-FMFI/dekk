@@ -19,11 +19,12 @@ function sendRequest() {
 function onResponse1() {
     // handles response
     if(xmlHttp.readyState == 4 && xmlHttp.status == 200)   {
+ 
+
 
         responnse = JSON.parse(xmlHttp.responseText);
 
         console.log(responnse);
-        
         L.geoJson(okresy, {style: style}).addTo(map);
     }
 }
