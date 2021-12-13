@@ -29,6 +29,7 @@
         padding: 6px 8px;
         font: 14px/16px Arial, Helvetica, sans-serif;
         background: white;
+        color: #777;
         background: rgba(255,255,255,0.8);
         box-shadow: 0 0 15px rgba(0,0,0,0.2);
         border-radius: 5px;
@@ -195,7 +196,7 @@
 <script src="js/load_data.js"></script>
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
     // Leaflet map init
     let bounds = new L.LatLngBounds(new L.LatLng(50.16962074944367, 16.3865741126029432), new L.LatLng(46.94733587652772, 23.45591532167501));
 	let map = L.map('map', {
@@ -205,15 +206,15 @@
     }).setView([48.6, 19.5 ], 7);
 
     geojson = L.geoJson(okresy, {
-        style: style,
+        style: style
     }).addTo(map);
     
     L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
-        maxZoom: 20,
+        maxZoom: 11,
+        minZoom: 7,
         id: 'tileset',
         attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
     }).addTo(map);
-
 
     // D3 graph init
     interactive_grouped();
@@ -222,7 +223,6 @@
     save_to_img('map', d3.select('#map').select("svg").node(), '#saveButtonMap', 970, 600)
     // save btn init graph width 370 height 360
     save_to_img('graph', d3.select("#my_dataviz3").select("svg").node(), '#saveButtonGraph', 370, 360);
-
 </script>
 <script src="js/get_params.js"></script> 
 
