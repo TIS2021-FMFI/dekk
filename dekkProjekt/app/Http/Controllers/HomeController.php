@@ -41,8 +41,9 @@ class HomeController extends Controller
     */
     public static function get_values($specific_year_dataset_id){
         $dataset = DB::table('values')
-        ->select('value', 'district_id')
-        ->where('specific_dataset_id', '=', $specific_year_dataset_id)
+        ->join('districts', 'districts.id', '=', 'values.district_id')
+        ->select('value', 'name')
+        ->where('values.specific_dataset_id', '=', $specific_year_dataset_id)
         ->orderBy('district_id')
         ->get();
 
@@ -72,9 +73,20 @@ class HomeController extends Controller
         $dataset2 = self::get_values(13);
         
         $res = self::calculate_correlation(self::extract_data($dataset1), self::extract_data($dataset2));
+        $pom1 = [];
+        foreach ($dataset1 as $dat) {
+            $pom1[$dat->name] = $dat->value;
+        }
+        $dataset1 = $pom1;
+        foreach ($dataset2 as $dat) {
+            $pom1[$dat->name] = $dat->value;
+        }
+        $dataset2 = $pom1;
+
         $result = ['corr'=> $res, 'dataset1' => $dataset1, 'dataset2' => $dataset2];
         return json_encode($result);
-        
+    }        
+
     // loads dataset parameters from database
     public function load2($dataset1, $dataset2)
     {
@@ -97,34 +109,47 @@ class HomeController extends Controller
         return json_encode($ret);
     }
 
-    public function load_param($dataset_name, $dataset_id, $ret)
+    public static function load_parameter($dataset_type_id)
     {
+        $ret = [];
+        $dataset_type_name = DB::table('dataset_types')
+        ->where('id', $dataset_type_id)
+        ->value('name');
 
         $parameters = DB::table('parameters')
-        ->select('id', 'name')
-        ->where('dataset_type_id', '=', $dataset_id)
+        ->select('name', 'id')
+        ->where('dataset_type_id', '=', $dataset_type_id)
         ->get();
 
-        $i = 0;
-        foreach($parameters as $parameter) {
-
-            array_push($ret[$dataset_name], array($parameter->name => array()));
-
+        foreach( $parameters as $parameter) {
+            
+            $ret[$parameter->name] = array(); 
+            
             $values = DB::table('parameter_values')
             ->select('id', 'name')
             ->where('parameter_id', '=', $parameter->id)
             ->get();
 
-            
-            foreach($values as $value) {
-                array_push($ret[$dataset_name][$i][$parameter->name], array($value->id, $value->name));
+            $pom = [];
+            foreach($values as $val){
+                $pom[$val->id] = $val->name;
             }
-            $i++;
+            
+            $ret[$parameter->name] = $pom;
         }
-
         return $ret;
     }
 
+    public function load_params($dataset_type_id1, $dataset_type_id2){
+        $data_par1 = self::load_parameter($dataset_type_id1);
+        $data_par2 = self::load_parameter($dataset_type_id2);
+
+        $ret = array(
+            $dataset_type_id1 => $data_par1,
+            $dataset_type_id2 => $data_par2
+        );
+        return json_encode($ret);
+    }
 
     public function get_dataset_parameters($dataset_id)
     {

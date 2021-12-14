@@ -122,7 +122,7 @@
                 </div>
 
                 <!-- Send requested datasets -->
-                <button type="button" class="btn btn-dark" onclick="sendRequest()">Obnoviť</button>
+                <button type="button" class="btn btn-dark" onclick="getParamsAndValues()">Obnoviť</button>
             </div>
 
             <!-- Map -->

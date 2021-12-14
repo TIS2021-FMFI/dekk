@@ -6,6 +6,44 @@ let geojson;
 let info;
 let legend;
 
+
+function getParamsAndValues(){
+    //TODO: zistit od pouzivatela datasety_type
+    let dataset_type1 = 1;
+    let dataset_type2 = 2;
+
+    // getParametersAndYears(dataset_type1, dataset_type2);
+    
+    getValues(4, 5);
+}
+
+function getParametersAndYears(dataset_type1, dataset_type2){
+    //TODO: get years
+    xmlHttp = new XMLHttpRequest();  
+    url ="/loadParams/"+ dataset_type1 + "/" + dataset_type2;
+    console.log(url);
+    xmlHttp.onreadystatechange = onResponseParameters;
+    xmlHttp.open("GET", url);
+    xmlHttp.send();
+}
+
+function getValues(dataset_id1, dataset_id2){
+    xmlHttp = new XMLHttpRequest();  
+    url = "/loadData/" + dataset_id1 + "/" + dataset_id2;
+    console.log(url);
+    xmlHttp.onreadystatechange = onResponseValues;
+    xmlHttp.open("GET", url);
+    xmlHttp.send();
+}
+
+function onResponseValues(){
+    if(xmlHttp.readyState == 4 && xmlHttp.status == 200)   {
+        response = JSON.parse(xmlHttp.responseText);
+        console.log(response);
+        colorMapAndGraph();
+    }
+}
+
 function sendRequest() {
     // send request to backend if 2 datasets are selected
     xmlHttp = new XMLHttpRequest();
@@ -22,11 +60,19 @@ function sendRequest() {
     xmlHttp.send();
 }
 
+function onResponseParameters(){
+    if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+        response = JSON.parse(xmlHttp.responseText);
+        console.log(response);
+        console.log(new Date().getTime());
+    }
 
-function onResponse1() {
-    // handles response
-    if(xmlHttp.readyState == 4 && xmlHttp.status == 200)   {
+}
 
+
+function colorMapAndGraph() {
+
+    
         // document.getElementById('odpoved').innerHTML = xmlHttp.responseText;
 
         // remove any previous layers
@@ -83,14 +129,7 @@ function onResponse1() {
 
             legend.addTo(map);
         }
-
-
-
-//         responnse = JSON.parse(xmlHttp.responseText);
-
-//         console.log(responnse);
-//         L.geoJson(okresy, {style: style}).addTo(map);
-    }
+    
 }
 
 // returns color of district
