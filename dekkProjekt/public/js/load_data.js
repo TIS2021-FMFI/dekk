@@ -300,7 +300,7 @@ function highlightFeature(e) {
 
     if (layers.length == 2) {
         if (map.hasLayer(geojson1)) info1.update(layers[0].feature.properties);
-        if (map.hasLayer(geojson1)) info2.update(layers[1].feature.properties);
+        if (map.hasLayer(geojson2)) info2.update(layers[1].feature.properties);
     }
 }
 
