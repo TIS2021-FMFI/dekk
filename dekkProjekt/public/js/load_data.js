@@ -85,16 +85,17 @@ function onResponseParameters(){
 
 
 function colorMapAndGraph() {
-        // remove any previous layers
-        map.eachLayer(layer => { if (layer.id == 'tileset') map.removeLayer(layer)});
+        // // remove any previous layers
+        // map.eachLayer(layer => { if (layer.id == 'tileset') map.removeLayer(layer); console.log(layer.id)});
 
-        if (geojson1 && geojson2) {
+        if (typeof geojson1 != 'undefined' && typeof geojson2 != 'undefined') {
             info1.remove();
             info2.remove();
             legend1.remove();
             legend2.remove();
             geojson1.remove();
             geojson2.remove();
+            selectOverlays.remove();
         }
 
         maxValue1 = d3.max(districts1['features'], o => o.properties.value);
@@ -117,23 +118,14 @@ function colorMapAndGraph() {
             'dataset2': geojson2
         }
 
+        
         selectOverlays = L.control.layers(null, overlay1, {collapsed: false, sortLayers: true});
         selectOverlays.addTo(map);
 
-        // info pane
-        if (!info1) {
-            info1 = initializeInfoPane(info1, 'Dataset 1');
-            info2 = initializeInfoPane(info2, 'Dataset 2');
-
-        }
-
-        // color legend
-        if (!legend1) {
-            legend1 = initializeLegendPane(legend1, maxValue1, 'dataset1');
-            legend2 = initializeLegendPane(legend2, maxValue2, 'dataset2');
-
-        }
-
+        info1 = initializeInfoPane(info1, 'Dataset 1');
+        info2 = initializeInfoPane(info2, 'Dataset 2');
+        legend1 = initializeLegendPane(legend1, maxValue1, 'dataset1');
+        legend2 = initializeLegendPane(legend2, maxValue2, 'dataset2');
 
         // show/ hide legend and pane
         map.on('overlayadd', function(overlay) {
@@ -192,7 +184,7 @@ function initializeLegendPane(pane, maxValue, dataset) {
     pane = L.control({position: 'bottomright'});
 
     pane.onAdd = function (map) {
-        let x = Math.floor(maxValue / 7);
+        let x = Math.floor(maxValue / 6);
         let div = L.DomUtil.create('div', 'info legend'),
             grades = [0, 1*x, 2*x, 3*x, 4*x, 5*x, 6*x, 7*x],
             labels = [];
