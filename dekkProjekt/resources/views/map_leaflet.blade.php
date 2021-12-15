@@ -25,7 +25,7 @@
 			height: 600px;
 		 }
 
-    .info {
+    .info, .info2 {
         padding: 6px 8px;
         font: 14px/16px Arial, Helvetica, sans-serif;
         background: white;
@@ -35,7 +35,7 @@
         border-radius: 5px;
     }
 
-    .info h4 {
+    .info h4, .info2 h4 {
         margin: 0 0 5px;
         color: #777;
     }
@@ -52,7 +52,6 @@
         margin-right: 8px;
         opacity: 0.7;
     }
-
 
     </style>
 
@@ -194,6 +193,7 @@
 
 <script type="text/javascript" src="js/okresy.js"></script>
 <script src="js/load_data.js"></script>
+<script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
 
 
 <script type="text/javascript">
@@ -206,7 +206,7 @@
     }).setView([48.6, 19.5 ], 7);
 
     geojson = L.geoJson(okresy, {
-        style: style
+        style: style1
     }).addTo(map);
     
     L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
