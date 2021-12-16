@@ -48,144 +48,139 @@
 
     <!-- Script for dropdown and parameters -->
     <script src="js/dropdown_and_params.js"></script>
+
     
+
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
+    <div class="container-fluid" style="height:100%;">
+        <div style="height:100%;">
+            <div class="row" id="main_row" >
 
-            <!-- class="subPanel" -->
-            <div class="col-xl-3 col-lg-12" id="sidePanel">
+                <!-- class="subPanel" -->
+                <div class="col-xl-3 col-lg-12" id="sidePanel">
 
-                <h3>Datasety a parametre:</h3>
-                <div class="datasets_parameters">
+                    <h3>Datasety a parametre:</h3>
+                    <div class="datasets_parameters">
 
-                    <!-- multichoice picker with search, limited to 2 selected options -->
-                    <select class="selectpicker" id="selectpicker" multiple data-live-search="true" data-max-options="2"
-                        data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
-                        title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
-                        onchange="getDatasetsParamsYear()">
-                        <?php for($i=0; $i<3; $i++) :?>
-                        <option id="dataset<?=$i?>"></option>
-                        <?php endfor;?>
-                    </select>
+                        <!-- multichoice picker with search, limited to 2 selected options -->
+                        <select class="selectpicker" id="selectpicker" multiple data-live-search="true"
+                            data-max-options="2"
+                            data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
+                            title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
+                            onchange="getDatasetsParamsYear()">
+                            <?php for($i=0; $i<3; $i++) :?>
+                            <option id="dataset<?=$i?>"></option>
+                            <?php endfor;?>
+                        </select>
 
-                    <!-- dynamic datasets and params -->
-                    <div id="selected_datasets" style="display:none">
-                        <div>
-
-                            <!-- this index is not dataset id, it's just the two datastes -->
-                            <?php for($i=0; $i<2; $i++) :?>
+                        <!-- dynamic datasets and params -->
+                        <div id="selected_datasets" style="display:none">
                             <div>
 
-                                <!-- selected dataset -->
-                                <div class="selected_datasets" id="selected_dataset<?=$i?>"></div>
+                                <!-- this index is not dataset id, it's just the two datastes -->
+                                <?php for($i=0; $i<2; $i++) :?>
+                                <div>
 
-                                <!-- selected datasets parameters -->
-                                <div id="all_params"></div>
+                                    <!-- selected dataset -->
+                                    <div class="selected_datasets" id="selected_dataset<?=$i?>"></div>
 
-                                <!--
-                                THIS IS BEING INSERTED BY showParameters():
-                                <div class="pretty p-svg p-plain" style="margin: 0.5em;">
-                                    <input type="checkbox" />
-                                    <div class="state">
-                                        <img class="svg" src="/svg/task.svg">
-                                        <label>Done</label>
-                                    </div>
+                                    <!-- selected datasets parameters -->
+                                    <div id="all_params"></div>
+
                                 </div>
-                                -->
+                                <?php endfor;?>
 
                             </div>
-                            <?php endfor;?>
-
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- Slider (value needed for year pick) -->
-                <div class="slidercontainer" style="margin-top: 1em;">
-                    <h3>Rok: <span id="sliderYear"></span></h3>
-                    <input type="range" min="1990" max="2020" value="2005" class="slider" id="myRange">
-
-                    <script>
-                    var slider = document.getElementById("myRange");
-                    var yearOutput = document.getElementById("sliderYear");
-                    yearOutput.innerHTML = slider.value;
-                    slider.oninput = function() {
-                        yearOutput.innerHTML = this.value;
-                        console.log(yearOutput.innerHTML);
-                    }
-                    </script>
-                </div>
-
-                <!-- Send requested datasets -->
-                <button type="button" class="btn btn-dark" onclick="sendRequest()">Obnoviť</button>
-            </div>
-
-            <!-- Map -->
-            <div class="col-xl-5 col-lg-12">
-                <div id='map'></div>
-                <div class="row">
-
-                    <!-- color pickers -->
-                    <!--
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="picker1" id="picker1">
-                            <script>
-                            var colorPicker1 = new iro.ColorPicker('#picker1', {
-                                width: 150,
-                                color: "#fff",
-                                layout: [{
-                                    component: iro.ui.Wheel,
-                                    options: {}
-                                }, ]
-                            });
-                            </script>
                         </div>
                     </div>
 
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="picker2" id="picker2">
-                            <script>
-                            var colorPicker2 = new iro.ColorPicker('#picker2', {
-                                width: 150,
-                                color: "#fff",
-                                layout: [{
-                                    component: iro.ui.Wheel,
-                                    options: {}
-                                }, ]
-                            });
-                            </script>
-                        </div>
+
+                    <!-- Slider (value needed for year pick) -->
+                    <div class="slidercontainer" style="margin-top: 1em;">
+                        <h3>Rok: <span id="sliderYear"></span></h3>
+                        <input type="range" min="1990" max="2020" value="2005" class="slider" id="myRange">
+
+                        <script>
+                        var slider = document.getElementById("myRange");
+                        var yearOutput = document.getElementById("sliderYear");
+                        yearOutput.innerHTML = slider.value;
+                        slider.oninput = function() {
+                            yearOutput.innerHTML = this.value;
+                            console.log(yearOutput.innerHTML);
+                        }
+                        </script>
                     </div>
-                    -->
+
+                    <!-- Send requested datasets -->
+                    <button type="button" class="btn btn-dark" onclick="sendRequest()">Obnoviť</button>
                 </div>
 
-            </div>
+                <!-- Map -->
+                <div class="col-xl-5 col-lg-12">
+                    <div id='map'></div>
+                    <div class="row">
 
-            <!-- BEFORE : <div class="col-md-4" id="odpoved"></div> -->
-            <div class="col-xl-4 col-lg-12" id="sidePanel">
-                <!-- Graph -->
-                <div id="my_dataviz3">
-                    <h3>Graf korelácie</h3>
+                        <!-- color pickers -->
+
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="picker1" id="picker1">
+                                <script>
+                                var colorPicker1 = new iro.ColorPicker('#picker1', {
+                                    width: 150,
+                                    color: "#fff",
+                                    layout: [{
+                                        component: iro.ui.Wheel,
+                                        options: {}
+                                    }, ]
+                                });
+                                </script>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="picker2" id="picker2">
+                                <script>
+                                var colorPicker2 = new iro.ColorPicker('#picker2', {
+                                    width: 150,
+                                    color: "#fff",
+                                    layout: [{
+                                        component: iro.ui.Wheel,
+                                        options: {}
+                                    }, ]
+                                });
+                                </script>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
-                <div class="correlation_meaning">
-                    <p>Korelačný koeficient je <a class="red"
-                            href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)"> 0.64 </a> a hovorí nám...
-                    </p>
+
+                <!-- BEFORE : <div class="col-md-4" id="odpoved"></div> -->
+                <div class="col-xl-4 col-lg-12" id="sidePanel">
+                    <!-- Graph -->
+                    <div id="my_dataviz3">
+                        <h3>Graf korelácie</h3>
+                    </div>
+                    <div class="correlation_meaning">
+                        <p>Korelačný koeficient je <a class="red"
+                                href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)"> 0.64 </a> a hovorí nám...
+                        </p>
+                    </div>
+                    <!-- Graph save button -->
+                    <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
+                    <!-- Map save button -->
+                    <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
                 </div>
-                <!-- Graph save button -->
-                <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
-                <!-- Map save button -->
-                <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
             </div>
         </div>
     </div>
 
 
 
+    <!--
     @foreach($dataset_types as $dataset_type)
     <div class="row">
         <div>
@@ -194,7 +189,7 @@
         </div>
     </div>
     @endforeach
-
+    -->
 
     <script type="text/javascript" src="js/okresy.js"></script>
     <script src="js/load_data.js"></script>
@@ -238,6 +233,13 @@
         console.log(getDatasetName(i));
         showParameters(getDatasetName(i));
     }
+    </script>
+
+    <script>
+        console.log("HEIGHT: " + window.innerHeight);
+        const elem = document.getElementById("main_row");
+        elem.style.height =  window.innerHeight+"px";
+        console.log("ELEM: " + elem);
     </script>
 
 
