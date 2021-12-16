@@ -74,6 +74,7 @@ class HomeController extends Controller
         $res = self::calculate_correlation(self::extract_data($dataset1), self::extract_data($dataset2));
         $result = ['corr'=> $res, 'dataset1' => $dataset1, 'dataset2' => $dataset2];
         return json_encode($result);
+    }
         
     // loads dataset parameters from database
     public function load2($dataset1, $dataset2)

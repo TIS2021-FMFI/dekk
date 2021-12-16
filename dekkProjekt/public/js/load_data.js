@@ -84,11 +84,8 @@ function onResponse1() {
             legend.addTo(map);
         }
 
-
-
-//         responnse = JSON.parse(xmlHttp.responseText);
-
-//         console.log(responnse);
+         responnse = JSON.parse(xmlHttp.responseText);
+         console.log(responnse);
 //         L.geoJson(okresy, {style: style}).addTo(map);
     }
 }

@@ -6,7 +6,7 @@ body {
     font-weight: 500;
 }
 h3 {
-    padding-bottom: 1em;
+    padding-bottom: 0.5em;
 }
 a:hover {
     color: #ed3833;
@@ -68,8 +68,40 @@ a:hover {
     padding: 1em;
     margin-bottom: 1em
 }
-#my_dataviz3 svg {
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    color: #777;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+.btn-light, .selected_datasets {
+    background-color: #ed3833;
+    color: white;
+}
+.bootstrap-select > .dropdown-toggle.bs-placeholder, .bootstrap-select > .dropdown-toggle.bs-placeholder:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder:active {
+    color: white !important;
+}
+#my_dataviz3 svg, #selected_datasets {
     background-color: white;
+    border-radius: 3%;
     color: black;
     border: 5px;
     border-style: solid;
@@ -77,6 +109,7 @@ a:hover {
 }
 #map {
     min-height: 800px;
+    height: 600px;
 }
 #sidePanel {
     background-color: rgba(47, 41, 99, 1);
@@ -86,5 +119,9 @@ a:hover {
     position: absolute;
     right: 20%;
 }
+
+
+
+
 
 
