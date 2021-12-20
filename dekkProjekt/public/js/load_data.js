@@ -25,7 +25,7 @@ function getParamsAndValues(){
 function getParametersAndYears(dataset_type1, dataset_type2){
     //TODO: get years
     xmlHttp = new XMLHttpRequest();  
-    let url ="/loadParams/"+ dataset_type1 + "/" + dataset_type2;
+    const url ="/loadParams/"+ dataset_type1 + "/" + dataset_type2;
     console.log(url);
     xmlHttp.onreadystatechange = onResponseParameters;
     xmlHttp.open("GET", url);
@@ -34,7 +34,7 @@ function getParametersAndYears(dataset_type1, dataset_type2){
 
 function getValues(dataset_id1, dataset_id2){
     xmlHttp = new XMLHttpRequest();  
-    let url = "/loadData/" + dataset_id1 + "/" + dataset_id2;
+    const url = "/loadData/" + dataset_id1 + "/" + dataset_id2;
     console.log(url);
     xmlHttp.onreadystatechange = onResponseValues;
     xmlHttp.open("GET", url);
@@ -50,10 +50,12 @@ function onResponseValues(){
 
         districts1 = addValueProperty(response, 'dataset1');
         districts2 = addValueProperty(response, 'dataset2');
+
         console.log(districts1);
         console.log(districts2);
         console.log(okresy);
-        colorMapAndGraph();
+        drawMap();
+        drawGraph(response);
     }
 }
 
@@ -84,7 +86,7 @@ function onResponseParameters(){
 }
 
 
-function colorMapAndGraph() {
+function drawMap() {
         // // remove any previous layers
         // map.eachLayer(layer => { if (layer.id == 'tileset') map.removeLayer(layer); console.log(layer.id)});
 
@@ -103,12 +105,12 @@ function colorMapAndGraph() {
         // console.log(maxValue);
         // console.log(maxValue2);
 
-        geojson1 = L.geoJson(districts1, {
+        geojson1 = L.geoJson(districts1, { // dataset1
             style: style1,
             onEachFeature: onEachFeature
         });
 
-        geojson2 = L.geoJson(districts2, {
+        geojson2 = L.geoJson(districts2, { // dataset2
             style: style2,
             onEachFeature: onEachFeature
         });
