@@ -19,11 +19,38 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/app.css" />
 
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="js/d3_graph_scripts.js"></script>
+
+    <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. -->
+    <script
+        src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js">
+    </script>
+    <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js">
+    </script>
+
+    <!-- Load save btn script -->
+    <script src="js/save_btn.js"></script>
+
+    <!-- For dropdown multiselect picklist with search (selectpicker) -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+    <!-- Color picker script -->
+    <script src="js/iro.min.js"></script>
+
+    <!-- Leaflet pip(point in polygon) used to propagate mouse events to all layers of the map -->
+    <script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
+   
     <style>
 
     #map { 
 			height: 600px;
-		 }
+	}
 
     .info, .info2 {
         padding: 6px 8px;
@@ -54,31 +81,6 @@
     }
 
     </style>
-
-    <!-- Load d3.js -->
-    <script src="https://d3js.org/d3.v6.js"></script>
-    <script src="js/scripts.js"></script>
-
-    <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. -->
-    <script
-        src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js">
-    </script>
-    <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js">
-    </script>
-
-    <!-- Load save btn script -->
-    <script src="js/save_btn.js"></script>
-
-    <!-- For dropdown multiselect picklist with search (selectpicker) -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-
-    <!-- Color picker script -->
-    <script src="js/iro.min.js"></script>
-
 </head>
 
 <body>
@@ -168,8 +170,8 @@
                     <h3>Graf korelácie</h3>
                 </div>
                 <div class="correlation_meaning">
-                    <p>Korelačný koeficient je <a class="red"
-                            href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)"> 0.64 </a> a hovorí nám...</p>
+                    <p">Korelačný koeficient je <a class="red"
+                            href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)" id="correlation_coefficient"> 0.64 </a> a hovorí nám...</p>
                 </div>
                 <!-- Graph save button -->
                 <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
@@ -193,7 +195,6 @@
 
 <script type="text/javascript" src="js/okresy.js"></script>
 <script src="js/load_data.js"></script>
-<script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
 
 
 <script type="text/javascript">
@@ -217,7 +218,8 @@
     }).addTo(map);
 
     // D3 graph init
-    interactive_grouped();
+    // interactive_grouped();
+    drawGraph();
 
     // save btn init map width 970 heigth 600
     save_to_img('map', d3.select('#map').select("svg").node(), '#saveButtonMap', 970, 600)
