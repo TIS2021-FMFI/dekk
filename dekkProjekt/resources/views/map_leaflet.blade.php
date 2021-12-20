@@ -49,14 +49,14 @@
     <!-- Script for dropdown and parameters -->
     <script src="js/dropdown_and_params.js"></script>
 
-    
+
 
 </head>
 
 <body>
     <div class="container-fluid" style="height:100%;">
         <div style="height:100%;">
-            <div class="row" id="main_row" >
+            <div class="row" id="main_row">
 
                 <!-- class="subPanel" -->
                 <div class="col-xl-3 col-lg-12" id="sidePanel">
@@ -69,7 +69,7 @@
                             data-max-options="2"
                             data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
                             title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
-                            onchange="getDatasetsParamsYear()">
+                            onchange="getSelectedDatasetsParams()">
                             <?php for($i=0; $i<3; $i++) :?>
                             <option id="dataset<?=$i?>"></option>
                             <?php endfor;?>
@@ -80,14 +80,14 @@
                             <div>
 
                                 <!-- this index is not dataset id, it's just the two datastes -->
-                                <?php for($i=0; $i<2; $i++) :?>
+                                <?php for($i=0; $i<3; $i++) :?>
                                 <div>
 
                                     <!-- selected dataset -->
                                     <div class="selected_datasets" id="selected_dataset<?=$i?>"></div>
 
                                     <!-- selected datasets parameters -->
-                                    <div id="all_params"></div>
+                                    <div id="selected_datasets_with_parameters"></div>
 
                                 </div>
                                 <?php endfor;?>
@@ -123,7 +123,7 @@
                     <div class="row">
 
                         <!-- color pickers -->
-
+                        <!--
                         <div class="col-xl-6 col-lg-6">
                             <div class="picker1" id="picker1">
                                 <script>
@@ -153,7 +153,7 @@
                                 </script>
                             </div>
                         </div>
-
+                        -->
                     </div>
 
                 </div>
@@ -224,22 +224,24 @@
     // save btn init graph width 370 height 360
     save_to_img('graph', d3.select("#my_dataviz3").select("svg").node(), '#saveButtonGraph', 370, 360);
     </script>
+
     <script src="js/get_params.js"></script>
 
     <!-- set innerHTML for dropdown -->
     <script>
     for (let i = 0; i < 3; i++) {
-        document.getElementById("dataset" + i).innerHTML = getDatasetName(i);
-        console.log(getDatasetName(i));
-        showParameters(getDatasetName(i));
+        document.getElementById("dataset" + i).innerHTML = getDatasetNameById(i);
+        console.log(getDatasetNameById(i));
+        showParameters(getDatasetNameById(i));
     }
     </script>
 
+    <!-- height adjust -->
     <script>
         console.log("HEIGHT: " + window.innerHeight);
-        const elem = document.getElementById("main_row");
-        elem.style.height =  window.innerHeight+"px";
-        console.log("ELEM: " + elem);
+        const main_row = document.getElementById("main_row");
+        main_row.style.height = window.innerHeight + "px";
+        console.log("MAIN_ROW: " + main_row);
     </script>
 
 

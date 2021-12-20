@@ -99,6 +99,11 @@ a:hover {
 .bootstrap-select > .dropdown-toggle.bs-placeholder, .bootstrap-select > .dropdown-toggle.bs-placeholder:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder:active {
     color: white !important;
 }
+.param_name {
+    padding-left: 0.5em;
+    border-top: #ed3833 2px solid;
+    margin: 0;
+}
 #my_dataviz3 svg, #selected_datasets {
     background-color: white;
     border-radius: 3%;
@@ -119,9 +124,5 @@ a:hover {
     position: absolute;
     right: 20%;
 }
-
-
-
-
 
 
