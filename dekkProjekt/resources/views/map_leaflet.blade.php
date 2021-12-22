@@ -21,7 +21,12 @@
 
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v6.js"></script>
-    <script src="js/d3_graph_scripts.js"></script>
+    
+    <!-- Singleton module responsible for the graph functionality -->
+    <script src="js/d3_graph_module.js"></script>
+
+    <!-- Singleton module responsible for the map functionality -->
+    <script src="js/leaflet_map_module.js"></script>
 
     <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. -->
     <script
@@ -196,14 +201,9 @@
 <script type="text/javascript" src="js/okresy.js"></script>
 <script src="js/load_data.js"></script>
 
-<!-- Singleton module responsible for the map functionality, cannot be loaded before the map div has been established -->
-<script src="js/leaflet_map_module.js"></script>
-
-
 <script type="text/javascript">
-    const mapModule = MapModule;
-    mapModule.init();
-
+    MapModule.init();
+    GraphModule.init();
     // save btn init map width 970 heigth 600
     let mapDiv = document.querySelector('#map');
     save_to_img('map', '#saveButtonMap', 770, 720);
