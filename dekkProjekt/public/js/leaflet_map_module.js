@@ -88,18 +88,19 @@ const MapModule = (() => {
         
     }
 
-    const bounds = new L.LatLngBounds(new L.LatLng(50.16962074944367, 16.3865741126029432), new L.LatLng(46.94733587652772, 23.45591532167501));
-    const map = L.map('map', {
-        center: [48.6, 19.5 ],
-        maxBounds: bounds,
-        maxBoundsViscosity: 0.5
-    }).setView([48.6, 19.5 ], 7);
-
     let geoLayer1;
     let geoLayer2;
     let selectOverlays;
+    let map;
 
     const init = () => {
+        const bounds = new L.LatLngBounds(new L.LatLng(50.16962074944367, 16.3865741126029432), new L.LatLng(46.94733587652772, 23.45591532167501));
+        map = L.map('map', {
+            center: [48.6, 19.5 ],
+            maxBounds: bounds,
+            maxBoundsViscosity: 0.5
+        }).setView([48.6, 19.5 ], 7);
+    
         const initialGeojson = L.geoJson(okresy, {
             style: feature => styling(feature, calculateColorGradient('0xfcfab3', '0xfcfab3'))
         }).addTo(map);

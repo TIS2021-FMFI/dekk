@@ -40,7 +40,7 @@ function onResponseValues(){
         districts2 = addValueProperty(response, 'dataset2');
 
         MapModule.addLayers(districts1, districts2);
-        drawGraph(response);
+        GraphModule.drawGraph(response);
     }
 }
 
