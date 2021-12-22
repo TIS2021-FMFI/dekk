@@ -196,35 +196,20 @@
 <script type="text/javascript" src="js/okresy.js"></script>
 <script src="js/load_data.js"></script>
 
+<!-- Singleton module responsible for the map functionality, cannot be loaded before the map div has been established -->
+<script src="js/leaflet_map_module.js"></script>
+
 
 <script type="text/javascript">
-    // Leaflet map init
-    let bounds = new L.LatLngBounds(new L.LatLng(50.16962074944367, 16.3865741126029432), new L.LatLng(46.94733587652772, 23.45591532167501));
-	let map = L.map('map', {
-        center: [48.6, 19.5 ],
-        maxBounds: bounds,
-        maxBoundsViscosity: 0.5
-    }).setView([48.6, 19.5 ], 7);
-
-    geojson = L.geoJson(okresy, {
-        style: style1
-    }).addTo(map);
-    
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
-        maxZoom: 11,
-        minZoom: 7,
-        id: 'tileset',
-        attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // D3 graph init
-    // interactive_grouped();
-    drawGraph();
+    const mapModule = MapModule;
+    mapModule.init();
 
     // save btn init map width 970 heigth 600
-    save_to_img('map', d3.select('#map').select("svg").node(), '#saveButtonMap', 970, 600)
+    let mapDiv = document.querySelector('#map');
+    save_to_img('map', '#saveButtonMap', 770, 720);
+    let graphDiv = document.querySelector('#my_dataviz3');
     // save btn init graph width 370 height 360
-    save_to_img('graph', d3.select("#my_dataviz3").select("svg").node(), '#saveButtonGraph', 370, 360);
+    save_to_img('graph', '#saveButtonGraph', 370, 360);
 </script>
 <script src="js/get_params.js"></script> 
 
