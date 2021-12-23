@@ -29,7 +29,7 @@ const MapModule = (() => {
             };
         
             return pane;
-        }
+        };
         
         const initializeLegendPane = () => {
             const pane = L.control({position: 'bottomright'});
@@ -52,7 +52,7 @@ const MapModule = (() => {
             };
         
             return pane;
-        }
+        };
 
         const onEachFeature = (feature, layer) => {
             layer.on({
@@ -60,7 +60,7 @@ const MapModule = (() => {
                 mouseout: resetHighlight,
                 click: zoomToFeature
             });
-        }
+        };
 
         const geojson = L.geoJson(data, {
             style: feature => styling(feature, gradient, maxValue),
@@ -84,9 +84,8 @@ const MapModule = (() => {
                 console.log(`gradient = ${gradient}`);
                 console.log(`maxValue = ${maxValue}`);
             }
-        }
-        
-    }
+        };
+    };
 
     let geoLayer1;
     let geoLayer2;
@@ -111,8 +110,7 @@ const MapModule = (() => {
             id: 'tileset',
             attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         }).addTo(map);
-
-    }
+    };
 
     // creates and adds layers from geojson objects
     const addLayers = (dataset1, dataset2) => {
@@ -129,7 +127,7 @@ const MapModule = (() => {
         const overlay = {
             'dataset1': geoLayer1.getGeojson(),
             'dataset2': geoLayer2.getGeojson()
-        }
+        };
 
         
         selectOverlays = L.control.layers(null, overlay, {collapsed: false, sortLayers: true});
@@ -142,7 +140,7 @@ const MapModule = (() => {
                 geoLayer1.getLegend().addTo(map);
 
                 // different overlay load orders result in different coloring of the map -> we dont want that
-                // rearrange geojsons so that geojson2 is always on top resulting in consistent color palette
+                // rearrange geojsons so that geoLayer2 is always on top resulting in consistent color palette
 
                 if (map.hasLayer(geoLayer2.getGeojson())) {
                     geoLayer2.getGeojson().remove();
@@ -153,7 +151,7 @@ const MapModule = (() => {
                 geoLayer2.getInfo().addTo(map);
                 geoLayer2.getLegend().addTo(map);
             }
-        })
+        });
 
         map.on('overlayremove', function(overlay) {
             if (overlay['name'] == 'dataset1') {
@@ -164,13 +162,8 @@ const MapModule = (() => {
                 geoLayer2.getInfo().remove()
                 geoLayer2.getLegend().remove()
             }
-        })
-
-        // debug info 
-
-        // geoLayer1.debug();
-        // geoLayer2.debug();
-    }
+        });
+    };
 
     const styling = (feature, gradient, maxValue=0) => {
         return {
@@ -179,8 +172,8 @@ const MapModule = (() => {
             color: '#007472',
             fillOpacity: 0.5,
             fillColor: getColor(feature.properties.value, gradient, maxValue)
-        }
-    }
+        };
+    };
 
     const getColor = (d, gradient, maxValue) => {
         const x = Math.floor(maxValue / 7); // colors are evenly split between 0 and maxValue
@@ -193,30 +186,30 @@ const MapModule = (() => {
                 d > 2*x ? gradient[2] :
                 d > 1*x ? gradient[1] :
                           gradient[0];
-    }
+    };
 
     // calculates color gradient between two hex colors
     const calculateColorGradient = (color1, color2) => {
         // get rgb from hex
         const getRgb = color => {
-            let bigint = parseInt(color, 16);
-            const r = (bigint >> 16) & 255;
-            const g = (bigint >> 8) & 255;
-            const b = bigint & 255;
+            const bigint = parseInt(color, 16),
+                r = (bigint >> 16) & 255,
+                g = (bigint >> 8) & 255,
+                b = bigint & 255;
 
             return [r, g, b];
-        }
+        };
 
         // get d% color between a1 and a2
         const getPoint = (d, a1, a2) => a1.map((p, i) => Math.floor(a1[i] + d * (a2[i] - a1[i])));
         const componentToHex = c => {
-            var hex = c.toString(16);
+            const hex = c.toString(16);
             return hex.length == 1 ? "0" + hex : hex;
-        }
+        };
           
         const rgbToHex = (r, g, b) => {
             return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-        }
+        };
         
         const rgb1 = getRgb(color1);
         const rgb2 = getRgb(color2);
@@ -229,7 +222,7 @@ const MapModule = (() => {
 
         colors = colors.map(c => rgbToHex(c[0], c[1], c[2]));
         return colors;
-    }
+    };
 
     const highlightFeature = e => {
         let layer = e.target;
@@ -251,7 +244,7 @@ const MapModule = (() => {
             if (map.hasLayer(geoLayer1.getGeojson())) geoLayer1.getInfo().update(layers[0].feature.properties);
             if (map.hasLayer(geoLayer2.getGeojson())) geoLayer2.getInfo().update(layers[1].feature.properties);
         }
-    }
+    };
 
     const resetHighlight = e => {
         if (map.hasLayer(geoLayer1.getGeojson())) {
@@ -262,16 +255,16 @@ const MapModule = (() => {
             geoLayer2.getGeojson().resetStyle(e.target);
             geoLayer2.getInfo().update();
         }
-    }
+    };
 
     const zoomToFeature = e => {
         map.fitBounds(e.target.getBounds());
-    }
+    };
 
     return {
         init,
         addLayers,
         calculateColorGradient
-    }
+    };
 
-})()
+})();

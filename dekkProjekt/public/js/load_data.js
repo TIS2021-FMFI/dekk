@@ -1,5 +1,4 @@
 
-
 function getParamsAndValues(){
     //TODO: zistit od pouzivatela datasety_type
     let dataset_type1 = 1;
