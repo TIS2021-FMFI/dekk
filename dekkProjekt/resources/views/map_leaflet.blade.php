@@ -50,42 +50,7 @@
 
     <!-- Leaflet pip(point in polygon) used to propagate mouse events to all layers of the map -->
     <script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
-   
-    <style>
-
-    #map { 
-			height: 600px;
-	}
-
-    .info, .info2 {
-        padding: 6px 8px;
-        font: 14px/16px Arial, Helvetica, sans-serif;
-        background: white;
-        color: #777;
-        background: rgba(255,255,255,0.8);
-        box-shadow: 0 0 15px rgba(0,0,0,0.2);
-        border-radius: 5px;
-    }
-
-    .info h4, .info2 h4 {
-        margin: 0 0 5px;
-        color: #777;
-    }
-
-    .legend {
-        line-height: 18px;
-        color: #555;
-    }
-
-    .legend i {
-        width: 18px;
-        height: 18px;
-        float: left;
-        margin-right: 8px;
-        opacity: 0.7;
-    }
-
-    </style>
+    
 </head>
 
 <body>
@@ -171,7 +136,7 @@
             <!-- BEFORE : <div class="col-md-4" id="odpoved"></div> -->
             <div class="col-xl-4 col-lg-12" id="sidePanel">
                 <!-- Graph -->
-                <div id="my_dataviz3">
+                <div id="graph">
                     <h3>Graf korelácie</h3>
                 </div>
                 <div class="correlation_meaning">
@@ -186,18 +151,6 @@
         </div>
     </div>
 
-
-
-    @foreach($dataset_types as $dataset_type)
-    <div class="row">
-        <div>
-            <button type="button" class="btn btn-dark"
-                onclick="getParams({{ $dataset_type->id }})">{{ $dataset_type->name }}</button>
-        </div>
-    </div>
-    @endforeach
-
-
 <script type="text/javascript" src="js/okresy.js"></script>
 <script src="js/load_data.js"></script>
 
@@ -207,7 +160,7 @@
     // save btn init map width 970 heigth 600
     let mapDiv = document.querySelector('#map');
     save_to_img('map', '#saveButtonMap', 770, 720);
-    let graphDiv = document.querySelector('#my_dataviz3');
+    let graphDiv = document.querySelector('#graph');
     // save btn init graph width 370 height 360
     save_to_img('graph', '#saveButtonGraph', 370, 360);
 </script>
