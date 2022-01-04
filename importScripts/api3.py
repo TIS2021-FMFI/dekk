@@ -102,7 +102,8 @@ def generuj_roky(od):
 
 datasety = []
 
-#1. - dataset
+#1. - dataset 
+# TODO: oprav generuj roky
 datasety.append(
     dataset("om7102rr",
              "Počet obyvateľov podľa pohlavia - SR-oblasť-kraj-okres, m-v (ročne)",
@@ -112,7 +113,7 @@ datasety.append(
                "udaje": areas},
               {"nazov": "Roky",
                "kod" : "om7102rr_obd",
-               "udaje": generuj_roky(1993)},
+               "udaje": generuj_roky(2020)},
               {"nazov": "Ukazovatele",
                "kod" : "om7102rr_ukaz",
                "udaje": {
@@ -622,5 +623,31 @@ datasety.append(
                     2 : "Stav trvale bývajúceho obyvateľstva k 30.6.(1.7.) (Osoba)"}}
             ]))
 
-#print(datasety[0].dimenzie[2]["udaje"])
+# print(datasety[0].dimenzie[1:])
 
+def permutacie_parametrov(dataset):
+
+  permutacie = []
+  for rok in dataset.dimenzie[1]["udaje"]:
+    permutacie.append([rok])
+
+
+  for dimenzia in dataset.dimenzie[2:]:
+    nove = []
+    for parameter in dimenzia["udaje"]:
+      for riadok in permutacie:
+        nove.append(riadok+[parameter])
+    permutacie = nove
+    
+  return permutacie
+
+print(permutacie_parametrov(datasety[0]))
+
+'''
+def stahuj(dataset, permuracie):
+  for parameter in permutacie:
+    data = {}
+    for okres in okresy:
+      data[orkes] = stiahni(parameter, okres)
+    vlozdodatabazy(data)
+'''
