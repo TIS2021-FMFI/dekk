@@ -140,7 +140,7 @@
                     <h3>Graf korelácie</h3>
                 </div>
                 <div class="correlation_meaning">
-                    <p">Korelačný koeficient je <a class="red"
+                    <p id="correlation_definition">Korelačný koeficient je <a class="red"
                             href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)" id="correlation_coefficient"> 0.64 </a> a hovorí nám...</p>
                 </div>
                 <!-- Graph save button -->
