@@ -37,8 +37,48 @@ const GraphModule = (() => {
         d3.select('#graph').select('svg').remove();
     };
 
-    const printCorrelation = correlation => { // TODO
-        document.getElementById('correlation_coefficient').innerHTML = correlation.split(';')[0];
+    const printCorrelation = correlation => { 
+        correlation = correlation.split(';')[0];
+
+        let corrNum;
+        let hypertext; 
+        let corrType = correlation.split('(')[0];
+
+        // Pearson returns (0.8660254037844388, 0.011724811003954602) 
+        // Spearman returns SpearmanrResult(correlation=0.8660254037844388, pvalue=0.011724811003954599)
+        
+        if (corrType == 'SpearmanrResult') {
+            corrNum = parseFloat(correlation.split('(')[1].split(',')[0].split('=')[1]).toFixed(3);
+            corrType = 'Spearman'
+            corrLink = 'https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient'
+        } else { // pearson
+            corrNum = parseFloat(correlation.split(',')[0]).toFixed(3);
+            corrType = 'Pearson'
+            corrLink = 'https://en.wikipedia.org/wiki/Pearson_correlation_coefficient'
+        }
+
+        let corrStrength;
+        const r = Math.abs(corrNum);
+        switch(true) {
+            case (r < 0.3):
+                corrStrength = 'zanedbateľnú';
+                break;
+            case (r < 0.5):
+                corrStrength = 'slabú';
+                break;
+            case (r < 0.7):
+                corrStrength = 'priemernú';
+                break;
+            default:
+                corrStrength = 'silnú';
+        }
+
+        if (corrNum < 0) corrStrength += ' negatívnu';
+
+        document.getElementById('correlation_definition').innerHTML = `
+        Korelačný koeficient je ${corrNum}. Koeficient bol vypočítaný pomocou <a class="red" href="${corrLink}" id="correlation_coefficient">${corrType}ovho vzorca.</a>
+        <br>Jedná sa o ${corrStrength} koreláciu.
+        `
     };
     
     const drawGraph = dataset => {
