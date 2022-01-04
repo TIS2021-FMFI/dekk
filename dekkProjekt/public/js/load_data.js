@@ -6,7 +6,7 @@ function getParamsAndValues(){
 
     // getParametersAndYears(dataset_type1, dataset_type2);
     
-    getValues(4, 5);
+    getValues(1, 2);
 }
 
 function getParametersAndYears(dataset_type1, dataset_type2){
@@ -32,11 +32,18 @@ function onResponseValues(){
     if(xmlHttp.readyState == 4 && xmlHttp.status == 200)   {
         response = JSON.parse(xmlHttp.responseText);
 
+<<<<<<< Updated upstream
         console.log(response);
 
 
         districts1 = addValueProperty(response, 'dataset1');
         districts2 = addValueProperty(response, 'dataset2');
+=======
+        districts1 = addValueProperty(response, 'dataset1', response['ds1']);
+        districts2 = addValueProperty(response, 'dataset2', response['ds2']);
+
+        console.log(districts1);
+>>>>>>> Stashed changes
 
         MapModule.addLayers(districts1, districts2);
         GraphModule.drawGraph(response);
@@ -70,14 +77,25 @@ function onResponseParameters(){
 }
 
 // modifies geoJSON to contain respective values per district
+<<<<<<< Updated upstream
 function addValueProperty(valuesDict, dataset) {
     let districts = JSON.parse(JSON.stringify(okresy)); // deep copy okresy into districts, do not modify okresy
+=======
+function addValueProperty(valuesDict, datasetKey, datasetName) {
+    let districts = JSON.parse(JSON.stringify(okresy)); // deep copy okresy into districts, do not modify okresy
+    districts['datasetName'] = datasetName;
+>>>>>>> Stashed changes
 
     for (let i in districts['features']) {
         let district = districts['features'][i]['properties']['NM3'];
 
+<<<<<<< Updated upstream
         if (valuesDict[dataset].hasOwnProperty(district)) {
             districts['features'][i]['properties']['value'] = parseFloat(valuesDict[dataset][district]);
+=======
+        if (valuesDict[datasetKey].hasOwnProperty(district)) {
+            districts['features'][i]['properties']['value'] = parseFloat(valuesDict[datasetKey][district]);
+>>>>>>> Stashed changes
         }
     }
 
