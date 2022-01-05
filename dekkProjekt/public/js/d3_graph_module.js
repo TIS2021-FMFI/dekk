@@ -40,7 +40,7 @@ const GraphModule = (() => {
         correlation = correlation.split(';')[0];
 
         let corrNum;
-        let hypertext; 
+        let corrLink; 
         let corrType = correlation.split('(')[0];
 
         // Pearson returns (0.8660254037844388, 0.011724811003954602) 
