@@ -21,3 +21,4 @@ Route::get('/loadData/{id1}/{id2}', [HomeController::class, 'load']);
 Route::get('/datasetParams', [HomeController::class, 'getAllDatasetsParams']);
 
 Route::get('/loadParams/{dataset_type_id1}/{dataset_type_id2}', [HomeController::class, 'load_params']);
+

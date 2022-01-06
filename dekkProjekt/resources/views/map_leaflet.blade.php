@@ -22,6 +22,14 @@
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v6.js"></script>
     <script src="js/scripts.js"></script>
+    
+    
+    <!-- Singleton module responsible for the graph functionality -->
+    <script src="js/d3_graph_module.js"></script>
+
+    <!-- Singleton module responsible for the map functionality -->
+    <script src="js/leaflet_map_module.js"></script>
+    
 
     <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. -->
     <script
@@ -48,6 +56,9 @@
 
     <!-- Script for dropdown and parameters -->
     <script src="js/dropdown_and_params.js"></script>
+    
+    <!-- Leaflet pip(point in polygon) used to propagate mouse events to all layers of the map -->
+    <script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
 
 </head>
 
@@ -168,30 +179,20 @@
                 </div>
 
                 <!-- BEFORE : <div class="col-md-4" id="odpoved"></div> -->
-                <div class="col-xl-4 col-lg-12" id="sidePanel2">
-                    <!-- Graph -->
-
-                    <div id="my_dataviz3">
-                        <h3>Graf korelácie</h3>
-                    </div>
-                    <div class="correlation_meaning">
-                        <p>Korelačný koeficient je <a class="red"
-                                href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)"> 0.64 </a> a hovorí
-                            nám...
-                        </p>
-                    </div>
-
-
-
-
-                    <!-- Graph save button -->
-                    <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
-                    <!-- Map save button -->
-                    <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
-
-
-
+                <div class="col-xl-4 col-lg-12" id="sidePanel">
+                <!-- Graph -->
+                <div id="graph">
+                    <h3>Graf korelácie</h3>
                 </div>
+                <div class="correlation_meaning">
+                    <p id="correlation_definition">Korelačný koeficient je <a class="red"
+                            href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)" id="correlation_coefficient"> 0.64 </a> a hovorí nám...</p>
+                </div>
+                <!-- Graph save button -->
+                <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
+                <!-- Map save button -->
+                <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
+            </div>
             </div>
         </div>
     </div>
@@ -241,6 +242,16 @@
     save_to_img('graph', d3.select("#my_dataviz3").select("svg").node(), '#saveButtonGraph', 370, 360);
     </script>
 
+    <script type="text/javascript">
+        MapModule.init();
+        GraphModule.init();
+        // save btn init map width 970 heigth 600
+        let mapDiv = document.querySelector('#map');
+        save_to_img('map', '#saveButtonMap', 770, 720);
+        let graphDiv = document.querySelector('#graph');
+        // save btn init graph width 370 height 360
+        save_to_img('graph', '#saveButtonGraph', 370, 360);
+    </script>
     <script src="js/get_params.js"></script>
 
     <!-- height adjust -->

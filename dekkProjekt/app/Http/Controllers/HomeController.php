@@ -13,7 +13,7 @@ class HomeController extends Controller
         ->get();
 
         // error_log(json_encode(self::getAllDatasetsParams()));
-        // foreach(self::getAllDatasetsParams() as $dat){
+        // foreach(self::getAllDatasetsParams() as $da
         //     error_log(json_encode($dat));
         // }
         error_log(self::get_specific_dataset_id([3], 2020));
@@ -78,11 +78,22 @@ class HomeController extends Controller
 
     // loads data from database
     public function load($dataset1, $dataset2)
-    {        
+    {
+        // $ret = DB::table('data')
+        // ->select('hodnota', 'okres')
+        // ->where('dataset_id', '=', $dataset1)
+        // ->orWhere('dataset_id', '=', $dataset2)
+        // ->get();
+        
+        $dataset1_name = self::get_dataset_name($dataset1);
+        $dataset2_name = self::get_dataset_name($dataset2);
+
+        // // var_dump($ret);
+        
         $dataset1 = self::get_values(1);
         $dataset2 = self::get_values(13);
         
-        $res = self::calculate_correlation(self::extract_data($dataset1), self::extract_data($dataset2));
+        $res = self::calculate_correlation(self::extract_data($dataset1, 'value'), self::extract_data($dataset2, 'value'));
         $pom1 = [];
         foreach ($dataset1 as $dat) {
             $pom1[$dat->name] = $dat->value;
@@ -93,7 +104,7 @@ class HomeController extends Controller
         }
         $dataset2 = $pom1;
 
-        $result = ['corr'=> $res, 'dataset1' => $dataset1, 'dataset2' => $dataset2];
+        $result = ['corr'=> $res, 'ds1' => $dataset1_name, 'ds2' => $dataset2_name,'dataset1' => $dataset1, 'dataset2' => $dataset2];
         return json_encode($result);
     }
         
@@ -146,6 +157,14 @@ class HomeController extends Controller
         return $ret;
     }
 
+    public function get_dataset_name($dataset_id) {
+        $name = DB::table('dataset_types')
+        ->where('id', $dataset_id)
+        ->value('name');
+
+        return $name;
+    }
+  
     public static function load_years($dataset_type_id){
         $years = DB::table('parameters')
         ->join('parameter_values', 'parameter_values.parameter_id', 'parameters.id')
@@ -219,3 +238,4 @@ class HomeController extends Controller
     // }
 }
 ?>
+
