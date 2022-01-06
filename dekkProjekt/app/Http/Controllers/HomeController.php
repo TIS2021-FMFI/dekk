@@ -1,8 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 
@@ -15,14 +12,35 @@ class HomeController extends Controller
         ->select('id', 'name')
         ->get();
 
+        // error_log(json_encode(self::getAllDatasetsParams()));
+        // foreach(self::getAllDatasetsParams() as $da
+        //     error_log(json_encode($dat));
+        // }
+        error_log(self::get_specific_dataset_id([3], 2020));
+        
         return view("map_leaflet")
         ->with('dataset_types', $dataset_types);
+    }
+
+    public static function getAllDatasetsParams(){
+        error_log('som tu 1');
+        $dataset_and_params = [];
+
+        $dataset_types = DB::table('dataset_types')
+        ->select('id', 'name')
+        ->get();
+
+        foreach($dataset_types as $type) {
+            $dataset_and_params[$type->name] = self::load_parameter($type->id);
+            $dataset_and_params[$type->name]['years'] = self::load_years($type->id);
+            // error_log(json_encode($dataset_and_params[$type->name]));
+        }
+        return $dataset_and_params;
     }
 
     /*
         $dataset1: array of numeric values
         $dataset2: array of numeric values
-
         calls python script to calculate correlation between $dataset1 and $dataset2
         and to find best linear function to approximate values (y = a + b*x)
         returns [correlation, a, b]
@@ -30,23 +48,10 @@ class HomeController extends Controller
     public static function calculate_correlation($dataset1, $dataset2){
         // transfer arrays into string to pass it to python script
         $input = implode(",",$dataset1) . ';' . implode(",", $dataset2);
-
-        $result = shell_exec("python " . public_path() . "/correlation.py " . escapeshellarg($input));
-        // debug_to_console($result);
-    
+        
+        $result = shell_exec("python3 " . public_path() . "/correlation.py " . escapeshellarg($input));
         
         return $result;
-    }
-    
-    /* 
-        Helper function to print data into the console
-    */
-    function debug_to_console($data) {
-        $output = $data;
-        if (is_array($output))
-            $output = implode(',', $output);
-    
-        echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
     }
 
     /*
@@ -66,8 +71,8 @@ class HomeController extends Controller
     /*
         from collection (district_id, value) extracts values
     */
-    public static function extract_data($dataset, $value){
-        return $dataset->pluck($value)->all();
+    public static function extract_data($dataset){
+        return $dataset->pluck('value')->all();
     }
 
 
@@ -102,15 +107,7 @@ class HomeController extends Controller
         $result = ['corr'=> $res, 'ds1' => $dataset1_name, 'ds2' => $dataset2_name,'dataset1' => $dataset1, 'dataset2' => $dataset2];
         return json_encode($result);
     }
-    
-    public function get_dataset_name($dataset_id) {
-        $name = DB::table('dataset_types')
-        ->where('id', $dataset_id)
-        ->value('name');
-
-        return $name;
-    }
-
+        
     // loads dataset parameters from database
     public function load2($dataset1, $dataset2)
     {
@@ -136,9 +133,6 @@ class HomeController extends Controller
     public static function load_parameter($dataset_type_id)
     {
         $ret = [];
-        $dataset_type_name = DB::table('dataset_types')
-        ->where('id', $dataset_type_id)
-        ->value('name');
 
         $parameters = DB::table('parameters')
         ->select('name', 'id')
@@ -146,7 +140,6 @@ class HomeController extends Controller
         ->get();
 
         foreach( $parameters as $parameter) {
-            
             $ret[$parameter->name] = array(); 
             
             $values = DB::table('parameter_values')
@@ -164,25 +157,85 @@ class HomeController extends Controller
         return $ret;
     }
 
-    public function load_params($dataset_type_id1, $dataset_type_id2){
-        $data_par1 = self::load_parameter($dataset_type_id1);
-        $data_par2 = self::load_parameter($dataset_type_id2);
+    public function get_dataset_name($dataset_id) {
+        $name = DB::table('dataset_types')
+        ->where('id', $dataset_id)
+        ->value('name');
 
-        $ret = array(
-            $dataset_type_id1 => $data_par1,
-            $dataset_type_id2 => $data_par2
-        );
-        return json_encode($ret);
+        return $name;
+    }
+  
+    public static function load_years($dataset_type_id){
+        $years = DB::table('parameters')
+        ->join('parameter_values', 'parameter_values.parameter_id', 'parameters.id')
+        ->join('belongs', 'parameter_values.id', 'belongs.parameter_value_id')
+        ->join('specific_year_datasets', 'specific_year_datasets.id', 'belongs.specific_dataset_id')
+        ->select('year')
+        ->groupBy('year')
+        ->where('parameters.dataset_type_id', '=', $dataset_type_id)
+        ->get();
+        // error_log($years);
+        return $years->pluck('year')->all();
     }
 
-    public function get_dataset_parameters($dataset_id)
-    {
-        $params = DB::table('parameters')
-        ->select('name')
-        ->where('dataset_type_id', '=', $dataset_id)
+    // public function load_params($dataset_type_id1, $dataset_type_id2){
+    //     $data_par1 = self::load_parameter($dataset_type_id1);
+    //     $data_par2 = self::load_parameter($dataset_type_id2);
+
+    //     $ret = array(
+    //         $dataset_type_id1 => $data_par1,
+    //         $dataset_type_id2 => $data_par2
+    //     );
+    //     return json_encode($ret);
+    // }
+
+    public function get_specific_dataset_id($parameter_ids, $year){
+        $specific_dataset_id = DB::table('belongs')
+        ->join('specific_year_datasets', 'specific_year_datasets.id', 'belongs.specific_dataset_id')
+        ->select('specific_dataset_id')
+        ->where('year', '=', $year)
+        ->where('parameter_value_id', '=', $parameter_ids[0])
         ->get()
-        ->toJson();
+        ->pluck('specific_dataset_id')
+        ->toArray();
 
-        return $params;
+        foreach($parameter_ids as $parameter_id){
+            $specific_dataset_id = DB::table('belongs')
+            ->select('specific_dataset_id')
+            ->where('parameter_value_id', '=', $parameter_id)
+            ->get()
+            ->pluck('specific_dataset_id')
+            ->intersect($specific_dataset_id)
+            ;
+        }
+        error_log($specific_dataset_id);
+        $other = DB::table('belongs')
+        ->join('specific_year_datasets', 'specific_year_datasets.id', 'belongs.specific_dataset_id')
+        ->select('specific_dataset_id')
+        ->where('year', '=', $year)
+        ->whereNotIn('belongs.specific_dataset_id', $parameter_ids)
+        ->get()
+        ->pluck('specific_dataset_id');
+
+        $specific_dataset_id = $specific_dataset_id->except($other);
+        foreach($specific_dataset_id as $spec){
+            error_log($spec);
+            return $spec;
+        }
+
+        return "noooope";
     }
+
+    // public function get_dataset_parameters($dataset_id)
+    // {
+    //     $params = DB::table('parameters')
+    //     ->select('name')
+    //     ->where('dataset_type_id', '=', $dataset_id)
+    //     ->get()
+    //     ->toJson();
+
+    //     return $params;
+    // }
 }
+?>
+
