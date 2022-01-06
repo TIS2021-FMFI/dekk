@@ -1,13 +1,9 @@
 
 
 
-function save_to_img(name, btn, width, height) {
+function save_to_img(name, svgNode, btn, width, height) {
     // Set-up the export button
-
     d3.select(btn).on('click', function(){
-        
-        if (name == 'graph') svgNode = d3.select("#graph").select("svg").node()
-        if (name == 'map') svgNode = d3.select('#map').select("svg").node()
 
         let svgString = getSVGString(svgNode);
         svgString2Image( svgString, 2*width, 2*height, 'png', save ); // passes Blob and filesize String to the callback

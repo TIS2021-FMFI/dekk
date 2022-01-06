@@ -30,23 +30,10 @@ class HomeController extends Controller
     public static function calculate_correlation($dataset1, $dataset2){
         // transfer arrays into string to pass it to python script
         $input = implode(",",$dataset1) . ';' . implode(",", $dataset2);
-
-        $result = shell_exec("python " . public_path() . "/correlation.py " . escapeshellarg($input));
-        // debug_to_console($result);
-    
+        
+        $result = shell_exec("python3 " . public_path() . "/correlation.py " . escapeshellarg($input));
         
         return $result;
-    }
-    
-    /* 
-        Helper function to print data into the console
-    */
-    function debug_to_console($data) {
-        $output = $data;
-        if (is_array($output))
-            $output = implode(',', $output);
-    
-        echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
     }
 
     /*
@@ -66,8 +53,8 @@ class HomeController extends Controller
     /*
         from collection (district_id, value) extracts values
     */
-    public static function extract_data($dataset, $value){
-        return $dataset->pluck($value)->all();
+    public static function extract_data($dataset){
+        return $dataset->pluck('value')->all();
     }
 
 
@@ -80,15 +67,12 @@ class HomeController extends Controller
         // ->orWhere('dataset_id', '=', $dataset2)
         // ->get();
         
-        $dataset1_name = self::get_dataset_name($dataset1);
-        $dataset2_name = self::get_dataset_name($dataset2);
-
         // // var_dump($ret);
         
         $dataset1 = self::get_values(1);
         $dataset2 = self::get_values(13);
         
-        $res = self::calculate_correlation(self::extract_data($dataset1, 'value'), self::extract_data($dataset2, 'value'));
+        $res = self::calculate_correlation(self::extract_data($dataset1), self::extract_data($dataset2));
         $pom1 = [];
         foreach ($dataset1 as $dat) {
             $pom1[$dat->name] = $dat->value;
@@ -99,17 +83,9 @@ class HomeController extends Controller
         }
         $dataset2 = $pom1;
 
-        $result = ['corr'=> $res, 'ds1' => $dataset1_name, 'ds2' => $dataset2_name,'dataset1' => $dataset1, 'dataset2' => $dataset2];
+        $result = ['corr'=> $res, 'dataset1' => $dataset1, 'dataset2' => $dataset2];
         return json_encode($result);
-    }
-    
-    public function get_dataset_name($dataset_id) {
-        $name = DB::table('dataset_types')
-        ->where('id', $dataset_id)
-        ->value('name');
-
-        return $name;
-    }
+    }        
 
     // loads dataset parameters from database
     public function load2($dataset1, $dataset2)
