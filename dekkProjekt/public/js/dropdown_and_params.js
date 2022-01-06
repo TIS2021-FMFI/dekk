@@ -143,6 +143,6 @@ function validateRequest(year) {
 
     }
 
-    sendRequest(checkedIDs, year);
+    //sendRequest(checkedIDs, year);
 }
 
