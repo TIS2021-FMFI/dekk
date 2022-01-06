@@ -19,14 +19,46 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/app.css" />
 
+    <style>
+
+    #map { 
+			height: 600px;
+		 }
+
+    .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        color: #777;
+        background: rgba(255,255,255,0.8);
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 5px;
+    }
+
+    .info h4 {
+        margin: 0 0 5px;
+        color: #777;
+    }
+
+    .legend {
+        line-height: 18px;
+        color: #555;
+    }
+
+    .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+    }
+
+
+    </style>
+
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v6.js"></script>
-    
-    <!-- Singleton module responsible for the graph functionality -->
-    <script src="js/d3_graph_module.js"></script>
-
-    <!-- Singleton module responsible for the map functionality -->
-    <script src="js/leaflet_map_module.js"></script>
+    <script src="js/scripts.js"></script>
 
     <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. -->
     <script
@@ -48,9 +80,6 @@
     <!-- Color picker script -->
     <script src="js/iro.min.js"></script>
 
-    <!-- Leaflet pip(point in polygon) used to propagate mouse events to all layers of the map -->
-    <script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
-    
 </head>
 
 <body>
@@ -136,12 +165,12 @@
             <!-- BEFORE : <div class="col-md-4" id="odpoved"></div> -->
             <div class="col-xl-4 col-lg-12" id="sidePanel">
                 <!-- Graph -->
-                <div id="graph">
+                <div id="my_dataviz3">
                     <h3>Graf korelácie</h3>
                 </div>
                 <div class="correlation_meaning">
-                    <p id="correlation_definition">Korelačný koeficient je <a class="red"
-                            href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)" id="correlation_coefficient"> 0.64 </a> a hovorí nám...</p>
+                    <p>Korelačný koeficient je <a class="red"
+                            href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)"> 0.64 </a> a hovorí nám...</p>
                 </div>
                 <!-- Graph save button -->
                 <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
@@ -151,18 +180,49 @@
         </div>
     </div>
 
+
+
+    @foreach($dataset_types as $dataset_type)
+    <div class="row">
+        <div>
+            <button type="button" class="btn btn-dark"
+                onclick="getParams({{ $dataset_type->id }})">{{ $dataset_type->name }}</button>
+        </div>
+    </div>
+    @endforeach
+
+
 <script type="text/javascript" src="js/okresy.js"></script>
 <script src="js/load_data.js"></script>
 
+
 <script type="text/javascript">
-    MapModule.init();
-    GraphModule.init();
+    // Leaflet map init
+    let bounds = new L.LatLngBounds(new L.LatLng(50.16962074944367, 16.3865741126029432), new L.LatLng(46.94733587652772, 23.45591532167501));
+	let map = L.map('map', {
+        center: [48.6, 19.5 ],
+        maxBounds: bounds,
+        maxBoundsViscosity: 0.5
+    }).setView([48.6, 19.5 ], 7);
+
+    geojson = L.geoJson(okresy, {
+        style: style
+    }).addTo(map);
+    
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+        maxZoom: 11,
+        minZoom: 7,
+        id: 'tileset',
+        attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // D3 graph init
+    interactive_grouped();
+
     // save btn init map width 970 heigth 600
-    let mapDiv = document.querySelector('#map');
-    save_to_img('map', '#saveButtonMap', 770, 720);
-    let graphDiv = document.querySelector('#graph');
+    save_to_img('map', d3.select('#map').select("svg").node(), '#saveButtonMap', 970, 600)
     // save btn init graph width 370 height 360
-    save_to_img('graph', '#saveButtonGraph', 370, 360);
+    save_to_img('graph', d3.select("#my_dataviz3").select("svg").node(), '#saveButtonGraph', 370, 360);
 </script>
 <script src="js/get_params.js"></script> 
 
