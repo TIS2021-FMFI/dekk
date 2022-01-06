@@ -49,8 +49,6 @@
     <!-- Script for dropdown and parameters -->
     <script src="js/dropdown_and_params.js"></script>
 
-
-
 </head>
 
 <body>
@@ -59,9 +57,9 @@
             <div class="row" id="main_row">
 
                 <!-- class="subPanel" -->
-                <div class="col-xl-3 col-lg-12" id="sidePanel">
+                <div class="col-xl-3 col-lg-12" id="sidePanel1">
 
-                    <h3>Datasety a parametre:</h3>
+                    <h3>Datasety a parametre</h3>
                     <div class="datasets_parameters">
 
                         <!-- multichoice picker with search, limited to 2 selected options -->
@@ -69,38 +67,34 @@
                             data-max-options="2"
                             data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
                             title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
-                            onchange="getSelectedDatasetsParams()">
-                            <?php for($i=0; $i<3; $i++) :?>
-                            <option id="dataset<?=$i?>"></option>
-                            <?php endfor;?>
+                            onchange="getSelectedDatasetsParams()" onload="loadAllDataSetParams()">
                         </select>
 
                         <!-- dynamic datasets and params -->
                         <div id="selected_datasets" style="display:none">
                             <div>
 
-                                <!-- this index is not dataset id, it's just the two datastes -->
-                                <?php for($i=0; $i<3; $i++) :?>
-                                <div>
+                                <!-- it's just the two datastes -->
+                                <div id="selected_d_w_p">
 
                                     <!-- selected dataset -->
-                                    <div class="selected_datasets" id="selected_dataset<?=$i?>"></div>
-
+                                    <div class="selected_datasets" id="selected_dataset0"></div>
                                     <!-- selected datasets parameters -->
-                                    <div id="selected_datasets_with_parameters"></div>
+                                    <div id="selected_dataset_params0"></div>
+
+                                    <div class="selected_datasets" id="selected_dataset1"></div>
+                                    <div id="selected_dataset_params1"></div>
 
                                 </div>
-                                <?php endfor;?>
 
                             </div>
                         </div>
                     </div>
 
-
                     <!-- Slider (value needed for year pick) -->
                     <div class="slidercontainer" style="margin-top: 1em;">
                         <h3>Rok: <span id="sliderYear"></span></h3>
-                        <input type="range" min="1990" max="2020" value="2005" class="slider" id="myRange">
+                        <input type="range" min="1990" max="2020" value="2020" class="slider" id="myRange">
 
                         <script>
                         var slider = document.getElementById("myRange");
@@ -114,11 +108,12 @@
                     </div>
 
                     <!-- Send requested datasets -->
-                    <button type="button" class="btn btn-dark" onclick="sendRequest()">Obnoviť</button>
+                    <button type="button" class="btn btn-dark"
+                        onclick="validateRequest(yearOutput.innerHTML)">Obnoviť</button>
                 </div>
 
                 <!-- Map -->
-                <div class="col-xl-5 col-lg-12">
+                <div class="col-xl-5 col-lg-12" id="midPanel">
                     <div id='map'></div>
                     <div class="row">
 
@@ -154,31 +149,52 @@
                             </div>
                         </div>
                         -->
+
+                        <!-- legenda farieb -->
+                        <div class='my-legend'>
+                            <div class='legend-title'>
+                                <h4>Legenda farieb</h4>
+                            </div>
+                            <div class='legend-scale'>
+                                <ul class='legend-labels'>
+                                    <li><span style='background:#FFEDA0;'></span>Dataset 1</li>
+                                    <li><span style='background:#a54c67;'></span>Dataset 2</li>
+                                </ul>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
 
                 <!-- BEFORE : <div class="col-md-4" id="odpoved"></div> -->
-                <div class="col-xl-4 col-lg-12" id="sidePanel">
+                <div class="col-xl-4 col-lg-12" id="sidePanel2">
                     <!-- Graph -->
+
                     <div id="my_dataviz3">
                         <h3>Graf korelácie</h3>
                     </div>
                     <div class="correlation_meaning">
                         <p>Korelačný koeficient je <a class="red"
-                                href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)"> 0.64 </a> a hovorí nám...
+                                href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)"> 0.64 </a> a hovorí
+                            nám...
                         </p>
                     </div>
+
+
+
+
                     <!-- Graph save button -->
                     <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
                     <!-- Map save button -->
                     <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
+
+
+
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <!--
     @foreach($dataset_types as $dataset_type)
@@ -227,21 +243,12 @@
 
     <script src="js/get_params.js"></script>
 
-    <!-- set innerHTML for dropdown -->
-    <script>
-    for (let i = 0; i < 3; i++) {
-        document.getElementById("dataset" + i).innerHTML = getDatasetNameById(i);
-        console.log(getDatasetNameById(i));
-        showParameters(getDatasetNameById(i));
-    }
-    </script>
-
     <!-- height adjust -->
     <script>
-        console.log("HEIGHT: " + window.innerHeight);
-        const main_row = document.getElementById("main_row");
-        main_row.style.height = window.innerHeight + "px";
-        console.log("MAIN_ROW: " + main_row);
+    console.log("HEIGHT: " + window.innerHeight);
+    const main_row = document.getElementById("main_row");
+    main_row.style.height = window.innerHeight + "px";
+    console.log("MAIN_ROW: " + main_row);
     </script>
 
 

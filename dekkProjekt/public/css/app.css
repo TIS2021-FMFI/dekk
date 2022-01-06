@@ -6,7 +6,11 @@ body {
     font-weight: 500;
 }
 h3 {
+    color: white;
     padding-bottom: 0.5em;
+    padding: 1em;
+    background-color: rgba(47, 41, 99, 1);
+    text-align: center;
 }
 a:hover {
     color: #ed3833;
@@ -17,12 +21,11 @@ a:hover {
 }
 .btn.btn-dark {
     background-color: #ed3833;
-    position: absolute;
-    bottom: 20%;
+    border: none;
+    width: 90%;
+    margin: 1em;
 }
-.slidercontainer {
-    width: 100%;
-}
+
 .slider {
     -webkit-appearance: none;
     width: 100%;
@@ -94,35 +97,75 @@ a:hover {
 }
 .btn-light, .selected_datasets {
     background-color: #ed3833;
+    padding: 0.3em;
     color: white;
 }
 .bootstrap-select > .dropdown-toggle.bs-placeholder, .bootstrap-select > .dropdown-toggle.bs-placeholder:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder:active {
     color: white !important;
 }
-.param_name {
+.paramName {
     padding-left: 0.5em;
-    border-top: #ed3833 2px solid;
     margin: 0;
 }
 #my_dataviz3 svg, #selected_datasets {
     background-color: white;
-    border-radius: 3%;
+    border-radius: 1%;
     color: black;
-    border: 5px;
-    border-style: solid;
-    border-color: #ed3833;
+    border: solid 5px #ed3833;
+    margin: 2em;
 }
 #map {
     min-height: 800px;
     height: 600px;
 }
-#sidePanel {
-    background-color: rgba(47, 41, 99, 1);
-    padding: 3em;
+#sidePanel1, #sidePanel2 {
+    color: rgba(47, 41, 99, 1);
+    background-color: #F4F4F4;
+    padding: 0;
 }
+
 #saveButtonMap {
-    position: absolute;
     right: 20%;
 }
+.slidercontainer {
+    width: 100%;
+    background-color: white;
+}
 
-
+.my-legend {
+    margin: 2em;
+    color: black;
+}
+.my-legend .legend-title {
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 120%;
+    }
+  .my-legend .legend-scale ul {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .my-legend .legend-scale ul li {
+    font-size: 120%;
+    list-style: none;
+    margin-left: 0;
+    line-height: 18px;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 22px;
+    width: 40px;
+    margin-right: 5px;
+    margin-left: 0;
+    }
+  .my-legend .legend-source {
+    font-size: 120%;
+    clear: both;
+    }
