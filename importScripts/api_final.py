@@ -16,7 +16,7 @@ class dataset:
     def __repr__(self):
         return self.kod_datasetu
 
-def generuj_roky(od): #robi presne co ma robit
+def generuj_roky(od):
     vysledok = []
     for i in range(od, date.today().year):
         vysledok.append(i)
