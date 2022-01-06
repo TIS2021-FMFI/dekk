@@ -68,7 +68,7 @@
             <div class="row" id="main_row">
 
                 <!-- class="subPanel" -->
-                <div class="col-xl-3 col-lg-12" id="sidePanel1">
+                <div class="col-xl-3 col-lg-12" id="sidePanel">
 
                     <h3>Datasety a parametre</h3>
                     <div class="datasets_parameters">
@@ -120,65 +120,14 @@
 
                     <!-- Send requested datasets -->
                     <button type="button" class="btn btn-dark"
-                        onclick="validateRequest(yearOutput.innerHTML)">Obnoviť</button>
+                        onclick="getParamsAndValues(); validateRequest(yearOutput.innerHTML)">Obnoviť</button>
                 </div>
 
                 <!-- Map -->
                 <div class="col-xl-5 col-lg-12" id="midPanel">
                     <div id='map'></div>
-                    <div class="row">
-
-                        <!-- color pickers -->
-                        <!--
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="picker1" id="picker1">
-                                <script>
-                                var colorPicker1 = new iro.ColorPicker('#picker1', {
-                                    width: 150,
-                                    color: "#fff",
-                                    layout: [{
-                                        component: iro.ui.Wheel,
-                                        options: {}
-                                    }, ]
-                                });
-                                </script>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="picker2" id="picker2">
-                                <script>
-                                var colorPicker2 = new iro.ColorPicker('#picker2', {
-                                    width: 150,
-                                    color: "#fff",
-                                    layout: [{
-                                        component: iro.ui.Wheel,
-                                        options: {}
-                                    }, ]
-                                });
-                                </script>
-                            </div>
-                        </div>
-                        -->
-
-                        <!-- legenda farieb -->
-                        <div class='my-legend'>
-                            <div class='legend-title'>
-                                <h4>Legenda farieb</h4>
-                            </div>
-                            <div class='legend-scale'>
-                                <ul class='legend-labels'>
-                                    <li><span style='background:#FFEDA0;'></span>Dataset 1</li>
-                                    <li><span style='background:#a54c67;'></span>Dataset 2</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-
                 </div>
 
-                <!-- BEFORE : <div class="col-md-4" id="odpoved"></div> -->
                 <div class="col-xl-4 col-lg-12" id="sidePanel">
                 <!-- Graph -->
                 <div id="graph">
@@ -197,50 +146,8 @@
         </div>
     </div>
 
-    <!--
-    @foreach($dataset_types as $dataset_type)
-    <div class="row">
-        <div>
-            <button type="button" class="btn btn-dark"
-                onclick="getParams({{ $dataset_type->id }})">{{ $dataset_type->name }}</button>
-        </div>
-    </div>
-    @endforeach
-    -->
-
     <script type="text/javascript" src="js/okresy.js"></script>
     <script src="js/load_data.js"></script>
-
-
-    <script type="text/javascript">
-    // Leaflet map init
-    let bounds = new L.LatLngBounds(new L.LatLng(50.16962074944367, 16.3865741126029432), new L.LatLng(
-        46.94733587652772, 23.45591532167501));
-    let map = L.map('map', {
-        center: [48.6, 19.5],
-        maxBounds: bounds,
-        maxBoundsViscosity: 0.5
-    }).setView([48.6, 19.5], 7);
-
-    geojson = L.geoJson(okresy, {
-        style: style
-    }).addTo(map);
-
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
-        maxZoom: 11,
-        minZoom: 7,
-        id: 'tileset',
-        attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // D3 graph init
-    interactive_grouped();
-
-    // save btn init map width 970 heigth 600
-    save_to_img('map', d3.select('#map').select("svg").node(), '#saveButtonMap', 970, 600)
-    // save btn init graph width 370 height 360
-    save_to_img('graph', d3.select("#my_dataviz3").select("svg").node(), '#saveButtonGraph', 370, 360);
-    </script>
 
     <script type="text/javascript">
         MapModule.init();
