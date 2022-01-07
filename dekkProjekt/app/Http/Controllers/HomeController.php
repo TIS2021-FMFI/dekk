@@ -51,7 +51,7 @@ class HomeController extends Controller
         
        
         // change python3 to python if it isnt recognized
-        $result = shell_exec("python3 " . public_path() . "/correlation.py " . escapeshellarg($input));
+        $result = shell_exec("python " . public_path() . "/correlation.py " . escapeshellarg($input));
         
         return $result;
     }
