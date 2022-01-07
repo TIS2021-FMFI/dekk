@@ -101,9 +101,10 @@ const MapModule = (() => {
         }).setView([48.6, 19.5 ], 7);
     
         const initialGeojson = L.geoJson(okresy, {
-            style: feature => styling(feature, calculateColorGradient('0xfcfab3', '0xfcfab3'))
+            style: feature => styling(feature, calculateColorGradient('0x908bb6', '0x908bb6'))
         }).addTo(map);
         
+        // http://leaflet-extras.github.io/leaflet-providers/preview/
         L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
             maxZoom: 11,
             minZoom: 7,
@@ -122,8 +123,8 @@ const MapModule = (() => {
         }
 
         // this is where different colors can be assigned -> each GeoJSON object needs 2 colors for which a color gradient will be calculated upon construction
-        geoLayer1 = GeoJSON(dataset1, dataset1['datasetName'], '0xFFEDA0', '0x800026');
-        geoLayer2 = GeoJSON(dataset2, dataset2['datasetName'], '0xFFEDA0', '0x06415c'); // '0xffa600', '0x06415c'
+        geoLayer1 = GeoJSON(dataset1, dataset1['datasetName'], '0xa99aff', '0x1b183a');
+        geoLayer2 = GeoJSON(dataset2, dataset2['datasetName'], '0xae8787', '0x771411'); // '0xffa600', '0x06415c'
 
         const overlay = {
             [dataset1['datasetName']]: geoLayer1.getGeojson(),
@@ -168,9 +169,9 @@ const MapModule = (() => {
 
     const styling = (feature, gradient, maxValue=0) => {
         return {
-            weight: 2,
+            weight: 1.2,
             opacity: 1,
-            color: '#007472',
+            color: '#2f2963',
             fillOpacity: 0.5,
             fillColor: getColor(feature.properties.value, gradient, maxValue)
         };
@@ -229,8 +230,8 @@ const MapModule = (() => {
         let layer = e.target;
 
         layer.setStyle({
-            weight: 4,
-            color: '#666',
+            weight: 2.4,
+            color: '#2f2963',
             dashArray: '',
             fillOpacity: 0.7
         });

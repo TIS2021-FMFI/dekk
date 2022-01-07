@@ -48,9 +48,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
-    <!-- Color picker script -->
-    <script src="js/iro.min.js"></script>
-
     <!--Checkboxes style -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" />
 
@@ -97,7 +94,6 @@
                                     <div id="selected_dataset_params1"></div>
 
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -120,7 +116,7 @@
 
                     <!-- Send requested datasets -->
                     <button type="button" class="btn btn-dark"
-                        onclick="getParamsAndValues(); validateRequest(yearOutput.innerHTML)">Obnoviť</button>
+                        onclick="getParamsAndValues(); sendParamsIDsAndYear(yearOutput.innerHTML)">Obnoviť</button>
                 </div>
 
                 <!-- Map -->
@@ -152,11 +148,9 @@
     <script type="text/javascript">
         MapModule.init();
         GraphModule.init();
-        // save btn init map width 970 heigth 600
-        let mapDiv = document.querySelector('#map');
+        // width and height of the map
         save_to_img('map', '#saveButtonMap', 770, 720);
-        let graphDiv = document.querySelector('#graph');
-        // save btn init graph width 370 height 360
+        // width and height of the graph
         save_to_img('graph', '#saveButtonGraph', 370, 360);
     </script>
     <script src="js/get_params.js"></script>

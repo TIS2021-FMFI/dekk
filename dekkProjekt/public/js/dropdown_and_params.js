@@ -4,6 +4,8 @@ var datasetsNames = [];
 var selectedParamsIDs = [];
 loadAllDataSetParams();
 
+
+
 // called onload from selectpicker
 function loadAllDataSetParams(){
     // load all parameters with years
@@ -131,7 +133,7 @@ function validateYear(datasetName, year) {
 // check if checked datasets contain given (picked) year and if checked parameters are valid
 // if yes -> send it all to sendRequest() function (parameters' ids and year) 
 // else -> put up error message on page (no year for param1, no year for param2, no param checked, etc...)
-function validateRequest(year) {
+function sendParamsIDsAndYear(year) {
     var checkedIDs = [];
     for(let i = 1; i <= getMaxID(); i++) {
         if(i == 4) continue; // id=4 je spolu pre pocet donasok jedla za rok, ktore sa nebude zobrazovat, pretoze
@@ -144,5 +146,9 @@ function validateRequest(year) {
     }
 
     //sendRequest(checkedIDs, year);
+
+    // chcem aby picknute idcka boli v dvoch poliach, prve pre prvy dataset, druhe pre druhy
+    // tak aby sa dala vyskladat url takto : loadData/1_3_5/6_8/2018
+
 }
 

@@ -117,13 +117,13 @@ const GraphModule = (() => {
             .call(d3.axisLeft(y));
     
         // get coordinates for the linear regression line
-        const lineCoords = lineToCoords(dataset['corr'].split(';').slice(-2), 0, 1.1 * maxValueX);
+        const lineCoords = lineToCoords(dataset['corr'].split(';').slice(-2), 0, 1.05 * maxValueX);
     
         // plot linear regression line
         svg.append('line')
             .style('stroke', 'red')
             .style('stroke-width', 3)
-            .style("stroke-dasharray", ("3, 3"))  
+            .style("stroke-dasharray", ("10, 3"))  
             .attr('x1', x(lineCoords[0]))
             .attr('y1', y(lineCoords[1]))
             .attr('x2', x(lineCoords[2]))
@@ -177,9 +177,9 @@ const GraphModule = (() => {
             .append('circle')
             .attr('cx', function (d) { return x(d.data1); } )
             .attr('cy', function (d) { return y(d.data2); } )
-            .attr('r', 7)
-            .style('fill', '#69b3a2')
-            .style('opacity', 0.3)
+            .attr('r', 5)
+            .style('fill', '#2f2963')
+            .style('opacity', 0.5)
             .style('stroke', 'white')
             .on('mouseover', mouseover )
             .on('mousemove', mousemove )
