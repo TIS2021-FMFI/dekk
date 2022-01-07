@@ -8,6 +8,7 @@ function getParamsAndValues(){
     getValues(1, 2);
 }
 
+
 function getParametersAndYears(dataset_type1, dataset_type2){
     //TODO: get years
     xmlHttp = new XMLHttpRequest();  
