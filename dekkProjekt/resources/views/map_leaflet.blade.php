@@ -152,11 +152,9 @@
     <script type="text/javascript">
         MapModule.init();
         GraphModule.init();
-        // save btn init map width 970 heigth 600
-        let mapDiv = document.querySelector('#map');
+        // width and height of the map
         save_to_img('map', '#saveButtonMap', 770, 720);
-        let graphDiv = document.querySelector('#graph');
-        // save btn init graph width 370 height 360
+        // width and height of the graph
         save_to_img('graph', '#saveButtonGraph', 370, 360);
     </script>
     <script src="js/get_params.js"></script>
