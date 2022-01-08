@@ -569,7 +569,7 @@ print(permutacie_parametrov(datasety[0]))
 #slovnik5 = fixnute URLs pre 5.dataset om7011rr
 #slovnik6 = fixnute URLs pre 6.dataset om7023rr
 #slovnik7 = fixnute URLs pre 7.dataset om7015rr
-#slovnik8 = fixnute URLs pre 7.dataset zd3002rr
+#slovnik8 = fixnute URLs pre 8.dataset zd3002rr
 
 
 #slovniky staci odkomentovat
