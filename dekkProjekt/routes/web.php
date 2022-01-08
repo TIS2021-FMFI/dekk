@@ -16,7 +16,7 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'home']);
 
-Route::get('/loadData/{id1}/{id2}', [HomeController::class, 'load']);
+Route::get('/loadData/{id1}/{id2}/{year}', [HomeController::class, 'load']);
 
 Route::get('/datasetParams', [HomeController::class, 'getAllDatasetsParams']);
 
