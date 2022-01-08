@@ -49,7 +49,9 @@ class HomeController extends Controller
         // transfer arrays into string to pass it to python script
         $input = implode(",",$dataset1) . ';' . implode(",", $dataset2);
         
-        $result = shell_exec("python3 " . public_path() . "/correlation.py " . escapeshellarg($input));
+       
+        // change python3 to python if it isnt recognized
+        $result = shell_exec("python " . public_path() . "/correlation.py " . escapeshellarg($input));
         
         return $result;
     }
