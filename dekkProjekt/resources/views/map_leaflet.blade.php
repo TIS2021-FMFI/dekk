@@ -65,7 +65,7 @@
             <div class="row" id="main_row">
 
                 <!-- class="subPanel" -->
-                <div class="col-xl-3 col-lg-12" id="sidePanel">
+                <div class="col-xl-3 col-lg-12" id="sidePanel1">
 
                     <h3>Datasety a parametre</h3>
                     <div class="datasets_parameters">
@@ -77,6 +77,7 @@
                             title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
                             onchange="getSelectedDatasetsParams()" onload="loadAllDataSetParams()">
                         </select>
+                        <button id="clearButton" type="button" class="btn btn-dark" onclick="clearPicked()"><b>x</b></button>
 
                         <!-- dynamic datasets and params -->
                         <div id="selected_datasets" style="display:none">
@@ -124,14 +125,13 @@
                     <div id='map'></div>
                 </div>
 
-                <div class="col-xl-4 col-lg-12" id="sidePanel">
+                <div class="col-xl-4 col-lg-12" id="sidePanel2">
                 <!-- Graph -->
                 <div id="graph">
                     <h3>Graf korelácie</h3>
                 </div>
                 <div class="correlation_meaning">
-                    <p id="correlation_definition">Korelačný koeficient je <a class="red"
-                            href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)" id="correlation_coefficient"> 0.64 </a> a hovorí nám...</p>
+                    <p id="correlation_definition"></p>
                 </div>
                 <!-- Graph save button -->
                 <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>

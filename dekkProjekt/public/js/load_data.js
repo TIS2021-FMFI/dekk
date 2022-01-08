@@ -42,7 +42,9 @@ function onResponseValues(){
     }
 }
 
-function sendRequest() {
+function sendRequest(url) {
+
+    console.log("LOG: " + url);
     // send request to backend if 2 datasets are selected
     xmlHttp = new XMLHttpRequest();
 
