@@ -3,6 +3,9 @@ Studentsky projekt TIS 2021 - World  Value Survey
 
 NEW - import scripts - for db communication
 pip install mysql-connector-python 
+pip install csv
+pip install numpy
+pip install scipy
 
 Project has 2 main parts:
 - dekkProjekt -> web app, that uses laravel
