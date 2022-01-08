@@ -2,6 +2,7 @@ window.datasetsDict;
 var datasetsDictLength = 0;
 var datasetsNames = [];
 var selectedParamsIDs = [];
+var selectedDatasetsArray = [];
 loadAllDataSetParams();
 
 
@@ -48,7 +49,7 @@ function onResponseAllDataSetParamas(){
 
 function getSelectedDatasetsParams() {
     console.log("SELECTED DATASETS: " + $("#selectpicker").val());
-    var selectedDatasetsArray = $("#selectpicker").val();
+    selectedDatasetsArray = $("#selectpicker").val();
 
     if(selectedDatasetsArray === null) {
         document.getElementById("selected_dataset0").innerHTML = null;
@@ -77,7 +78,7 @@ function getSpoluParamId(datasetName) {
 
 function insertParamDiv(dNum, datasetName, paramName, unique_param_id) {
     var group = datasetName + '_' + paramName;
-    if(paramName == "spolu" || paramName == "pohlavie") group = "sex";
+    //if(paramName == "spolu" || paramName == "pohlavie") group = "sex";
     document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="pretty p-svg p-plain" id="unique_'+
     unique_param_id +'" style="margin: 0.5em;"><input type="radio" name="'+group+'" id="puID_'+unique_param_id+'" /><div class="state"><img class="svg" src="/svg/task.svg"><label>'+ 
     window.datasetsDict[datasetName][paramName][unique_param_id] +'</label></div></div><br>';
@@ -91,64 +92,78 @@ function showParameters(selectedDatasetsArray) {
         console.log("DNAME: " + datasetName);
         for (const paramName in window.datasetsDict[datasetName]) {
             console.log("PNAME: " + paramName);
-            if(paramName != "years") {
-                switch (paramName) {
-                    case "spolu":
-                        continue;
-                    case "pohlavie":
-                        document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="paramName" style="width:200px;"> '+ paramName +'</div><br>';
-                        for (const unique_param_id in window.datasetsDict[datasetName][paramName]) insertParamDiv(dNum, datasetName, paramName, unique_param_id);
-                        let spoluID = getSpoluParamId(datasetName);
-                        insertParamDiv(dNum, datasetName, "spolu", spoluID)
-                        break;
-                    default:
-                        document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="paramName" style="width:200px;"> '+ paramName +'</div><br>';
-                        for (const unique_param_id in window.datasetsDict[datasetName][paramName]) insertParamDiv(dNum, datasetName, paramName, unique_param_id);
-                        break;
-                }
+            if(paramName != "years" && paramName != "spolu") {
+                document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="paramName" style="width:200px;"> '+ paramName +'</div><br>';
+                for (const unique_param_id in window.datasetsDict[datasetName][paramName]) insertParamDiv(dNum, datasetName, paramName, unique_param_id);
+                
             }
         }
         dNum++;
     }
 };
 
-// returns IDs and YEARS of given dataset by its name
-function getIDsAndYears(d_name) {
-    var IDs = [];
-    var years = window.datasetsDict[d_name].years;
-    for (const paramName of Object.keys(window.datasetsDict[d_name])) {
-        if(paramName != "years" && paramName != "id") {
-            for(const id of Object.keys(window.datasetsDict[d_name][paramName])) IDs.push(id);
-        };
-    }
-    console.log("getIDsAndYears(d_name) YEARS : "  + years);
-    console.log("getIDsAndYears(d_name) IDs : "  + IDs);
-    return {"IDs":IDs, "years":years}
-}
-
 function validateYear(datasetName, year) {
     return window.datasetsDict[datasetName][years].includes(year);
 }
 
-// check if checked datasets contain given (picked) year and if checked parameters are valid
-// if yes -> send it all to sendRequest() function (parameters' ids and year) 
-// else -> put up error message on page (no year for param1, no year for param2, no param checked, etc...)
-function sendParamsIDsAndYear(year) {
+function getCheckedIDs() {
     var checkedIDs = [];
-    for(let i = 1; i <= getMaxID(); i++) {
-        if(i == 4) continue; // id=4 je spolu pre pocet donasok jedla za rok, ktore sa nebude zobrazovat, pretoze
-                             // parameter spolu nemozer fungovat bez pohlavia...takto sa v html vynechalo divko pre dane id = 4
+    var allSpoluIDs = getSelectedDatasetsSpoluIDs();
 
+    for(let i = 1; i <= getMaxID(); i++) {
+
+        // spoluIDs passes, they don't have element with puID_
+        if(allSpoluIDs.includes(i.toString())) continue;
         var tmpElem = document.getElementById("puID_"+i);
         console.log("puID_"+i + ": " + tmpElem.checked);
         if(tmpElem.checked) checkedIDs.push(i);
-
     }
 
-    //sendRequest(checkedIDs, year);
+    // saves "spolu" IDs to checkedIDs for both picked datasets if no other parameters are picked
+    if(checkedIDs.length == 0) {
+        checkedIDs.push(Object.keys(window.datasetsDict[document.getElementById("selected_dataset0").innerHTML]["spolu"])[0]);
+        checkedIDs.push(Object.keys(window.datasetsDict[document.getElementById("selected_dataset1").innerHTML]["spolu"])[0]);
+    }
+    console.log("PICKED IDs: " + checkedIDs[0] + ";" + checkedIDs[1]);
+    return checkedIDs;
+}
 
-    // chcem aby picknute idcka boli v dvoch poliach, prve pre prvy dataset, druhe pre druhy
-    // tak aby sa dala vyskladat url takto : loadData/1_3_5/6_8/2018
+function sendParamsIDsAndYear(year) {
 
+    // url: loadData/1_3_5/6_8/2018
+    var url = "/loadData/"+getCheckedIDs()[0]+"/"+getCheckedIDs()[1]+"/"+year;
+    sendRequest(url);
+}
+
+function getAllSpoluIDs() {
+    var spoluIDs = [];
+    for (const datasetName in window.datasetsDict) {
+        for (const paramName in window.datasetsDict[datasetName]) {
+            if(paramName == "spolu") {
+                spoluIDs.push(Object.keys(window.datasetsDict[datasetName][paramName])[0])
+            }
+        }
+    }
+    return spoluIDs;
+}
+
+function getSelectedDatasetsSpoluIDs() {
+    var spoluIDs = [];
+    for (const datasetName of selectedDatasetsArray) {
+        for (const paramName in window.datasetsDict[datasetName]) {
+            if(paramName == "spolu") {
+                spoluIDs.push(Object.keys(window.datasetsDict[datasetName][paramName])[0]);
+            }
+        }
+    }
+    return spoluIDs;
+}
+
+function clearPicked() {
+    var pickedSpoluIDs = getSelectedDatasetsSpoluIDs();
+    for(let i = 1; i <= getMaxID(); i++) {
+        if(pickedSpoluIDs.includes(i.toString())) continue;
+        document.getElementById("puID_"+i).checked = false;
+    }
 }
 
