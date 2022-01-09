@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 class HomeController extends Controller
 {
@@ -11,19 +12,13 @@ class HomeController extends Controller
         $dataset_types = DB::table('dataset_types')
         ->select('id', 'name')
         ->get();
-
-        // error_log(json_encode(self::getAllDatasetsParams()));
-        // foreach(self::getAllDatasetsParams() as $da
-        //     error_log(json_encode($dat));
-        // }
-        error_log(self::get_specific_dataset_id([3], 2020));
         
         return view("map_leaflet")
         ->with('dataset_types', $dataset_types);
     }
 
+    /* returns all datasets with their possible parameters and years */
     public static function getAllDatasetsParams(){
-        error_log('som tu 1');
         $dataset_and_params = [];
 
         $dataset_types = DB::table('dataset_types')
@@ -33,7 +28,6 @@ class HomeController extends Controller
         foreach($dataset_types as $type) {
             $dataset_and_params[$type->name] = self::load_parameter($type->id);
             $dataset_and_params[$type->name]['years'] = self::load_years($type->id);
-            // error_log(json_encode($dataset_and_params[$type->name]));
         }
         return $dataset_and_params;
     }
@@ -49,15 +43,14 @@ class HomeController extends Controller
         // transfer arrays into string to pass it to python script
         $input = implode(",",$dataset1) . ';' . implode(",", $dataset2);
         
-       
         // change python3 to python if it isnt recognized
-        $result = shell_exec("python " . public_path() . "/correlation.py " . escapeshellarg($input));
+        $result = shell_exec("python3 " . public_path() . "/correlation.py " . escapeshellarg($input));
         
         return $result;
     }
 
     /*
-        returns collection of district_id with value, based on id of specific dataset 
+        returns collection of district name with value, based on id of specific dataset 
     */
     public static function get_values($specific_year_dataset_id){
         $dataset = DB::table('values')
@@ -70,32 +63,36 @@ class HomeController extends Controller
         return $dataset;
     }
 
-    /*
-        from collection (district_id, value) extracts values
+    /* 
+        loads data from database, for each set of parameter values ids and year 
+        returns correlation info, names of datasets and vales for each district in dataset
     */
-    public static function extract_data($dataset){
-        return $dataset->pluck('value')->all();
-    }
-
-
-    // loads data from database
-    public function load($dataset1, $dataset2)
+    public function load($dataset1_par, $dataset2_par, $year)
     {
-        // $ret = DB::table('data')
-        // ->select('hodnota', 'okres')
-        // ->where('dataset_id', '=', $dataset1)
-        // ->orWhere('dataset_id', '=', $dataset2)
-        // ->get();
+        $dataset1_par = explode("_", $dataset1_par);
+        $dataset2_par = explode("_", $dataset2_par);
         
-        $dataset1_name = self::get_dataset_name($dataset1);
-        $dataset2_name = self::get_dataset_name($dataset2);
+        $dataset1_name = self::get_dataset_name($dataset1_par[0]);
+        $dataset2_name = self::get_dataset_name($dataset2_par[0]);
 
-        // // var_dump($ret);
         
-        $dataset1 = self::get_values(1);
-        $dataset2 = self::get_values(13);
+        $dataset1 = self::get_values(self::get_specific_dataset_id($dataset1_par, $year));
+        $dataset2 = self::get_values(self::get_specific_dataset_id($dataset2_par, $year));
+              
+        $values1 = [];
+        $values2 = [];
+       
+        foreach($dataset1 as $dat1){
+            foreach($dataset2 as $dat2){
+                if (strcmp($dat1->name, $dat2->name) == 0){
+                    array_push($values1, $dat1->value);
+                    array_push($values2, $dat2->value);
+                }
+            }
+        }
         
-        $res = self::calculate_correlation(self::extract_data($dataset1, 'value'), self::extract_data($dataset2, 'value'));
+        $res = self::calculate_correlation($values1, $values2); 
+        
         $pom1 = [];
         foreach ($dataset1 as $dat) {
             $pom1[$dat->name] = $dat->value;
@@ -111,27 +108,30 @@ class HomeController extends Controller
     }
         
     // loads dataset parameters from database
-    public function load2($dataset1, $dataset2)
-    {
-        $dataset_name1 = DB::table('dataset_types')
-        ->where('id', $dataset1)
-        ->value('name');
+    // public function load2($dataset1, $dataset2)
+    // {
+    //     $dataset_name1 = DB::table('dataset_types')
+    //     ->where('id', $dataset1)
+    //     ->value('name');
 
-        $dataset_name2 = DB::table('dataset_types')
-        ->where('id', $dataset2)
-        ->value('name');
+    //     $dataset_name2 = DB::table('dataset_types')
+    //     ->where('id', $dataset2)
+    //     ->value('name');
 
-        $ret = array(
-            $dataset_name1 => array(),
-            $dataset_name2 => array()
-        );
+    //     $ret = array(
+    //         $dataset_name1 => array(),
+    //         $dataset_name2 => array()
+    //     );
 
-        $ret = $this->load_param($dataset_name1, $dataset1, $ret);
-        $ret = $this->load_param($dataset_name2, $dataset2, $ret);
+    //     $ret = $this->load_param($dataset_name1, $dataset1, $ret);
+    //     $ret = $this->load_param($dataset_name2, $dataset2, $ret);
 
-        return json_encode($ret);
-    }
+    //     return json_encode($ret);
+    // }
 
+    /* 
+       loads parameters with its values for dataset_type 
+    */
     public static function load_parameter($dataset_type_id)
     {
         $ret = [];
@@ -159,14 +159,27 @@ class HomeController extends Controller
         return $ret;
     }
 
-    public function get_dataset_name($dataset_id) {
-        $name = DB::table('dataset_types')
-        ->where('id', $dataset_id)
-        ->value('name');
+    /* 
+        returns dataset name based on parameter value id
+    */
+    public function get_dataset_name($par_val_id) {
+        error_log($par_val_id);
 
-        return $name;
+        $name = DB::table('dataset_types')
+        ->join('parameters', 'dataset_types.id', 'parameters.dataset_type_id')
+        ->join('parameter_values', 'parameter_values.parameter_id', 'parameters.id')
+        ->select('dataset_types.name')
+        ->where('parameter_values.id', '=', $par_val_id)
+        ->get();
+
+        error_log($name[0]->name);
+
+        return $name[0]->name;
     }
   
+    /* 
+        return array of years for dataset_type, for which there is data
+    */
     public static function load_years($dataset_type_id){
         $years = DB::table('parameters')
         ->join('parameter_values', 'parameter_values.parameter_id', 'parameters.id')
@@ -176,7 +189,7 @@ class HomeController extends Controller
         ->groupBy('year')
         ->where('parameters.dataset_type_id', '=', $dataset_type_id)
         ->get();
-        // error_log($years);
+
         return $years->pluck('year')->all();
     }
 
@@ -191,7 +204,12 @@ class HomeController extends Controller
     //     return json_encode($ret);
     // }
 
-    public function get_specific_dataset_id($parameter_ids, $year){
+    /*
+        parameter_ids - array of parameters for chosen dataset
+        year - year for which we want data
+        return specific dataset id
+     */
+    public static function get_specific_dataset_id($parameter_ids, $year){
         $specific_dataset_id = DB::table('belongs')
         ->join('specific_year_datasets', 'specific_year_datasets.id', 'belongs.specific_dataset_id')
         ->select('specific_dataset_id')
@@ -210,7 +228,7 @@ class HomeController extends Controller
             ->intersect($specific_dataset_id)
             ;
         }
-        error_log($specific_dataset_id);
+
         $other = DB::table('belongs')
         ->join('specific_year_datasets', 'specific_year_datasets.id', 'belongs.specific_dataset_id')
         ->select('specific_dataset_id')
@@ -221,10 +239,10 @@ class HomeController extends Controller
 
         $specific_dataset_id = $specific_dataset_id->except($other);
         foreach($specific_dataset_id as $spec){
-            error_log($spec);
+            // error_log($spec);
             return $spec;
         }
-
+        //TODO: toto asi uplne nie
         return "noooope";
     }
 
