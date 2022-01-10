@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
-            dataset_types::class,
+            // dataset_types::class,
             districts::class,
-            parameters::class,
-            parameter_values::class,
-            specific_year_datasets::class,
+            // parameters::class,
+            // parameter_values::class,
+            // specific_year_datasets::class,
             values::class,
-            belongs::class
+            // belongs::class
         ]);
         
     }
