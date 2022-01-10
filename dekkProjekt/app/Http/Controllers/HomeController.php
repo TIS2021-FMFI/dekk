@@ -42,7 +42,6 @@ class HomeController extends Controller
     public static function calculate_correlation($dataset1, $dataset2){
         // transfer arrays into string to pass it to python script
         $input = implode(",",$dataset1) . ';' . implode(",", $dataset2);
-        
         // change python3 to python if it isnt recognized
         $result = shell_exec("python3 " . public_path() . "/correlation.py " . escapeshellarg($input));
         
@@ -75,13 +74,23 @@ class HomeController extends Controller
         $dataset1_name = self::get_dataset_name($dataset1_par[0]);
         $dataset2_name = self::get_dataset_name($dataset2_par[0]);
 
-        
-        $dataset1 = self::get_values(self::get_specific_dataset_id($dataset1_par, $year));
-        $dataset2 = self::get_values(self::get_specific_dataset_id($dataset2_par, $year));
+        $specific_dataset_id1 = self::get_specific_dataset_id($dataset1_par, $year);
+        $specific_dataset_id2 = self::get_specific_dataset_id($dataset2_par, $year);
+
+        if ($specific_dataset_id1 == 0 || $specific_dataset_id2 == 0){
+            error_log('dont have data');
+            return json_encode(0);
+        }
+
+        $dataset1 = self::get_values($specific_dataset_id1);
+        $dataset2 = self::get_values($specific_dataset_id2);
               
         $values1 = [];
         $values2 = [];
-       
+
+        error_log($dataset1);
+        error_log($dataset2);
+        
         foreach($dataset1 as $dat1){
             foreach($dataset2 as $dat2){
                 if (strcmp($dat1->name, $dat2->name) == 0){
@@ -90,7 +99,7 @@ class HomeController extends Controller
                 }
             }
         }
-        
+
         $res = self::calculate_correlation($values1, $values2); 
         
         $pom1 = [];
@@ -163,7 +172,7 @@ class HomeController extends Controller
         returns dataset name based on parameter value id
     */
     public function get_dataset_name($par_val_id) {
-        error_log($par_val_id);
+        // error_log($par_val_id);
 
         $name = DB::table('dataset_types')
         ->join('parameters', 'dataset_types.id', 'parameters.dataset_type_id')
@@ -219,6 +228,8 @@ class HomeController extends Controller
         ->pluck('specific_dataset_id')
         ->toArray();
 
+        error_log(implode('_',$specific_dataset_id));
+
         foreach($parameter_ids as $parameter_id){
             $specific_dataset_id = DB::table('belongs')
             ->select('specific_dataset_id')
@@ -229,21 +240,43 @@ class HomeController extends Controller
             ;
         }
 
-        $other = DB::table('belongs')
-        ->join('specific_year_datasets', 'specific_year_datasets.id', 'belongs.specific_dataset_id')
-        ->select('specific_dataset_id')
-        ->where('year', '=', $year)
-        ->whereNotIn('belongs.specific_dataset_id', $parameter_ids)
-        ->get()
-        ->pluck('specific_dataset_id');
+        error_log($specific_dataset_id);
 
-        $specific_dataset_id = $specific_dataset_id->except($other);
-        foreach($specific_dataset_id as $spec){
-            // error_log($spec);
-            return $spec;
+        // $other = DB::table('belongs')
+        // ->join('specific_year_datasets', 'specific_year_datasets.id', 'belongs.specific_dataset_id')
+        // ->select('specific_dataset_id')
+        // ->where('year', '=', $year)
+        // ->whereNotIn('belongs.specific_dataset_id', $parameter_ids)
+        // ->get()
+        // ->pluck('specific_dataset_id');
+        // error_log($other);
+        // $specific_dataset_id = $specific_dataset_id->except($other);
+
+        foreach($specific_dataset_id as $id){
+            // error_log($id);
+
+            $params = DB::table('belongs')
+            ->select('parameter_value_id')
+            ->where('specific_dataset_id', '=', $id)
+            ->get()
+            ->pluck('parameter_value_id')
+            ->toArray();
+
+            error_log(implode('_', $params));
+
+            if(count($params) == count($parameter_ids)){
+                error_log($id);
+                return $id;
+            }
         }
+
+
+        // foreach($specific_dataset_id as $spec){
+        //     error_log($spec);
+        //     return $spec;
+        // }
         //TODO: toto asi uplne nie
-        return "noooope";
+        return 0;
     }
 
     // public function get_dataset_parameters($dataset_id)
