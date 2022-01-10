@@ -22,14 +22,14 @@
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v6.js"></script>
     <script src="js/scripts.js"></script>
-    
-    
+
+
     <!-- Singleton module responsible for the graph functionality -->
     <script src="js/d3_graph_module.js"></script>
 
     <!-- Singleton module responsible for the map functionality -->
     <script src="js/leaflet_map_module.js"></script>
-    
+
 
     <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. -->
     <script
@@ -53,7 +53,7 @@
 
     <!-- Script for dropdown and parameters -->
     <script src="js/dropdown_and_params.js"></script>
-    
+
     <!-- Leaflet pip(point in polygon) used to propagate mouse events to all layers of the map -->
     <script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
 
@@ -77,24 +77,22 @@
                             title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
                             onchange="getSelectedDatasetsParams()" onload="loadAllDataSetParams()">
                         </select>
-                        <button id="clearButton" type="button" class="btn btn-dark" onclick="clearPicked()"><b>x</b></button>
+                        <button id="clearButton" type="button" class="btn btn-dark"
+                            onclick="clearPicked()"><b>x</b></button>
 
                         <!-- dynamic datasets and params -->
                         <div id="selected_datasets" style="display:none">
-                            <div>
+                            <!-- it's just the two datastes -->
+                            <div id="selected_d_w_p">
 
-                                <!-- it's just the two datastes -->
-                                <div id="selected_d_w_p">
+                                <!-- selected dataset -->
+                                <div class="selected_datasets" id="selected_dataset0"></div>
+                                <!-- selected datasets parameters -->
+                                <div id="selected_dataset_params0"></div>
 
-                                    <!-- selected dataset -->
-                                    <div class="selected_datasets" id="selected_dataset0"></div>
-                                    <!-- selected datasets parameters -->
-                                    <div id="selected_dataset_params0"></div>
+                                <div class="selected_datasets" id="selected_dataset1"></div>
+                                <div id="selected_dataset_params1"></div>
 
-                                    <div class="selected_datasets" id="selected_dataset1"></div>
-                                    <div id="selected_dataset_params1"></div>
-
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -126,18 +124,18 @@
                 </div>
 
                 <div class="col-xl-4 col-lg-12" id="sidePanel2">
-                <!-- Graph -->
-                <div id="graph">
-                    <h3>Graf korelácie</h3>
+                    <!-- Graph -->
+                    <div id="graph">
+                        <h3>Graf korelácie</h3>
+                    </div>
+                    <div class="correlation_meaning">
+                        <p id="correlation_definition"></p>
+                    </div>
+                    <!-- Graph save button -->
+                    <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
+                    <!-- Map save button -->
+                    <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
                 </div>
-                <div class="correlation_meaning">
-                    <p id="correlation_definition"></p>
-                </div>
-                <!-- Graph save button -->
-                <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
-                <!-- Map save button -->
-                <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
-            </div>
             </div>
         </div>
     </div>
@@ -146,21 +144,21 @@
     <script src="js/load_data.js"></script>
 
     <script type="text/javascript">
-        MapModule.init();
-        GraphModule.init();
-        // width and height of the map
-        save_to_img('map', '#saveButtonMap', 770, 720);
-        // width and height of the graph
-        save_to_img('graph', '#saveButtonGraph', 370, 360);
+    MapModule.init();
+    GraphModule.init();
+    // width and height of the map
+    save_to_img('map', '#saveButtonMap', 770, 720);
+    // width and height of the graph
+    save_to_img('graph', '#saveButtonGraph', 370, 360);
     </script>
     <script src="js/get_params.js"></script>
 
     <!-- height adjust -->
     <script>
-    console.log("HEIGHT: " + window.innerHeight);
+    //console.log("HEIGHT: " + window.innerHeight);
     const main_row = document.getElementById("main_row");
     main_row.style.height = window.innerHeight + "px";
-    console.log("MAIN_ROW: " + main_row);
+    //console.log("MAIN_ROW: " + main_row);
     </script>
 
 

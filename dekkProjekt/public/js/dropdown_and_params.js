@@ -5,8 +5,6 @@ var selectedParamsIDs = [];
 var selectedDatasetsArray = [];
 loadAllDataSetParams();
 
-
-
 // called onload from selectpicker
 function loadAllDataSetParams(){
     // load all parameters with years
@@ -21,10 +19,13 @@ function getMaxID() {
     var max = 0;
     for (const datasetName in window.datasetsDict) {
         for (const paramName in window.datasetsDict[datasetName]) {
-            for (const unique_param_id in window.datasetsDict[datasetName][paramName]) if(unique_param_id > max) max = unique_param_id;
+            if(paramName == "years") continue;
+            for (const unique_param_id in window.datasetsDict[datasetName][paramName]) {
+                if(Number(unique_param_id) > max) max = unique_param_id;
+            }
         }
     }
-    return max
+    return max;
 }
 
 // creates/fills window.datasetsDict
@@ -71,14 +72,8 @@ function getSelectedDatasetsParams() {
     if(selectedDatasetsArray != null) showParameters(selectedDatasetsArray);
 };
 
-function getSpoluParamId(datasetName) {
-    for (const unique_param_id in window.datasetsDict[datasetName]["spolu"]) if( window.datasetsDict[datasetName]["spolu"][unique_param_id] == "spolu" ) return unique_param_id;
-    return null;
-}
-
 function insertParamDiv(dNum, datasetName, paramName, unique_param_id) {
     var group = datasetName + '_' + paramName;
-    //if(paramName == "spolu" || paramName == "pohlavie") group = "sex";
     document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="pretty p-svg p-plain" id="unique_'+
     unique_param_id +'" style="margin: 0.5em;"><input type="radio" name="'+group+'" id="puID_'+unique_param_id+'" /><div class="state"><img class="svg" src="/svg/task.svg"><label>'+ 
     window.datasetsDict[datasetName][paramName][unique_param_id] +'</label></div></div><br>';
@@ -95,7 +90,6 @@ function showParameters(selectedDatasetsArray) {
             if(paramName != "years" && paramName != "spolu") {
                 document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="paramName" style="width:200px;"> '+ paramName +'</div><br>';
                 for (const unique_param_id in window.datasetsDict[datasetName][paramName]) insertParamDiv(dNum, datasetName, paramName, unique_param_id);
-                
             }
         }
         dNum++;
@@ -108,43 +102,44 @@ function validateYear(datasetName, year) {
 
 function getCheckedIDs() {
     var checkedIDs = [];
-    var allSpoluIDs = getSelectedDatasetsSpoluIDs();
-
     for(let i = 1; i <= getMaxID(); i++) {
-
-        // spoluIDs passes, they don't have element with puID_
-        if(allSpoluIDs.includes(i.toString())) continue;
         var tmpElem = document.getElementById("puID_"+i);
-        console.log("puID_"+i + ": " + tmpElem.checked);
-        if(tmpElem.checked) checkedIDs.push(i);
+        if(tmpElem != null) {
+            console.log("puID_"+i + ": " + tmpElem.checked);
+            if(tmpElem.checked) checkedIDs.push(i);
+        }
     }
 
     // saves "spolu" IDs to checkedIDs for both picked datasets if no other parameters are picked
     if(checkedIDs.length == 0) {
-        checkedIDs.push(Object.keys(window.datasetsDict[document.getElementById("selected_dataset0").innerHTML]["spolu"])[0]);
-        checkedIDs.push(Object.keys(window.datasetsDict[document.getElementById("selected_dataset1").innerHTML]["spolu"])[0]);
+        var tmpObject = window.datasetsDict[document.getElementById("selected_dataset0").innerHTML]["spolu"];
+        if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
+        else console.log("Parameter 'spolu' does not exist for selected_dataset0.");
+        tmpObject = null;
+        tmpObject = window.datasetsDict[document.getElementById("selected_dataset1").innerHTML]["spolu"];
+        if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
+        else console.log("Parameter 'spolu' does not exist for selected_dataset1.");
     }
-    console.log("PICKED IDs: " + checkedIDs[0] + ";" + checkedIDs[1]);
+    if(checkedIDs.length < 2) popupAlert("Pre vybrané datasety neexistuje parameter 'spolu', vyberte parametre datasetov.")
+    console.log("PICKED IDs: " + checkedIDs);
     return checkedIDs;
 }
 
-function sendParamsIDsAndYear(year) {
-
-    // url: loadData/1_3_5/6_8/2018
-    var url = "/loadData/"+getCheckedIDs()[0]+"/"+getCheckedIDs()[1]+"/"+year;
-    sendRequest(url);
+function popupAlert(message) {
+    alert(message);
 }
 
-function getAllSpoluIDs() {
-    var spoluIDs = [];
-    for (const datasetName in window.datasetsDict) {
-        for (const paramName in window.datasetsDict[datasetName]) {
-            if(paramName == "spolu") {
-                spoluIDs.push(Object.keys(window.datasetsDict[datasetName][paramName])[0])
-            }
-        }
+function sendParamsIDsAndYear(year) {
+    var url = "/loadData/";
+    var datasetNameToIDs = getDatasetNameByParamValsIDs(getCheckedIDs());
+    console.log("--->" + datasetNameToIDs);
+    for(datasetName in datasetNameToIDs) {
+        for(id of datasetNameToIDs[datasetName]) url += id+"_";
+        url = url.substring(0,url.length-1) + "/";
     }
-    return spoluIDs;
+    url += year;
+    console.log("URL: " + url);
+    sendRequest(url);
 }
 
 function getSelectedDatasetsSpoluIDs() {
@@ -160,10 +155,29 @@ function getSelectedDatasetsSpoluIDs() {
 }
 
 function clearPicked() {
-    var pickedSpoluIDs = getSelectedDatasetsSpoluIDs();
     for(let i = 1; i <= getMaxID(); i++) {
-        if(pickedSpoluIDs.includes(i.toString())) continue;
-        document.getElementById("puID_"+i).checked = false;
+        try {
+            document.getElementById("puID_"+i).checked = false;
+        }
+        catch(e) {
+
+        }
     }
 }
 
+function getDatasetNameByParamValsIDs(IDs) {
+    var nameToID = [];
+    for (const datasetName of selectedDatasetsArray) {
+        for (const paramName in window.datasetsDict[datasetName]) {
+            if(paramName == "years") continue;
+            for (const unique_param_id of Object.keys(window.datasetsDict[datasetName][paramName])) {
+                if(IDs.includes(Number(unique_param_id))) {
+                    if(nameToID[datasetName] === undefined) nameToID[datasetName] = [unique_param_id];
+                    else nameToID[datasetName].push(unique_param_id);
+                }
+            }
+        }
+    }
+    return nameToID;
+    
+}
