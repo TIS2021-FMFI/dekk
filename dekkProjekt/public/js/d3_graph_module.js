@@ -90,8 +90,12 @@ const GraphModule = (() => {
         const data = createDataArray(dataset);
 
         // max values for both axis are used to determine the scale
-        const maxValueX = d3.max(Object.values(dataset['dataset1']));
-        const maxValueY = d3.max(Object.values(dataset['dataset2']));
+        const maxValueX = d3.max(Object.values(dataset['dataset1']).map(value => parseFloat(value)));
+        const maxValueY = d3.max(Object.values(dataset['dataset2']).map(value => parseFloat(value)));
+
+        console.log('maxValueX graph: ' + maxValueX);
+        console.log('maxValueY graph: ' + maxValueY);
+
     
         // append the svg object to the body of the page
         const svg = d3.select('#graph')

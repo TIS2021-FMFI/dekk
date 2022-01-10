@@ -34,7 +34,8 @@ function onResponseValues(){
         districts1 = addValueProperty(response, 'dataset1', response['ds1']);
         districts2 = addValueProperty(response, 'dataset2', response['ds2']);
 
-        console.log(districts1);
+        console.log('onResponseValues response: ');
+        console.log(response);
 
         MapModule.addLayers(districts1, districts2);
         GraphModule.drawGraph(response);
