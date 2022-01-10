@@ -5,7 +5,7 @@ function getParamsAndValues(){
 
     // getParametersAndYears(dataset_type1, dataset_type2);
     
-    getValues(1, 2);
+    // getValues(1, 2);
 }
 
 function getParametersAndYears(dataset_type1, dataset_type2){
@@ -13,7 +13,7 @@ function getParametersAndYears(dataset_type1, dataset_type2){
     xmlHttp = new XMLHttpRequest();  
     const url ="/loadParams/"+ dataset_type1 + "/" + dataset_type2;
     console.log(url);
-    xmlHttp.onreadystatechange = onResponse1;
+    xmlHttp.onreadystatechange = onResponseValues;
     xmlHttp.open("GET", url);
     xmlHttp.send();
 }

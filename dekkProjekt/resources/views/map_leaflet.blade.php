@@ -115,7 +115,7 @@
 
                     <!-- Send requested datasets -->
                     <button type="button" class="btn btn-dark"
-                        onclick="getParamsAndValues(); sendParamsIDsAndYear(yearOutput.innerHTML)">Obnoviť</button>
+                        onclick="sendParamsIDsAndYear(yearOutput.innerHTML)">Obnoviť</button>
                 </div>
 
                 <!-- Map -->
