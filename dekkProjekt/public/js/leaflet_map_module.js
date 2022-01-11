@@ -2,8 +2,10 @@
 // create singleton module for the map
 const MapModule = (() => {
 
-    const COLORS1 = ['0xe0dbfc', '0x1b183a']
-    const COLORS2 = ['0xe1d4d4', '0x771411']
+    const COLORS = [['0xe0dbfc', '0x1b183a'], ['0xe0dbfc', '0x1b183a']]
+    const COLORS1 = ['0xe0dbfc', '0x1b183a'];
+    const COLORS2 = ['0xe1d4d4', '0x771411'];
+    const COLORS_DEFAULT = ['0x908bb6', '0x908bb6'];
 
     const GeoJSON = (data, id, c1, c2) => {
         const dataset = id;
@@ -90,6 +92,7 @@ const MapModule = (() => {
         };
     };
 
+    const geoLayers = [];
     let geoLayer1;
     let geoLayer2;
     let selectOverlays;
@@ -104,7 +107,7 @@ const MapModule = (() => {
         }).setView([48.6, 19.5 ], 7);
     
         const initialGeojson = L.geoJson(okresy, {
-            style: feature => styling(feature, calculateColorGradient('0x908bb6', '0x908bb6'))
+            style: feature => styling(feature, calculateColorGradient(COLORS_DEFAULT[0], COLORS_DEFAULT[1]))
         }).addTo(map);
         
         // http://leaflet-extras.github.io/leaflet-providers/preview/
@@ -117,29 +120,44 @@ const MapModule = (() => {
     };
 
     // creates and adds layers from geojson objects
-    const addLayers = (dataset1, dataset2) => {
+    const addLayers = (...datasets) => {
 
-        if (typeof geoLayer1 != 'undefined' && typeof geoLayer2 != 'undefined') {
-            geoLayer1.reset();
-            geoLayer2.reset();
+        // if (typeof geoLayer1 != 'undefined' && typeof geoLayer2 != 'undefined') {
+        //     geoLayer1.reset();
+        //     geoLayer2.reset();
+        //     selectOverlays.remove();
+        // }
+        
+        if (typeof geoLayers[0] != 'undefined') {
+            geoLayers.forEach(layer => layer.reset());
             selectOverlays.remove();
+
+            while (geoLayers.length != 0) {
+                geoLayers.pop();
+            }
         }
 
         // this is where different colors can be assigned -> each GeoJSON object needs 2 colors for which a color gradient will be calculated upon construction
-        geoLayer1 = GeoJSON(dataset1, dataset1['datasetName'], COLORS1[0], COLORS1[1]);
-        geoLayer2 = GeoJSON(dataset2, dataset2['datasetName'], COLORS2[0], COLORS2[1]); // '0xffa600', '0x06415c'
+        // geoLayer1 = GeoJSON(dataset1, dataset1['datasetName'], COLORS1[0], COLORS1[1]);
+        // geoLayer2 = GeoJSON(dataset2, dataset2['datasetName'], COLORS2[0], COLORS2[1]); // '0xffa600', '0x06415c'
 
-        const layers = [geoLayer1, geoLayer2];
+        const overlay = {};
+        datasets.forEach(dataset => {
+            let i = 0;
+            const geoLayer = GeoJSON(dataset, dataset['datasetName'], COLORS[i][0], COLORS[i][1]);
+            geoLayers.push(geoLayer);
+            overlay[dataset['datasetName']] = geoLayer.getGeojson();
+        })
 
-        const overlay = {
-            [dataset1['datasetName']]: geoLayer1.getGeojson(),
-            [dataset2['datasetName']]: geoLayer2.getGeojson()
-        };
-        
+        // const overlay = {
+        //     [dataset1['datasetName']]: geoLayer1.getGeojson(),
+        //     [dataset2['datasetName']]: geoLayer2.getGeojson()
+        // };
+
         selectOverlays = L.control.layers(null, overlay, {collapsed: false, sortLayers: true});
         selectOverlays.addTo(map);
 
-        layers.forEach(layer => {
+        geoLayers.forEach(layer => {
             layer.getGeojson().addTo(map);
             layer.getInfo().addTo(map);
             layer.getLegend().addTo(map);
@@ -147,35 +165,60 @@ const MapModule = (() => {
 
 
         // show/ hide legend and pane
-        map.on('overlayadd', function(overlay) {
-            if (overlay['name'] == geoLayer1.getDatasetName()) {
-                geoLayer1.getInfo().addTo(map);
-                geoLayer1.getLegend().addTo(map);
-
-                // different overlay load orders result in different coloring of the map -> we dont want that
-                // rearrange geojsons so that geoLayer2 is always on top resulting in consistent color palette
-
-                if (map.hasLayer(geoLayer2.getGeojson())) {
-                    geoLayer2.getGeojson().bringToFront();
-                    // geoLayer2.getGeojson().remove();
-                    // geoLayer2.getGeojson().addTo(map);
+        map.on('overlayadd', overlay => {
+            geoLayers.forEach(layer => {
+                if (overlay['name'] == layer.getDatasetName()) {
+                    layer.getInfo().addTo(map);
+                    layer.getLegend().addTo(map);
                 }
-            }
-            if (overlay['name'] == geoLayer2.getDatasetName()) {
-                geoLayer2.getInfo().addTo(map);
-                geoLayer2.getLegend().addTo(map);
-            }
+
+                if (map.hasLayer(layer)) {
+                    layer.getGeojson().bringToFront();
+                }
+            })
+
+
+
+            // if (overlay['name'] == geoLayer1.getDatasetName()) {
+            //     geoLayer1.getInfo().addTo(map);
+            //     geoLayer1.getLegend().addTo(map);
+
+            //     // different overlay load orders result in different coloring of the map -> we dont want that
+            //     // rearrange geojsons so that geoLayer2 is always on top resulting in consistent color palette
+
+            //     if (map.hasLayer(geoLayer2.getGeojson())) {
+            //         geoLayer2.getGeojson().bringToFront();
+            //         // geoLayer2.getGeojson().remove();
+            //         // geoLayer2.getGeojson().addTo(map);
+            //     }
+            // }
+            // if (overlay['name'] == geoLayer2.getDatasetName()) {
+            //     geoLayer2.getInfo().addTo(map);
+            //     geoLayer2.getLegend().addTo(map);
+            // }
         });
 
         map.on('overlayremove', function(overlay) {
-            if (overlay['name'] == geoLayer1.getDatasetName()) {
-                geoLayer1.getInfo().remove()
-                geoLayer1.getLegend().remove()
-            }
-            if (overlay['name'] == geoLayer2.getDatasetName()) {
-                geoLayer2.getInfo().remove()
-                geoLayer2.getLegend().remove()
-            }
+            geoLayers.forEach(layer => {
+                if (overlay['name'] == layer.getDatasetName()) {
+                    layer.getInfo().remove()
+                    layer.getLegend().remove()
+                }
+
+                if (map.hasLayer(layer)) {
+                    layer.getGeojson().bringToFront();
+                }
+            })
+
+
+            // if (overlay['name'] == geoLayer1.getDatasetName()) {
+            //     geoLayer1.getInfo().remove()
+            //     geoLayer1.getLegend().remove()
+            // }
+            // if (overlay['name'] == geoLayer2.getDatasetName()) {
+            //     geoLayer2.getInfo().remove()
+            //     geoLayer2.getLegend().remove()
+            // }
         });
     };
 
@@ -261,14 +304,21 @@ const MapModule = (() => {
     };
 
     const resetHighlight = e => {
-        if (map.hasLayer(geoLayer1.getGeojson())) {
-            geoLayer1.getGeojson().resetStyle(e.target);
-            geoLayer1.getInfo().update();
-        }
-        if (map.hasLayer(geoLayer2.getGeojson())) {
-            geoLayer2.getGeojson().resetStyle(e.target);
-            geoLayer2.getInfo().update();
-        }
+        // if (map.hasLayer(geoLayer1.getGeojson())) {
+        //     geoLayer1.getGeojson().resetStyle(e.target);
+        //     geoLayer1.getInfo().update();
+        // }
+        // if (map.hasLayer(geoLayer2.getGeojson())) {
+        //     geoLayer2.getGeojson().resetStyle(e.target);
+        //     geoLayer2.getInfo().update();
+        // }
+
+        geoLayers.forEach(layer => {
+            if (map.hasLayer(layer.getGeojson())) {
+                layer.getGeojson().resetStyle(e.target);
+                layer.getInfo().update();
+            }
+        });
     };
 
     const zoomToFeature = e => {
@@ -276,11 +326,20 @@ const MapModule = (() => {
     };
 
     const clear = () => {
-        if (typeof geoLayer1 != 'undefined' && typeof geoLayer2 != 'undefined') {
-            geoLayer1.reset();
-            geoLayer2.reset();
-            selectOverlays.remove();
+        // if (typeof geoLayer1 != 'undefined' && typeof geoLayer2 != 'undefined') {
+        //     geoLayer1.reset();
+        //     geoLayer2.reset();
+        //     selectOverlays.remove();
+        // }
+
+        geoLayers.forEach(layer => {
+            layer.reset();
+        })
+
+        while (geoLayers.length != 0) {
+            geoLayers.pop();
         }
+        selectOverlays.remove();
     }
 
     return {
