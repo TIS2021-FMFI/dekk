@@ -84,9 +84,9 @@ function showParameters(selectedDatasetsArray) {
     console.log(window.datasetsDict);
     var dNum = 0;
     for (const datasetName of selectedDatasetsArray) {
-        console.log("DNAME: " + datasetName);
+        //console.log("DNAME: " + datasetName);
         for (const paramName in window.datasetsDict[datasetName]) {
-            console.log("PNAME: " + paramName);
+            //console.log("PNAME: " + paramName);
             if(paramName != "years" && paramName != "spolu") {
                 document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="paramName" style="width:200px;"> '+ paramName +'</div><br>';
                 for (const unique_param_id in window.datasetsDict[datasetName][paramName]) insertParamDiv(dNum, datasetName, paramName, unique_param_id);
@@ -97,7 +97,7 @@ function showParameters(selectedDatasetsArray) {
 };
 
 function validateYear(datasetName, year) {
-    return window.datasetsDict[datasetName][years].includes(year);
+    return window.datasetsDict[datasetName]["years"].includes(year);
 }
 
 function getCheckedIDs() {
@@ -121,7 +121,7 @@ function getCheckedIDs() {
         else console.log("Parameter 'spolu' does not exist for selected_dataset1.");
     }
     if(checkedIDs.length < 2) popupAlert("Pre vybrané datasety neexistuje parameter 'spolu', vyberte parametre datasetov.")
-    console.log("PICKED IDs: " + checkedIDs);
+    //console.log("PICKED IDs: " + checkedIDs);
     return checkedIDs;
 }
 
@@ -132,7 +132,7 @@ function popupAlert(message) {
 function sendParamsIDsAndYear(year) {
     var url = "/loadData/";
     var datasetNameToIDs = getDatasetNameByParamValsIDs(getCheckedIDs());
-    console.log("--->" + datasetNameToIDs);
+    //console.log("--->" + datasetNameToIDs);
     for(datasetName in datasetNameToIDs) {
         for(id of datasetNameToIDs[datasetName]) url += id+"_";
         url = url.substring(0,url.length-1) + "/";
@@ -180,4 +180,35 @@ function getDatasetNameByParamValsIDs(IDs) {
     }
     return nameToID;
     
+}
+
+function getYearsIntersectionForSelectedDatasets() { 
+    var min = 3000;
+    var max = 0;
+    var values = [];
+    if(selectedDatasetsArray.length == 1) {
+        //console.log(window.datasetsDict[selectedDatasetsArray[0]]["years"]);
+        min = Math.min(...window.datasetsDict[selectedDatasetsArray[0]]["years"]);
+        max = Math.max(...window.datasetsDict[selectedDatasetsArray[0]]["years"]);
+        values.push(min);
+        values.push(max);
+    }
+    if(selectedDatasetsArray.length == 2) {
+        //console.log(window.datasetsDict[selectedDatasetsArray[0]]["years"]);
+        //console.log(window.datasetsDict[selectedDatasetsArray[1]]["years"]);
+        min = Math.min(...window.datasetsDict[selectedDatasetsArray[0]]["years"]);
+        max = Math.max(...window.datasetsDict[selectedDatasetsArray[0]]["years"]);
+        if(Math.min(...window.datasetsDict[selectedDatasetsArray[1]]["years"]) > min) min = Math.min(...window.datasetsDict[selectedDatasetsArray[1]]["years"]);
+        if(Math.max(...window.datasetsDict[selectedDatasetsArray[1]]["years"]) < max) max = Math.max(...window.datasetsDict[selectedDatasetsArray[1]]["years"]);
+        values.push(min);
+        values.push(max);
+    }
+    setYearRangeForSlider(values);
+    return;
+}
+
+function setYearRangeForSlider(vals) {
+    document.getElementById("myRange").min = vals[0];
+    document.getElementById("myRange").max = vals[1];
+    document.getElementById("sliderYear").innerHTML = vals[1];
 }
