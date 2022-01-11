@@ -126,6 +126,8 @@ const MapModule = (() => {
         geoLayer1 = GeoJSON(dataset1, dataset1['datasetName'], '0xe0dbfc', '0x1b183a');
         geoLayer2 = GeoJSON(dataset2, dataset2['datasetName'], '0xe1d4d4', '0x771411'); // '0xffa600', '0x06415c'
 
+        const layers = [geoLayer1, geoLayer2];
+
         const overlay = {
             [dataset1['datasetName']]: geoLayer1.getGeojson(),
             [dataset2['datasetName']]: geoLayer2.getGeojson()
@@ -134,7 +136,12 @@ const MapModule = (() => {
         selectOverlays = L.control.layers(null, overlay, {collapsed: false, sortLayers: true});
         selectOverlays.addTo(map);
 
-        Object.values(overlay).forEach(geojson => geojson.addTo(map));
+        layers.forEach(layer => {
+            layer.getGeojson().addTo(map);
+            layer.getInfo().addTo(map);
+            layer.getLegend().addTo(map);
+        })
+
 
         // show/ hide legend and pane
         map.on('overlayadd', function(overlay) {
@@ -146,8 +153,9 @@ const MapModule = (() => {
                 // rearrange geojsons so that geoLayer2 is always on top resulting in consistent color palette
 
                 if (map.hasLayer(geoLayer2.getGeojson())) {
-                    geoLayer2.getGeojson().remove();
-                    geoLayer2.getGeojson().addTo(map);
+                    geoLayer2.getGeojson().bringToFront();
+                    // geoLayer2.getGeojson().remove();
+                    // geoLayer2.getGeojson().addTo(map);
                 }
             }
             if (overlay['name'] == geoLayer2.getDatasetName()) {
