@@ -78,7 +78,7 @@
                             onchange="getSelectedDatasetsParams()" onload="loadAllDataSetParams()">
                         </select>
                         <button id="clearButton" type="button" class="btn btn-dark"
-                            onclick="clearPicked()"><b>x</b></button>
+                            onclick="clearPicked(); MapModule.clear(); GraphModule.clear();"><b>x</b></button>
 
                         <!-- dynamic datasets and params -->
                         <div id="selected_datasets" style="display:none">
