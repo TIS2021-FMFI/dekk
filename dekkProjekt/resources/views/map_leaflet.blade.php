@@ -75,7 +75,7 @@
                             data-max-options="2"
                             data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
                             title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
-                            onchange="getSelectedDatasetsParams()" onload="loadAllDataSetParams()">
+                            onchange="getSelectedDatasetsParams(); getYearsIntersectionForSelectedDatasets()" onload="loadAllDataSetParams()">
                         </select>
                         <button id="clearButton" type="button" class="btn btn-dark"
                             onclick="clearPicked(); MapModule.clear(); GraphModule.clear();"><b>x</b></button>
