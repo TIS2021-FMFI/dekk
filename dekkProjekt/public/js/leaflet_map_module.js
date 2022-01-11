@@ -130,10 +130,11 @@ const MapModule = (() => {
             [dataset1['datasetName']]: geoLayer1.getGeojson(),
             [dataset2['datasetName']]: geoLayer2.getGeojson()
         };
-
         
         selectOverlays = L.control.layers(null, overlay, {collapsed: false, sortLayers: true});
         selectOverlays.addTo(map);
+
+        Object.values(overlay).forEach(geojson => geojson.addTo(map));
 
         // show/ hide legend and pane
         map.on('overlayadd', function(overlay) {
