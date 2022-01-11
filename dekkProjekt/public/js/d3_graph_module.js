@@ -3,8 +3,8 @@ const GraphModule = (() => {
 
     // set the dimensions and margins of the graph
     const margin = {top: 10, right: 30, bottom: 30, left: 60};
-    const width = 460 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    const width = 540- margin.left - margin.right;
+    const height = 480 - margin.top - margin.bottom;
 
     const init = () => {
         // append the svg object to the body of the page
@@ -116,6 +116,9 @@ const GraphModule = (() => {
         const yAxis = svg.append('g')
             .call(d3.axisLeft(y));
 
+        // get coordinates for the linear regression line
+        const lineCoords = lineToCoords(dataset['corr'].split(';').slice(-2), 0, 1.05 * maxValueX);
+
 
         // function that will be called on zoom event, updates both axis and positions of the dots and the line
         const updateChart = event => {
@@ -133,17 +136,24 @@ const GraphModule = (() => {
                 .attr('cx', d => newX(d.data1))
                 .attr('cy', d => newY(d.data2));
             
-            // update line position
+
+            // get the new beginning and the end of the line -> infinite line
+            // const newCoords = lineToCoords(dataset['corr'].split(';').slice(-2), newX.domain().at(0), newX.domain().at(-1))
+            // get the new beginning and the end fo the line -> 60% longer than the X domain -> static
+            const newCoords = lineToCoords(dataset['corr'].split(';').slice(-2), -0.3 * maxValueX, 1.3 * maxValueX); 
+            // // update line position
             line
-                .attr('x1', newX(lineCoords[0]))
-                .attr('y1', newY(lineCoords[1]))
-                .attr('x2', newX(lineCoords[2]))
-                .attr('y2', newY(lineCoords[3]));
+                .attr('x1', newX(newCoords[0]))
+                .attr('y1', newY(newCoords[1]))
+                .attr('x2', newX(newCoords[2]))
+                .attr('y2', newY(newCoords[3]));
+
+
         }
 
         // Set the zoom and pan features: how much you can zoom, on which part, and what to do when there is a zoom
         const zoom = d3.zoom()
-        .scaleExtent([.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+        .scaleExtent([.8, 10])  // This control how much you can unzoom (x0.8) and zoom (x10)
         .extent([[0, 0], [width, height]])
         .on('zoom', updateChart);
 
@@ -156,8 +166,6 @@ const GraphModule = (() => {
             .attr('x', 0)
             .attr('y', 0);
     
-        // get coordinates for the linear regression line
-        const lineCoords = lineToCoords(dataset['corr'].split(';').slice(-2), 0, 1.05 * maxValueX);
     
         // plot linear regression line
         const line = svg.append('line')
