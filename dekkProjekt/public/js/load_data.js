@@ -31,11 +31,11 @@ function onResponseValues(){
     if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
         response = JSON.parse(xmlHttp.responseText);
 
-        districts1 = addValueProperty(response, 'dataset1', response['ds1']);
-        districts2 = addValueProperty(response, 'dataset2', response['ds2']);
-
         console.log('onResponseValues response: ');
         console.log(response);
+
+        districts1 = addValueProperty(response, 'dataset1', response['ds1']);
+        districts2 = addValueProperty(response, 'dataset2', response['ds2']);
 
         MapModule.addLayers(districts1, districts2);
         GraphModule.drawGraph(response);

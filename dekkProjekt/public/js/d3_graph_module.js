@@ -263,9 +263,15 @@ const GraphModule = (() => {
         return data;
     };
 
+    const clear = () => {
+        resetGraph();
+        init();
+    }
+
     return {
         init,
-        drawGraph
+        drawGraph,
+        clear
     };
 
 })();

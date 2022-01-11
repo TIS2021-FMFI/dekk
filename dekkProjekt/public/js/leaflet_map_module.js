@@ -263,10 +263,19 @@ const MapModule = (() => {
         map.fitBounds(e.target.getBounds());
     };
 
+    const clear = () => {
+        if (typeof geoLayer1 != 'undefined' && typeof geoLayer2 != 'undefined') {
+            geoLayer1.reset();
+            geoLayer2.reset();
+            selectOverlays.remove();
+        }
+    }
+
     return {
         init,
         addLayers,
-        calculateColorGradient
+        calculateColorGradient,
+        clear
     };
 
 })();
