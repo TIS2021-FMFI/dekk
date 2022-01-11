@@ -93,23 +93,19 @@ const GraphModule = (() => {
         const maxValueX = d3.max(Object.values(dataset['dataset1']).map(value => parseFloat(value)));
         const maxValueY = d3.max(Object.values(dataset['dataset2']).map(value => parseFloat(value)));
 
-        console.log('maxValueX graph: ' + maxValueX);
-        console.log('maxValueY graph: ' + maxValueY);
-
-    
         // append the svg object to the body of the page
         const svg = d3.select('#graph')
             .append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
             .append('g')
-            .attr('transform', `translate(${margin.left}, ${margin.top})`);
-    
+            .attr('transform', `translate(${margin.left}, ${margin.top})`)
+
         // Add X axis
         const x = d3.scaleLinear()
             .domain([0, 1.05 * maxValueX])
             .range([ 0, width ]);
-        svg.append('g')
+        const xAxis = svg.append('g')
             .attr('transform', `translate(0, ${height})`)
             .call(d3.axisBottom(x));
     
@@ -117,14 +113,55 @@ const GraphModule = (() => {
         const y = d3.scaleLinear()
             .domain([0, 1.05 * maxValueY])
             .range([ height, 0]);
-        svg.append('g')
+        const yAxis = svg.append('g')
             .call(d3.axisLeft(y));
+
+
+        // function that will be called on zoom event, updates both axis and positions of the dots and the line
+        const updateChart = event => {
+            // recover the new scale
+            const newX = event.transform.rescaleX(x);
+            const newY = event.transform.rescaleY(y);
+
+            // update axis with these new boundaries
+            xAxis.call(d3.axisBottom(newX))
+            yAxis.call(d3.axisLeft(newY))
+
+            // update circle position
+            scatter
+                .selectAll('circle')
+                .attr('cx', d => newX(d.data1))
+                .attr('cy', d => newY(d.data2));
+            
+            // update line position
+            line
+                .attr('x1', newX(lineCoords[0]))
+                .attr('y1', newY(lineCoords[1]))
+                .attr('x2', newX(lineCoords[2]))
+                .attr('y2', newY(lineCoords[3]));
+        }
+
+        // Set the zoom and pan features: how much you can zoom, on which part, and what to do when there is a zoom
+        const zoom = d3.zoom()
+        .scaleExtent([.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+        .extent([[0, 0], [width, height]])
+        .on('zoom', updateChart);
+
+        // Add a clipPath: everything out of this area won't be drawn.
+        const clip = svg.append('defs').append('SVG:clipPath')
+            .attr('id', 'clip')
+            .append('SVG:rect')
+            .attr('width', width )
+            .attr('height', height )
+            .attr('x', 0)
+            .attr('y', 0);
     
         // get coordinates for the linear regression line
         const lineCoords = lineToCoords(dataset['corr'].split(';').slice(-2), 0, 1.05 * maxValueX);
     
         // plot linear regression line
-        svg.append('line')
+        const line = svg.append('line')
+            .attr('clip-path', 'url(#clip)')
             .style('stroke', 'red')
             .style('stroke-width', 3)
             .style("stroke-dasharray", ("10, 3"))  
@@ -173,8 +210,22 @@ const GraphModule = (() => {
             .style('opacity', 0);
         };
         
-        // Add dots
-        svg.append('g')
+        // Create scatter
+        const scatter = svg.append('g')
+            .attr('clip-path', 'url(#clip)');
+
+        // Invisible rect covering the entire plot, recovering all mouse events
+        svg.append('rect')
+            .attr('width', width)
+            .attr('height', height)
+            .style('fill', "none")
+            .style('pointer-events', 'all')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+            .lower() // lower moves the rect behind scatter dots so mouseover events still work if hovering over a dot
+            .call(zoom);
+
+        // Add individual dots
+        scatter            
             .selectAll('dot')
             .data(data)
             .enter()

@@ -123,8 +123,8 @@ const MapModule = (() => {
         }
 
         // this is where different colors can be assigned -> each GeoJSON object needs 2 colors for which a color gradient will be calculated upon construction
-        geoLayer1 = GeoJSON(dataset1, dataset1['datasetName'], '0xa99aff', '0x1b183a');
-        geoLayer2 = GeoJSON(dataset2, dataset2['datasetName'], '0xae8787', '0x771411'); // '0xffa600', '0x06415c'
+        geoLayer1 = GeoJSON(dataset1, dataset1['datasetName'], '0xe0dbfc', '0x1b183a');
+        geoLayer2 = GeoJSON(dataset2, dataset2['datasetName'], '0xe1d4d4', '0x771411'); // '0xffa600', '0x06415c'
 
         const overlay = {
             [dataset1['datasetName']]: geoLayer1.getGeojson(),
