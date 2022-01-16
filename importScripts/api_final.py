@@ -562,6 +562,7 @@ def stiahni(url, rok):
     docasne_url = url.replace(rok, '_ROK_')
     if docasne_url in slovnik1:
         api_url = slovnik1[docasne_url]['url']
+        api_url = api_url.replace('_ROK_',rok)
         response = requests.get(api_url)
         if (response.status_code) == 200: #200 HTTP status code = OK
             vysledok = response.json()['value'][int(slovnik1[docasne_url]['json'])]
