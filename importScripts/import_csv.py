@@ -1,5 +1,7 @@
 from csv import reader
 from datasetClass import Dataset
+import sys
+
 # open file in read mode
 
 def import_csv(file_name):
@@ -79,7 +81,29 @@ def import_csv(file_name):
     
             dataset.insert()
 
-file_name = 'cesta k import.csv'
-import_csv(file_name)
+# file_name = ['importScripts/volby.csv', 
+#             'importScripts/emise_km_tuhe.csv', 
+#             'importScripts/emisie_km_oxidsiricity.csv',
+#             'importScripts/emisie_tony_oxidsiricity.csv',
+#             'importScripts/emisie_tony_tuhe.csv',
+#             'importScripts/volby2020sas.csv',
+#             'importScripts/volby2020saspodiel.csv',
+#             'importScripts/volby2020sns.csv',
+#             'importScripts/volby2020snspodiel.csv',
+#             'importScripts/zivotanarodeni_poradie.csv',
+#             'importScripts/zivotanarodeni_poradie2.csv',
+#             'importScripts/zivotanarodeni_poradie3.csv',
+#             'importScripts/zivotanarodeni_poradie4.csv',
+#             'importScripts/zivotanarodeni_poradie5.csv'
+#             ]
 
-    
+# for file in file_name:
+#     import_csv(file)
+
+input = sys.argv[1]
+print(input)
+import_csv(input)
+print('Data boli importnute do databazy.')
+
+# d = Dataset()
+# print(d.get_district_id_from_code('SK0212 '))

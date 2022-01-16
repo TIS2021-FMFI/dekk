@@ -19,46 +19,17 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/app.css" />
 
-    <style>
-
-    #map { 
-			height: 600px;
-		 }
-
-    .info {
-        padding: 6px 8px;
-        font: 14px/16px Arial, Helvetica, sans-serif;
-        background: white;
-        color: #777;
-        background: rgba(255,255,255,0.8);
-        box-shadow: 0 0 15px rgba(0,0,0,0.2);
-        border-radius: 5px;
-    }
-
-    .info h4 {
-        margin: 0 0 5px;
-        color: #777;
-    }
-
-    .legend {
-        line-height: 18px;
-        color: #555;
-    }
-
-    .legend i {
-        width: 18px;
-        height: 18px;
-        float: left;
-        margin-right: 8px;
-        opacity: 0.7;
-    }
-
-
-    </style>
-
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v6.js"></script>
     <script src="js/scripts.js"></script>
+
+
+    <!-- Singleton module responsible for the graph functionality -->
+    <script src="js/d3_graph_module.js"></script>
+
+    <!-- Singleton module responsible for the map functionality -->
+    <script src="js/leaflet_map_module.js"></script>
+
 
     <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. -->
     <script
@@ -77,154 +48,119 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
-    <!-- Color picker script -->
-    <script src="js/iro.min.js"></script>
+    <!--Checkboxes style -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" />
+
+    <!-- Script for dropdown and parameters -->
+    <script src="js/dropdown_and_params.js"></script>
+
+    <!-- Leaflet pip(point in polygon) used to propagate mouse events to all layers of the map -->
+    <script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
 
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xl-3 col-lg-12" id="sidePanel">
-                <div>
-                    <!-- class="subPanel" -->
-                    <h3>Datasety a parametre:</h3>
+    <div class="container-fluid" style="height:100%;">
+        <div style="height:100%;">
+            <div class="row" id="main_row">
+
+                <!-- class="subPanel" -->
+                <div class="col-xl-3 col-lg-12" id="sidePanel1">
+
+                    <h3>Datasety a parametre</h3>
                     <div class="datasets_parameters">
 
-                        <!--multichoice picker with search, NOT WORKING YET! -->
-                        <select class="selectpicker" multiple data-live-search="true">
-                            <?php for($i=1; $i<3; $i++) :?>
-                            <option><?=$i?><label class="container" id="checkData<?=$i?>"></label></option>
-                            <?php endfor;?>
+                        <!-- multichoice picker with search, limited to 2 selected options -->
+                        <select class="selectpicker" id="selectpicker" multiple data-live-search="true"
+                            data-max-options="2"
+                            data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
+                            title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
+                            onchange="getSelectedDatasetsParams(); getYearsIntersectionForSelectedDatasets()" onload="loadAllDataSetParams()">
                         </select>
+                        <button id="clearButton" type="button" class="btn btn-dark"
+                            onclick="clearPicked(); MapModule.clear(); GraphModule.clear();"><b>x</b></button>
 
-                        <?php for($i=1; $i<3; $i++) :?>
-                        <label class="container">
-                            <input type="checkbox" id="checkData<?=$i?>"> checkData<?=$i?>
-                        </label>
-                        <?php endfor;?>
-                    </div>
-                </div>
+                        <!-- dynamic datasets and params -->
+                        <div id="selected_datasets" style="display:none">
+                            <!-- it's just the two datastes -->
+                            <div id="selected_d_w_p">
 
-                <!-- Slider (value needed for year pick) -->
-                <div class="slidercontainer">
-                    <h3>Rok: <span id="sliderYear"></span></h3>
-                    <input type="range" min="1990" max="2020" value="2005" class="slider" id="myRange">
+                                <!-- selected dataset -->
+                                <div class="selected_datasets" id="selected_dataset0"></div>
+                                <!-- selected datasets parameters -->
+                                <div id="selected_dataset_params0"></div>
 
-                    <script>
-                    var slider = document.getElementById("myRange");
-                    var output = document.getElementById("sliderYear");
-                    output.innerHTML = slider.value;
-                    slider.oninput = function() {
-                        output.innerHTML = this.value;
-                    }
-                    </script>
-                </div>
+                                <div class="selected_datasets" id="selected_dataset1"></div>
+                                <div id="selected_dataset_params1"></div>
 
-                <!-- Send requested datasets -->
-                <button type="button" class="btn btn-dark" onclick="getParamsAndValues()">Obnoviť</button>
-            </div>
-
-            <!-- Map -->
-            <div class="col-xl-5 col-lg-12">
-                <div id='map'></div>
-                <div class="row">
-
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="picker1" id="picker1">
-                            <script>
-                            var colorPicker1 = new iro.ColorPicker('#picker1', {
-                                width: 150,
-                                color: "#fff",
-                                layout: [{
-                                    component: iro.ui.Wheel,
-                                    options: {}
-                                }, ]
-                            });
-                            </script>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="picker2" id="picker2">
-                            <script>
-                            var colorPicker2 = new iro.ColorPicker('#picker2', {
-                                width: 150,
-                                color: "#fff",
-                                layout: [{
-                                    component: iro.ui.Wheel,
-                                    options: {}
-                                }, ]
-                            });
-                            </script>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <!-- Slider (value needed for year pick) -->
+                    <div class="slidercontainer" style="margin-top: 1em;">
+                        <h3>Rok: <span id="sliderYear"></span></h3>
+                        <input type="range" min="1990" max="2020" value="2020" class="slider" id="myRange">
 
-            <!-- BEFORE : <div class="col-md-4" id="odpoved"></div> -->
-            <div class="col-xl-4 col-lg-12" id="sidePanel">
-                <!-- Graph -->
-                <div id="my_dataviz3">
-                    <h3>Graf korelácie</h3>
+                        <script>
+                        var slider = document.getElementById("myRange");
+                        var yearOutput = document.getElementById("sliderYear");
+                        yearOutput.innerHTML = slider.value;
+                        slider.oninput = function() {
+                            yearOutput.innerHTML = this.value;
+                            console.log(yearOutput.innerHTML);
+                        }
+                        </script>
+                    </div>
+
+                    <!-- Send requested datasets -->
+                    <button type="button" class="btn btn-dark"
+                        onclick="sendParamsIDsAndYear(yearOutput.innerHTML)">Obnoviť</button>
                 </div>
-                <div class="correlation_meaning">
-                    <p>Korelačný koeficient je <a class="red"
-                            href="https://sk.wikipedia.org/wiki/Korelácia_(štatistika)"> 0.64 </a> a hovorí nám...</p>
+
+                <!-- Map -->
+                <div class="col-xl-5 col-lg-12" id="midPanel">
+                    <div id='map'></div>
                 </div>
-                <!-- Graph save button -->
-                <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
-                <!-- Map save button -->
-                <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
+
+                <div class="col-xl-4 col-lg-12" id="sidePanel2">
+                    <!-- Graph -->
+                    <div id="graph">
+                        <h3>Graf korelácie</h3>
+                    </div>
+                    <div class="correlation_meaning">
+                        <p id="correlation_definition"></p>
+                    </div>
+                    <!-- Graph save button -->
+                    <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
+                    <!-- Map save button -->
+                    <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <script type="text/javascript" src="js/okresy.js"></script>
+    <script src="js/load_data.js"></script>
 
+    <script type="text/javascript">
+    MapModule.init();
+    GraphModule.init();
+    // width and height of the map
+    save_to_img('map', '#saveButtonMap', 770, 720);
+    // width and height of the graph
+    save_to_img('graph', '#saveButtonGraph', 370, 360);
+    </script>
+    <script src="js/get_params.js"></script>
 
-    @foreach($dataset_types as $dataset_type)
-    <div class="row">
-        <div>
-            <button type="button" class="btn btn-dark"
-                onclick="getParams({{ $dataset_type->id }})">{{ $dataset_type->name }}</button>
-        </div>
-    </div>
-    @endforeach
+    <!-- height adjust -->
+    <script>
+    //console.log("HEIGHT: " + window.innerHeight);
+    const main_row = document.getElementById("main_row");
+    main_row.style.height = window.innerHeight + "px";
+    //console.log("MAIN_ROW: " + main_row);
+    </script>
 
-
-<script type="text/javascript" src="js/okresy.js"></script>
-<script src="js/load_data.js"></script>
-
-
-<script type="text/javascript">
-    // Leaflet map init
-    let bounds = new L.LatLngBounds(new L.LatLng(50.16962074944367, 16.3865741126029432), new L.LatLng(46.94733587652772, 23.45591532167501));
-	let map = L.map('map', {
-        center: [48.6, 19.5 ],
-        maxBounds: bounds,
-        maxBoundsViscosity: 0.5
-    }).setView([48.6, 19.5 ], 7);
-
-    geojson = L.geoJson(okresy, {
-        style: style
-    }).addTo(map);
-    
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
-        maxZoom: 11,
-        minZoom: 7,
-        id: 'tileset',
-        attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // D3 graph init
-    interactive_grouped();
-
-    // save btn init map width 970 heigth 600
-    save_to_img('map', d3.select('#map').select("svg").node(), '#saveButtonMap', 970, 600)
-    // save btn init graph width 370 height 360
-    save_to_img('graph', d3.select("#my_dataviz3").select("svg").node(), '#saveButtonGraph', 370, 360);
-</script>
-<script src="js/get_params.js"></script> 
 
 </body>
 

@@ -155,3 +155,4 @@ class Dataset:
             return False
 
         return myresult[0][0]
+

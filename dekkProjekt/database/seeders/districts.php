@@ -22,7 +22,7 @@ class districts extends Seeder
                 $data = explode(",", $line);
                 DB::table('districts')->insert([
                     'name' => $data[0],
-                    'datacube_code' => $data[1],
+                    'datacube_code' => trim($data[1]),
                 ]);
             }
 
