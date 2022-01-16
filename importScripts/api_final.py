@@ -588,15 +588,6 @@ def poskladaj_url(permutacia):
     vysledok = "https://data.statistics.sk/api/v2/dataset/" + "/".join(permutacia)
     return vysledok
 
-'''
-def stahuj(dataset, permutacie):
-    for parameter in permutacie:
-        data = {}
-        for okres in okresy:
-            data[okres] = stiahni(parameter, okres)
-        vlozdodatabazy(data)
-'''
-
 #print(permutacie_parametrov("zd3002rr", 2010))
 #print(datasety[7].generuj_vsetky_url(2010))
 
