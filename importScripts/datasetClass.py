@@ -142,3 +142,16 @@ class Dataset:
 
         return myresult[0][0]
 
+    # returns district id based on name
+    def get_district_id_from_code(self, code):
+        code = code.strip()
+        sql = "SELECT id FROM districts WHERE datacube_code LIKE %s"
+        adr = ('%'+code+'%',)
+
+        self.mycursor.execute(sql, adr)
+        myresult = self.mycursor.fetchall()
+
+        if self.mycursor.rowcount == 0:
+            return False
+
+        return myresult[0][0]

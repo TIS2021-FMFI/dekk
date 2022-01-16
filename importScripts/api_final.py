@@ -1,6 +1,7 @@
 import requests
 import itertools
 from datetime import date
+from datasetClass import Dataset
 
 #URL kde je zoznam vsetkych datasetov pre ktore existuje API
 #https://data.statistics.sk/api/v2/collection?lang=sk
@@ -644,4 +645,26 @@ def spust(kod_datasetu,rok):
             #vlozdodatabazy(pomocny) <--------
         return vysledok
     
-print(spust("om7015rr",2010)) #cca 1-2min to trvá
+# print(spust("om7015rr",2010)) #cca 1-2min to trvá
+
+data = spust("om7015rr",2010)
+
+for dataset_year in data:
+    d = Dataset()
+    d.dataset_type_id = d.get_dataset_type_id(dataset_year[0])
+    d.parameter_value_ids = []
+
+    for par, val in dataset_year[1].items():
+        parameter_id = d.get_parameter_id(par, d.dataset_type_id)
+        d.parameter_value_ids.append(d.get_parameter_value_id(val, parameter_id))
+
+    d.year = dataset_year[2]
+
+    d.data = {}
+    for code, val in dataset_year[3].items():
+        d.data[d.get_district_id_from_code(code)] = val
+
+    d.insert()
+
+    print("shit is done")
+    break
