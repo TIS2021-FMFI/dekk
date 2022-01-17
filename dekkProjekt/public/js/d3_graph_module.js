@@ -2,7 +2,7 @@
 const GraphModule = (() => {
 
     // set the dimensions and margins of the graph
-    const margin = {top: 10, right: 30, bottom: 30, left: 60};
+    const margin = {top: 10, right: 30, bottom: 40, left: 40};
     const width = 540- margin.left - margin.right;
     const height = 480 - margin.top - margin.bottom;
 
@@ -108,6 +108,22 @@ const GraphModule = (() => {
         const xAxis = svg.append('g')
             .attr('transform', `translate(0, ${height})`)
             .call(d3.axisBottom(x));
+
+        // add Y axis name
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text(dataset['ds2']);
+
+        // add X axis name
+        svg.append('text')             
+            .attr('transform', `translate(${width/2},${height+margin.top+25})`)
+            .attr('dx', '1em')
+            .style('text-anchor', 'middle')
+            .text(dataset['ds1'])
     
         // Add Y axis
         const y = d3.scaleLinear()
@@ -150,6 +166,7 @@ const GraphModule = (() => {
 
 
         }
+
 
         // Set the zoom and pan features: how much you can zoom, on which part, and what to do when there is a zoom
         const zoom = d3.zoom()
