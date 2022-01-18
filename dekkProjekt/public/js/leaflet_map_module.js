@@ -111,7 +111,7 @@ const MapModule = (() => {
         }).addTo(map);
         
         // http://leaflet-extras.github.io/leaflet-providers/preview/
-        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=1a77002e-c80d-471c-98be-bb571a69d21b', {
             maxZoom: 11,
             minZoom: 7,
             id: 'tileset',
