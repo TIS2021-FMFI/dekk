@@ -122,6 +122,7 @@ const MapModule = (() => {
         L.control.attribution({
             position: 'bottomleft'
         }).addTo(map);
+
         
         // required if map container size is calculated dynamically ie. 100%
         setTimeout(() => { map.invalidateSize() }, 30);
