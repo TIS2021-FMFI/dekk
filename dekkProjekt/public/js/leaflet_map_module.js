@@ -38,13 +38,10 @@ const MapModule = (() => {
 
             pane.onAdd = function (map) {
                 const x = maxValue >= 10 ? Math.floor(maxValue / 7) : maxValue / 7; // colors are evenly split between 0 and maxValue
-                console.log('x: ' + x);
 
                 const div = L.DomUtil.create('div', 'info legend'),
-                    grades = [0, 1*x, 2*x, 3*x, 4*x, 5*x, 6*x, 6.5*x],
-                    labels = [];
-                    console.log(grades);
-        
+                    grades = [0, 1*x, 2*x, 3*x, 4*x, 5*x, 6*x, 6.5*x];
+
                 // loop through our data intervals and generate a label with a colored square for each interval
                 for (let i = 0; i < grades.length; i++) {
                     let grade1 = maxValue > 10 ? grades[i] : grades[i].toFixed(1);
@@ -114,12 +111,15 @@ const MapModule = (() => {
         }).addTo(map);
         
         // http://leaflet-extras.github.io/leaflet-providers/preview/
-        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=1a77002e-c80d-471c-98be-bb571a69d21b', {
             maxZoom: 11,
             minZoom: 7,
             id: 'tileset',
             attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         }).addTo(map);
+        
+        // required if map container size is calculated dynamically ie. 100%
+        setTimeout(() => { map.invalidateSize() }, 30);
     };
 
     // creates and adds layers from geojson objects
@@ -173,7 +173,6 @@ const MapModule = (() => {
                 // rearrange geojsons so that geoLayers are ordered by their initial order resulting in consistent color palette
 
                 if (map.hasLayer(layer.getGeojson())) {
-                    console.log('dataset name: ' + layer.getDatasetName());
                     layer.getGeojson().bringToFront();
                 }
             })
@@ -207,8 +206,6 @@ const MapModule = (() => {
 
     const getColor = (d, gradient, maxValue) => {
         const x = maxValue >= 10 ? Math.floor(maxValue / 7) : maxValue / 7; // colors are evenly split between 0 and maxValue
-        console.log('getColor x: ' + x);
-        console.log('getColor d: ' + d);
 
         return  d > 7*x ? gradient[7] :
                 d > 6*x ? gradient[6] :
@@ -284,7 +281,7 @@ const MapModule = (() => {
                 layer.getGeojson().resetStyle(e.target);
                 layer.getInfo().update();
             }
-        });
+        })
     };
 
     const zoomToFeature = e => {
