@@ -219,3 +219,7 @@ div[class='filter-option-inner-inner'] {
     margin-right: 8px;
     opacity: 0.7;
 }
+
+.leaflet-bottom.leaflet-right {
+    display: flex;
+}

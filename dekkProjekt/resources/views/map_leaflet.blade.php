@@ -59,7 +59,7 @@
 
 </head>
 
-<body onload="setupLegend()">
+<body>
     <div class="container-fluid" style="height:100%;">
         <div style="height:100%;">
             <div class="row" id="main_row">

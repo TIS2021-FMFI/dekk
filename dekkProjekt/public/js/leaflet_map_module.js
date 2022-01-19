@@ -102,8 +102,10 @@ const MapModule = (() => {
         map = L.map('map', {
             center: [48.6, 19.5 ],
             maxBounds: bounds,
-            maxBoundsViscosity: 0.5
+            maxBoundsViscosity: 0.5,
+            attributionControl: false
         }).setView([48.6, 19.5 ], 7);
+
     
         const initialGeojson = L.geoJson(okresy, {
             style: feature => styling(feature, calculateColorGradient(COLORS_DEFAULT[0], COLORS_DEFAULT[1]))
@@ -115,6 +117,10 @@ const MapModule = (() => {
             minZoom: 7,
             id: 'tileset',
             attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.control.attribution({
+            position: 'bottomleft'
         }).addTo(map);
         
         // required if map container size is calculated dynamically ie. 100%
@@ -307,12 +313,3 @@ const MapModule = (() => {
     };
 
 })();
-
-
-function setupLegend(){
-    const elements = document.getElementsByClassName("leaflet-control-attribution leaflet-control");
-    elements[0].parentNode.style = "display: flex !important;"
-    while(elements.length > 0){
-        elements[0].parentNode.removeChild(elements[0]);
-    }
-}
