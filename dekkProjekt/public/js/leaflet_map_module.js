@@ -51,7 +51,6 @@ const MapModule = (() => {
                     div.innerHTML +=
                         '<i style="background:' + getColor(grades[i], gradient, maxValue) + '"></i> ' +
                         grade1 + (grades[i + 1] ? '&ndash;' + grade2 + '<br>' : '+');
-
                 }
         
                 return div;
@@ -298,8 +297,8 @@ const MapModule = (() => {
         while (geoLayers.length != 0) {
             geoLayers.pop();
         }
-    }
-
+    };
+      
     return {
         init,
         addLayers,
@@ -308,3 +307,12 @@ const MapModule = (() => {
     };
 
 })();
+
+
+function setupLegend(){
+    const elements = document.getElementsByClassName("leaflet-control-attribution leaflet-control");
+    elements[0].parentNode.style = "display: flex !important;"
+    while(elements.length > 0){
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+}
