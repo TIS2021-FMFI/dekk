@@ -20,16 +20,20 @@ a:hover {
 .leaflet-container {
     background: white;
 }
-.btn.btn-dark, button[class='btn dropdown-toggle bs-placeholder btn-light'] {
+.btn.btn-dark, button[class='btn dropdown-toggle bs-placeholder btn-light'], button {
     background-color: #ed3833;
     border: none;
     width: 90%;
     margin: 1em;
+    
 }
-#clearButton {
-    width: fit-content;
-    padding-top: 4px;
-    padding-bottom: 4px;
+.dropdown .bootstrap-select .show-tick {
+    width: 90% !important;
+}
+#clearButton, #refreshButton {
+    width: 40%;
+    padding-left: 1em;
+    padding-right: 1em;
 }
 div[class='filter-option-inner-inner'] {
     text-align: center;
@@ -105,18 +109,18 @@ div[class='filter-option-inner-inner'] {
 }
 .btn-light, .selected_datasets {
     background-color: #ed3833;
-    padding: 0.3em;
+    padding: 0.6em;
+    padding-left: 2em;
     color: white;
 }
-
 .bootstrap-select > .dropdown-toggle.bs-placeholder, .bootstrap-select > .dropdown-toggle.bs-placeholder:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder:active {
     color: white !important;
 }
 .paramName {
     padding-left: 0.5em;
+    padding-top: 0.5em;
     margin: 0;
 }
-
 #graph {
     color: black;
 }
@@ -133,16 +137,18 @@ div[class='filter-option-inner-inner'] {
 }
 #midPanel {
     padding: 0;
+    height: 100%;
 }
-
 #saveButtonMap {
     right: 20%;
+}
+#selected_dataset_params0, #selected_dataset_params1 {
+    margin-left: 2em;
 }
 .slidercontainer {
     width: 100%;
     background-color: #f1f3ef;
 }
-
 .my-legend {
     margin: 2em;
     color: black;
@@ -213,4 +219,3 @@ div[class='filter-option-inner-inner'] {
     margin-right: 8px;
     opacity: 0.7;
 }
-

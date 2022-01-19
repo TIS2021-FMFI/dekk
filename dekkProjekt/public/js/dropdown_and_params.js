@@ -165,6 +165,7 @@ function clearPicked() {
     }
 }
 
+
 function getDatasetNameByParamValsIDs(IDs) {
     var nameToID = [];
     for (const datasetName of selectedDatasetsArray) {
@@ -194,8 +195,8 @@ function getYearsIntersectionForSelectedDatasets() {
         values.push(max);
     }
     if(selectedDatasetsArray.length == 2) {
-        //console.log(window.datasetsDict[selectedDatasetsArray[0]]["years"]);
-        //console.log(window.datasetsDict[selectedDatasetsArray[1]]["years"]);
+        console.log("FST-YEARS: ", window.datasetsDict[selectedDatasetsArray[0]]["years"]);
+        console.log("SND-YEARS: ", window.datasetsDict[selectedDatasetsArray[1]]["years"]);
         min = Math.min(...window.datasetsDict[selectedDatasetsArray[0]]["years"]);
         max = Math.max(...window.datasetsDict[selectedDatasetsArray[0]]["years"]);
         if(Math.min(...window.datasetsDict[selectedDatasetsArray[1]]["years"]) > min) min = Math.min(...window.datasetsDict[selectedDatasetsArray[1]]["years"]);
@@ -204,7 +205,7 @@ function getYearsIntersectionForSelectedDatasets() {
         values.push(max);
     }
     setYearRangeForSlider(values);
-    return;
+    return values;
 }
 
 function setYearRangeForSlider(vals) {
