@@ -3,8 +3,8 @@ const GraphModule = (() => {
 
     // set the dimensions and margins of the graph
     const margin = {top: 10, right: 30, bottom: 30, left: 60};
-    const width = 540- margin.left - margin.right;
-    const height = 480 - margin.top - margin.bottom;
+    const width = 400- margin.left - margin.right;
+    const height = 340 - margin.top - margin.bottom;
 
     const init = () => {
         // append the svg object to the body of the page
@@ -74,10 +74,9 @@ const GraphModule = (() => {
 
         if (corrNum < 0) corrStrength += ' negatívnu';
 
-        document.getElementById('correlation_definition').innerHTML = `
-        Korelačný koeficient je ${corrNum}. Koeficient bol vypočítaný pomocou <a class="red" href="${corrLink}" id="correlation_coefficient">${corrType}ovho vzorca.</a>
-        <br>Jedná sa o ${corrStrength} koreláciu.
-        `
+        document.getElementById('correlation_definition').innerHTML = 
+        `Korelačný koeficient je ${corrNum}. Koeficient bol vypočítaný pomocou <a class="red" href="${corrLink}" id="correlation_coefficient">${corrType}ovho vzorca.</a>
+        Jedná sa o ${corrStrength} koreláciu.`
     };
     
     const drawGraph = dataset => {

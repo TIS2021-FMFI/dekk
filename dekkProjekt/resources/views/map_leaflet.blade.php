@@ -59,7 +59,7 @@
 
 </head>
 
-<body>
+<body onload="setupLegend()">
     <div class="container-fluid" style="height:100%;">
         <div style="height:100%;">
             <div class="row" id="main_row">
@@ -70,16 +70,18 @@
                     <h3>Datasety a parametre</h3>
                     <div class="datasets_parameters">
 
-                        <!-- multichoice picker with search, limited to 2 selected options -->
-                        <select class="selectpicker" id="selectpicker" multiple data-live-search="true"
-                            data-max-options="2"
-                            data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
-                            title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
-                            onchange="getSelectedDatasetsParams(); getYearsIntersectionForSelectedDatasets()" onload="loadAllDataSetParams()">
-                        </select>
-                        <button id="clearButton" type="button" class="btn btn-dark"
-                            onclick="clearPicked(); MapModule.clear(); GraphModule.clear();"><b>x</b></button>
+                        <div class="row" style="display:contents">
+                            <!-- multichoice picker with search, limited to 2 selected options -->
+                            <select class="selectpicker" id="selectpicker" multiple data-live-search="true"
+                                data-max-options="2"
+                                data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
+                                title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
+                                onchange="getSelectedDatasetsParams(); getYearsIntersectionForSelectedDatasets()"
+                                onload="loadAllDataSetParams()">
+                            </select>
 
+
+                        </div>
                         <!-- dynamic datasets and params -->
                         <div id="selected_datasets" style="display:none">
                             <!-- it's just the two datastes -->
@@ -112,18 +114,22 @@
                         }
                         </script>
                     </div>
-
-                    <!-- Send requested datasets -->
-                    <button type="button" class="btn btn-dark"
-                        onclick="sendParamsIDsAndYear(yearOutput.innerHTML)">Obnoviť</button>
+                    <div class="row" style="padding-left: 1em">
+                        <!-- clear button -->
+                        <button id="clearButton" type="button" class="btn btn-dark"
+                            onclick="clearPicked(); MapModule.clear(); GraphModule.clear();">Vymazať</button>
+                        <!-- Send requested datasets -->
+                        <button id="refreshButton" type="button" class="btn btn-dark"
+                            onclick="sendParamsIDsAndYear(yearOutput.innerHTML)">Obnoviť</button>
+                    </div>
                 </div>
 
                 <!-- Map -->
-                <div class="col-xl-5 col-lg-12" id="midPanel">
+                <div class="col-xl-6 col-lg-12" id="midPanel">
                     <div id='map'></div>
                 </div>
 
-                <div class="col-xl-4 col-lg-12" id="sidePanel2">
+                <div class="col-xl-3 col-lg-12" id="sidePanel2">
                     <!-- Graph -->
                     <div id="graph">
                         <h3>Graf korelácie</h3>

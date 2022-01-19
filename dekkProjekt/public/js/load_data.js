@@ -73,6 +73,7 @@ function addValueProperty(valuesDict, datasetKey, datasetName) {
         if (valuesDict[datasetKey].hasOwnProperty(district)) {
             districts['features'][i]['properties']['value'] = parseFloat(valuesDict[datasetKey][district]);
         }
+        
     }
     return districts;
 }
