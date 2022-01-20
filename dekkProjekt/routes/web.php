@@ -18,6 +18,8 @@ Route::get('/', [HomeController::class, 'home']);
 
 Route::get('/loadData/{id1}/{id2}/{year}', [HomeController::class, 'load']);
 
+Route::get('/loadData/{id1}/{year}', [HomeController::class, 'load_one']);
+
 Route::get('/datasetParams', [HomeController::class, 'getAllDatasetsParams']);
 
 Route::get('/loadParams/{dataset_type_id1}/{dataset_type_id2}', [HomeController::class, 'load_params']);
