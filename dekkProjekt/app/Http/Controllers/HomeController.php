@@ -116,6 +116,44 @@ class HomeController extends Controller
         return json_encode($result);
     }
         
+    public function load_one($dataset_par, $year){
+        $dataset_par = explode("_", $dataset_par);
+        
+        $dataset_name = self::get_dataset_name($dataset_par[0]);
+
+        $specific_dataset_id = self::get_specific_dataset_id($dataset_par, $year);
+
+        if ($specific_dataset_id == 0){
+            error_log('dont have data');
+            return json_encode(0);
+        }
+
+        $dataset = self::get_values($specific_dataset_id);
+              
+        $values = [];
+
+        error_log($dataset);
+        
+        // foreach($dataset1 as $dat1){
+        //     foreach($dataset2 as $dat2){
+        //         if (strcmp($dat1->name, $dat2->name) == 0){
+        //             array_push($values1, $dat1->value);
+        //             array_push($values2, $dat2->value);
+        //         }
+        //     }
+        // }
+
+        
+        $pom1 = [];
+        foreach ($dataset as $dat) {
+            $pom1[$dat->name] = $dat->value;
+        }
+        $dataset = $pom1;
+
+        $result = ['ds1' => $dataset_name, 'dataset1' => $dataset];
+        return json_encode($result);
+        
+    }
     // loads dataset parameters from database
     // public function load2($dataset1, $dataset2)
     // {
