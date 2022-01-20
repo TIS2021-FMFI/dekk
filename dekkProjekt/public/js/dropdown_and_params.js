@@ -69,7 +69,7 @@ function getSelectedDatasetsParams() {
         else document.getElementById("selected_dataset1").innerHTML = selectedDatasetsArray[1];
         document.getElementById("selected_datasets").style.display = "block";
     }
-    if(selectedDatasetsArray != null) showParameters(selectedDatasetsArray);
+    if(selectedDatasetsArray != null) showParameters();
 };
 
 function insertParamDiv(dNum, datasetName, paramName, unique_param_id) {
@@ -80,7 +80,7 @@ function insertParamDiv(dNum, datasetName, paramName, unique_param_id) {
 }
 
 //shows parameters on dropdown when dataset is picked
-function showParameters(selectedDatasetsArray) {
+function showParameters() {
     console.log(window.datasetsDict);
     var dNum = 0;
     for (const datasetName of selectedDatasetsArray) {
@@ -120,7 +120,7 @@ function getCheckedIDs() {
         if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
         else console.log("Parameter 'spolu' does not exist for selected_dataset1.");
     }
-    if(checkedIDs.length < 2) popupAlert("Pre vybrané datasety neexistuje parameter 'spolu', vyberte parametre datasetov.")
+    // if(checkedIDs.length < 2) popupAlert("Pre vybrané datasety neexistuje parameter 'spolu', vyberte parametre datasetov.")
     //console.log("PICKED IDs: " + checkedIDs);
     return checkedIDs;
 }
@@ -165,7 +165,6 @@ function clearPicked() {
     }
 }
 
-
 function getDatasetNameByParamValsIDs(IDs) {
     var nameToID = [];
     for (const datasetName of selectedDatasetsArray) {
@@ -180,7 +179,6 @@ function getDatasetNameByParamValsIDs(IDs) {
         }
     }
     return nameToID;
-    
 }
 
 function getYearsIntersectionForSelectedDatasets() { 

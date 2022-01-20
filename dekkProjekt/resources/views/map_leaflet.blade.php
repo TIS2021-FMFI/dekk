@@ -80,7 +80,6 @@
                                 onload="loadAllDataSetParams()">
                             </select>
 
-
                         </div>
                         <!-- dynamic datasets and params -->
                         <div id="selected_datasets" style="display:none">
@@ -120,7 +119,7 @@
                             onclick="clearPicked(); MapModule.clear(); GraphModule.clear();">Vymazať</button>
                         <!-- Send requested datasets -->
                         <button id="refreshButton" type="button" class="btn btn-dark"
-                            onclick="sendParamsIDsAndYear(yearOutput.innerHTML)">Obnoviť</button>
+                            onclick="sendParamsIDsAndYear(yearOutput.innerHTML)">Zobraziť</button>
                     </div>
                 </div>
 
@@ -132,7 +131,7 @@
                 <div class="col-xl-3 col-lg-12" id="sidePanel2">
                     <!-- Graph -->
                     <div id="graph">
-                        <h3>Graf korelácie</h3>
+                        <h3>Graf korelácie SR</h3>
                     </div>
                     <div class="correlation_meaning">
                         <p id="correlation_definition"></p>
