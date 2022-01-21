@@ -1,5 +1,6 @@
 import api_final
 import os
+import traceback
 from datetime import datetime
 
 with open('datasety_api.txt') as f:
@@ -11,6 +12,8 @@ with open('datasety_api.txt') as f:
 
             try:
                 api_final.import_dataset(dataset, year)
-            except Exception as err:
+            except:
                 with open('log.txt', 'a' if os.path.isfile('log.txt') else 'w') as log:
-                    log.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S"), err)
+                    log.write(f'{datetime.now().strftime("%d/%m/%Y %H:%M:%S")} code={dataset} year={year}\n')
+                    traceback.print_exc(file=log)
+                    log.write('\n')
