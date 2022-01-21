@@ -587,7 +587,7 @@ def download(url, year):
             result = 0
         if (result is None) or (result == 'null'):
             result = 0
-        return int(result)
+        return float(result)
 
     else:
         api_url = url
@@ -598,7 +598,7 @@ def download(url, year):
             result = 0
         if (result is None) or (result == 'null'):
             result = 0
-        return int(result)
+        return float(result)
 
 class Chyba(Exception): pass
 
