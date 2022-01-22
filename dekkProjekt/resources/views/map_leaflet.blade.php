@@ -65,7 +65,7 @@
             <div class="row" id="main_row">
 
                 <!-- class="subPanel" -->
-                <div class="col-xl-3 col-lg-12" id="sidePanel1">
+                <div class="col-xl-3 col-lg-3 col-md-12" id="sidePanel1">
 
                     <h3>Datasety a parametre</h3>
                     <div class="datasets_parameters">
@@ -101,7 +101,7 @@
                     <!-- Slider (value needed for year pick) -->
                     <div class="slidercontainer" style="margin-top: 1em;">
                         <h3>Rok: <span id="sliderYear"></span></h3>
-                        <input type="range" min="1990" max="2020" value="2020" class="slider" id="myRange">
+                        <input type="range" min="1990" max="2022" value="2021" class="slider" id="myRange">
 
                         <script>
                         var slider = document.getElementById("myRange");
@@ -113,22 +113,25 @@
                         }
                         </script>
                     </div>
-                    <div class="row" style="padding-left: 1em">
-                        <!-- clear button -->
-                        <button id="clearButton" type="button" class="btn btn-dark"
-                            onclick="clearPicked(); MapModule.clear(); GraphModule.clear();">Vymazať</button>
+                    <div id="control_buttons" class="row">
+
                         <!-- Send requested datasets -->
                         <button id="refreshButton" type="button" class="btn btn-dark"
                             onclick="sendParamsIDsAndYear(yearOutput.innerHTML)">Zobraziť</button>
+
+                        <!-- clear button -->
+                        <button id="clearButton" type="button" class="btn btn-outline-danger"
+                            onclick="clearPicked(); MapModule.clear(); GraphModule.clear();">Vymazať</button>
+
                     </div>
                 </div>
 
                 <!-- Map -->
-                <div class="col-xl-6 col-lg-12" id="midPanel">
+                <div class="col-xl-6 col-lg-6 col-md-12" id="midPanel">
                     <div id='map'></div>
                 </div>
 
-                <div class="col-xl-3 col-lg-12" id="sidePanel2">
+                <div class="col-xl-3 col-lg-3 col-md-12" id="sidePanel2">
                     <!-- Graph -->
                     <div id="graph">
                         <h3>Graf korelácie SR</h3>
@@ -136,10 +139,12 @@
                     <div class="correlation_meaning">
                         <p id="correlation_definition"></p>
                     </div>
-                    <!-- Graph save button -->
-                    <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
-                    <!-- Map save button -->
-                    <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
+                    <div id="download_buttons">
+                        <!-- Graph save button -->
+                        <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
+                        <!-- Map save button -->
+                        <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
+                    </div>
                 </div>
             </div>
         </div>

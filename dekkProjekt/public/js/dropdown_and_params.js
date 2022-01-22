@@ -74,9 +74,20 @@ function getSelectedDatasetsParams() {
 
 function insertParamDiv(dNum, datasetName, paramName, unique_param_id) {
     var group = datasetName + '_' + paramName;
+
+    /*
+    document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="pretty p-default p-curve"><input type="radio" name="'+group+'" id="puID_'+unique_param_id+'"><div class="state"><label for="puID_'+unique_param_id+'">&emsp;'+
+    String(window.datasetsDict[datasetName][paramName][unique_param_id]) +'</label></div></div><br>';
+    */
+
+    document.getElementById("selected_dataset_params"+dNum).innerHTML += '<label for="puID_'+unique_param_id+'"><input type="radio" name="'+group+'" id="puID_'+unique_param_id+'">&emsp;'+
+    String(window.datasetsDict[datasetName][paramName][unique_param_id]) +'</label><br>';
+
+    /*
     document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="pretty p-svg p-plain" id="unique_'+
     unique_param_id +'" style="margin: 0.5em;"><input type="radio" name="'+group+'" id="puID_'+unique_param_id+'" /><div class="state"><img class="svg" src="/svg/task.svg"><label>'+ 
     window.datasetsDict[datasetName][paramName][unique_param_id] +'</label></div></div><br>';
+    */ 
 }
 
 //shows parameters on dropdown when dataset is picked
@@ -114,20 +125,22 @@ function getCheckedIDs() {
     if(checkedIDs.length == 0) {
         var tmpObject = window.datasetsDict[document.getElementById("selected_dataset0").innerHTML]["spolu"];
         if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
-        else console.log("Parameter 'spolu' does not exist for selected_dataset0.");
+        else {
+            console.log("Parameter 'spolu' does not exist for selected_dataset0.");
+            alert("Pre dataset0 neexistuje parameter 'spolu' - vyberte si parametre.");
+        }
         tmpObject = null;
         tmpObject = window.datasetsDict[document.getElementById("selected_dataset1").innerHTML]["spolu"];
         if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
-        else console.log("Parameter 'spolu' does not exist for selected_dataset1.");
+        else {
+            console.log("Parameter 'spolu' does not exist for selected_dataset1.");
+            alert("Pre dataset1 neexistuje parameter 'spolu' - vyberte si parametre.");
+        }
     }
-    // if(checkedIDs.length < 2) popupAlert("Pre vybrané datasety neexistuje parameter 'spolu', vyberte parametre datasetov.")
     //console.log("PICKED IDs: " + checkedIDs);
     return checkedIDs;
 }
 
-function popupAlert(message) {
-    alert(message);
-}
 
 function sendParamsIDsAndYear(year) {
     var url = "/loadData/";
