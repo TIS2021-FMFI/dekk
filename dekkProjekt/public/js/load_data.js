@@ -34,11 +34,25 @@ function onResponseValues(){
         console.log('onResponseValues response: ');
         console.log(response);
 
-        districts1 = addValueProperty(response, 'dataset1', response['ds1']);
-        districts2 = addValueProperty(response, 'dataset2', response['ds2']);
+        if (response == 0) {
+            alert('Nepodarilo sa načítať zvolené datasety.');
+            return;
+        }
 
-        MapModule.addLayers(districts1, districts2);
-        GraphModule.drawGraph(response);
+        const datasetsCount = (Object.keys(response).length == 2) ? 1 : (Object.keys(response).length - 1) / 2;
+        const districts = [];
+
+        console.log(datasetsCount);
+
+        for(let i = 0; i < datasetsCount; i++) {
+            const dataset = 'dataset' + (i + 1);
+            const name = 'ds' + (i + 1);
+            districts.push(addValueProperty(response, dataset, response[name]));
+        }
+
+        MapModule.addLayers(districts);
+
+        if (datasetsCount == 2) GraphModule.drawGraph(response); // display graph if two datasets are selected
     }
 }
 

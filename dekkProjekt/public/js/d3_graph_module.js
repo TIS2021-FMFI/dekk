@@ -2,7 +2,7 @@
 const GraphModule = (() => {
 
     // set the dimensions and margins of the graph
-    const margin = {top: 10, right: 30, bottom: 30, left: 60};
+    const margin = {top: 10, right: 30, bottom: 45, left: 45};
     const width = 400- margin.left - margin.right;
     const height = 340 - margin.top - margin.bottom;
 

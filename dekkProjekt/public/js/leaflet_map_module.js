@@ -128,8 +128,8 @@ const MapModule = (() => {
         setTimeout(() => { map.invalidateSize() }, 30);
     };
 
-    // creates and adds layers from geojson objects
-    const addLayers = (...datasets) => {
+    // creates and adds layers from geojson array
+    const addLayers = (datasets) => {
         
         if (typeof geoLayers[0] != 'undefined') {
             geoLayers.forEach(layer => layer.reset());
