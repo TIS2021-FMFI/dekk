@@ -12,6 +12,7 @@ h3 {
     padding: 1em;
     background-color: rgba(47, 41, 99, 1);
     text-align: center;
+    margin: 0 !important;
 }
 a:hover {
     color: #ed3833;
@@ -20,21 +21,38 @@ a:hover {
 .leaflet-container {
     background: white;
 }
-.btn.btn-dark, button[class='btn dropdown-toggle bs-placeholder btn-light'], button {
+button[class='btn dropdown-toggle bs-placeholder btn-light'], button, #clearButton, #refreshButton, #saveButtonMap, #saveButtonGraph {
+    border-radius: 0;
+    width: 100%;
+    padding-top: .6em;
+    padding-bottom: .6em;
+    margin-top: 1em;
+}
+.btn.btn-dark {
+    font-weight: 600;
+    color: white;
+    border-color: rgba(47, 41, 99, 1);
+    background-color: rgb(62, 55, 131);
+}
+.btn.btn-dark:hover {
+    font-weight: 600;
+    background-color: rgba(47, 41, 99, 1);
+}
+.btn-outline-danger {
+    font-weight: 600;
+    color: white;
+    border-color: #ed3833;
+    background-color: #ee4e49;
+}
+.btn-outline-danger:hover {
+    font-weight: 600;
     background-color: #ed3833;
-    border: none;
-    width: 90%;
-    margin: 1em;
-    
+
 }
 .dropdown .bootstrap-select .show-tick {
     width: 90% !important;
 }
-#clearButton, #refreshButton {
-    width: 40%;
-    padding-left: 1em;
-    padding-right: 1em;
-}
+
 div[class='filter-option-inner-inner'] {
     text-align: center;
 }
@@ -117,9 +135,13 @@ div[class='filter-option-inner-inner'] {
     color: white !important;
 }
 .paramName {
-    padding-left: 0.5em;
-    padding-top: 0.5em;
+    padding: 0.5em;
     margin: 0;
+    background-color: #ed39335d;
+    min-width: 100%;
+}
+.paramName, label {
+    padding-left: 2em;
 }
 #graph {
     color: black;
@@ -134,16 +156,11 @@ div[class='filter-option-inner-inner'] {
     background-color: #f1f3ef;
     margin: 0;
     padding: 0;
+    height: 100%;
 }
 #midPanel {
     padding: 0;
     height: 100%;
-}
-#saveButtonMap {
-    right: 20%;
-}
-#selected_dataset_params0, #selected_dataset_params1 {
-    margin-left: 2em;
 }
 .slidercontainer {
     width: 100%;
@@ -222,4 +239,63 @@ div[class='filter-option-inner-inner'] {
 
 .leaflet-bottom.leaflet-right {
     display: flex;
+}
+input[type="radio"]{
+    vertical-align: middle;
+}
+
+#selected_datasets {
+    text-align: left;
+    max-height: 50vh;
+    overflow-y: auto;
+    border: 1px solid #ed3833;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 15px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #ed39335d;
+    border-radius: 0px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ed3833;
+    border-radius: 0px;
+}
+.datasets_parameters div div button {
+    border-radius: 0;
+    min-width: auto;
+    font-weight: 600;
+}
+.btn .dropdown-toggle .bs-placeholder .btn-light {
+    margin: 0;
+}
+.dropdown .bootstrap-select .show-tick {
+    padding: 0;
+}
+.btn .dropdown-toggle .bs-placeholder .btn-light {
+    margin: 0;
+}
+.bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+    width: 100% !important;
+    margin-bottom: 2em !important;
+    border: 0;
+}
+.dropdown {
+    padding: 0;
+}
+#control_buttons, #download_buttons {
+    justify-content: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    position: absolute !important; 
+    bottom: 0 !important;
+    width: 100%;
+}
+#myRange {
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
