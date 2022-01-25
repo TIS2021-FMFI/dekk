@@ -72,7 +72,7 @@
                             <select class="selectpicker" id="selectpicker" multiple data-live-search="true"
                                 data-max-options="2"
                                 data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
-                                title="Datasety" style="background-color:#ed3833;" data-selected-text-format="static"
+                                title="Zoznam datasetov" style="background-color:#ed3833;" data-selected-text-format="static"
                                 onchange="getSelectedDatasetsParams(); getYearsIntersectionForSelectedDatasets()"
                                 onload="loadAllDataSetParams()">
                             </select>
@@ -97,7 +97,7 @@
 
                     <!-- Slider (value needed for year pick) -->
                     <div class="slidercontainer" style="margin-top: 1em;">
-                        <h4 style="text-align:center; font-weight:bold">Rok datasetu: <span id="sliderYear"></span></h4>
+                        <h4 style="text-align:center; font-weight:bold">Rok: <span id="sliderYear"></span></h4>
                         <input type="range" min="1990" max="2022" value="2021" class="slider" id="myRange">
 
                         <script>
@@ -138,9 +138,9 @@
                     </div>
                     <div id="download_buttons">
                         <!-- Graph save button -->
-                        <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť PNG grafu</button>
+                        <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť graf</button>
                         <!-- Map save button -->
-                        <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť PNG mapy</button>
+                        <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť mapu</button>
                     </div>
                 </div>
             </div>
