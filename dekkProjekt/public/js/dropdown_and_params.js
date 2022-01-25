@@ -3,10 +3,10 @@ var datasetsDictLength = 0;
 var datasetsNames = [];
 var selectedParamsIDs = [];
 var selectedDatasetsArray = [];
-loadAllDataSetParams();
+setTimeout(() => {  loadAllDataSetParams(); }, 400); // first, load datasets (400ms should be enough), then input into dropdown selectpicker
 
 // called onload from selectpicker
-function loadAllDataSetParams(){
+function loadAllDataSetParams() {
     // load all parameters with years
     xmlHttp = new XMLHttpRequest();
     url = '/datasetParams';
@@ -31,21 +31,30 @@ function getMaxID() {
 // creates/fills window.datasetsDict
 function onResponseAllDataSetParamas(){
     // handles response
+    dNames = [];
     if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         window.datasetsDict = JSON.parse(xmlHttp.responseText);
         datasetsDictLength = Object.keys(window.datasetsDict).length;
-        
-        console.log("LEN:" + datasetsDictLength);
         console.log(window.datasetsDict);
-        
-        // populate selectpicker with available datasets - no whitespaces for ids, so _
         for (var datasetName in window.datasetsDict) {
-            var noWhitespaceDName = datasetName.replace(/\s+/g, '_');
-            document.getElementById("selectpicker").innerHTML += "<option id="+noWhitespaceDName+"></option>";
-            document.getElementById(noWhitespaceDName).innerHTML = datasetName;
+            // needs to be sorted before inserting into dropdown
+            dNames.push(datasetName);
         }
-        $('.selectpicker').selectpicker('refresh');
     }
+    // sort array - function needed for capital and small leters
+    dNames.sort(function(a,b) {
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+        if( a == b) return 0;
+        return a < b ? -1 : 1;
+    });
+    // populate selectpicker with available datasets - no whitespaces for ids, so _
+    for (var i = 0; i < dNames.length; i++){
+        var noWhitespaceDName = dNames[i].replace(/\s+/g, '_');
+        document.getElementById("selectpicker").innerHTML += "<option id="+noWhitespaceDName+"></option>";
+        document.getElementById(noWhitespaceDName).innerHTML = dNames[i];
+    }
+    $('.selectpicker').selectpicker('refresh');
 }
 
 function getSelectedDatasetsParams() {
@@ -74,25 +83,12 @@ function getSelectedDatasetsParams() {
 
 function insertParamDiv(dNum, datasetName, paramName, unique_param_id) {
     var group = datasetName + '_' + paramName;
-
-    /*
-    document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="pretty p-default p-curve"><input type="radio" name="'+group+'" id="puID_'+unique_param_id+'"><div class="state"><label for="puID_'+unique_param_id+'">&emsp;'+
-    String(window.datasetsDict[datasetName][paramName][unique_param_id]) +'</label></div></div><br>';
-    */
-
     document.getElementById("selected_dataset_params"+dNum).innerHTML += '<label for="puID_'+unique_param_id+'"><input type="radio" name="'+group+'" id="puID_'+unique_param_id+'">&emsp;'+
     String(window.datasetsDict[datasetName][paramName][unique_param_id]) +'</label><br>';
-
-    /*
-    document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="pretty p-svg p-plain" id="unique_'+
-    unique_param_id +'" style="margin: 0.5em;"><input type="radio" name="'+group+'" id="puID_'+unique_param_id+'" /><div class="state"><img class="svg" src="/svg/task.svg"><label>'+ 
-    window.datasetsDict[datasetName][paramName][unique_param_id] +'</label></div></div><br>';
-    */ 
 }
 
 //shows parameters on dropdown when dataset is picked
 function showParameters() {
-    console.log(window.datasetsDict);
     var dNum = 0;
     for (const datasetName of selectedDatasetsArray) {
         //console.log("DNAME: " + datasetName);
@@ -111,33 +107,73 @@ function validateYear(datasetName, year) {
     return window.datasetsDict[datasetName]["years"].includes(year);
 }
 
+function getDatasetIDs(dName) {
+    IDs = [];
+    for (const datasetName of selectedDatasetsArray) {
+        for (const paramName in window.datasetsDict[datasetName]) {
+            if(paramName != "years") {
+                for (const unique_param_id in window.datasetsDict[datasetName][paramName]) {
+                    if(datasetName === dName) IDs.push(Number(unique_param_id));
+                }
+            }
+        }
+    }
+    return IDs;
+}
+
+function containsAnyID(checkedIDs, allIDs) {
+    out = false;
+    console.log(typeof(checkedIDs[0]) + " type " + typeof(allIDs[0]));
+    for (var i = 0; i < allIDs.length; i++) {
+        for (var j = 0; j < checkedIDs.length; j++) {
+            if(Number(allIDs[i]) == Number(checkedIDs[j])) out = true;
+        }
+    }
+    console.log("CHECKED: " + checkedIDs + " and ALL: " + allIDs + " = " + out);
+    return out;
+}
+
 function getCheckedIDs() {
     var checkedIDs = [];
     for(let i = 1; i <= getMaxID(); i++) {
         var tmpElem = document.getElementById("puID_"+i);
         if(tmpElem != null) {
-            console.log("puID_"+i + ": " + tmpElem.checked);
+            // console.log("puID_"+i + ": " + tmpElem.checked);
             if(tmpElem.checked) checkedIDs.push(i);
         }
     }
 
-    // saves "spolu" IDs to checkedIDs for both picked datasets if no other parameters are picked
-    if(checkedIDs.length == 0) {
-        var tmpObject = window.datasetsDict[document.getElementById("selected_dataset0").innerHTML]["spolu"];
-        if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
-        else {
-            console.log("Parameter 'spolu' does not exist for selected_dataset0.");
-            alert("Pre dataset0 neexistuje parameter 'spolu' - vyberte si parametre.");
+    
+    
+    if(selectedDatasetsArray.length > 0) {
+        d0IDs = getDatasetIDs(selectedDatasetsArray[0]);
+        
+        if(!containsAnyID(checkedIDs, d0IDs)) {
+            // spolu param for d0
+            console.log("FST " + d0IDs)
+            tmpObject = window.datasetsDict[document.getElementById("selected_dataset0").innerHTML]["spolu"];
+            if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
+            else {
+                console.log("Parameter 'spolu' does not exist for selected_dataset0/'"+document.getElementById("selected_dataset0").innerHTML+"'");
+                alert("Pre dataset '"+document.getElementById("selected_dataset0").innerHTML+"' neexistuje parameter 'spolu' - vyberte si parametre.");
+            }
         }
-        tmpObject = null;
-        tmpObject = window.datasetsDict[document.getElementById("selected_dataset1").innerHTML]["spolu"];
-        if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
-        else {
-            console.log("Parameter 'spolu' does not exist for selected_dataset1.");
-            alert("Pre dataset1 neexistuje parameter 'spolu' - vyberte si parametre.");
+        if(selectedDatasetsArray.length == 2) {
+            d1IDs = getDatasetIDs(selectedDatasetsArray[1]);
+            if(!containsAnyID(checkedIDs, d1IDs)) {
+                // spolu param for d1
+                console.log("SND " + d1IDs)
+                tmpObject = window.datasetsDict[document.getElementById("selected_dataset1").innerHTML]["spolu"];
+                if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
+                else {
+                    console.log("Parameter 'spolu' does not exist for selected_dataset1/'"+document.getElementById("selected_dataset1").innerHTML+"'");
+                    alert("Pre dataset '"+document.getElementById("selected_dataset1").innerHTML+"' neexistuje parameter 'spolu' - vyberte si parametre.");
+                }
+            }
         }
     }
-    //console.log("PICKED IDs: " + checkedIDs);
+
+    console.log("CHECKED IDs: " + checkedIDs);
     return checkedIDs;
 }
 
@@ -145,13 +181,12 @@ function getCheckedIDs() {
 function sendParamsIDsAndYear(year) {
     var url = "/loadData/";
     var datasetNameToIDs = getDatasetNameByParamValsIDs(getCheckedIDs());
-    //console.log("--->" + datasetNameToIDs);
     for(datasetName in datasetNameToIDs) {
         for(id of datasetNameToIDs[datasetName]) url += id+"_";
         url = url.substring(0,url.length-1) + "/";
     }
     url += year;
-    console.log("URL: " + url);
+    //console.log("URL: " + url);
     sendRequest(url);
 }
 

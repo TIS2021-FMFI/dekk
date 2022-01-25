@@ -58,11 +58,10 @@ function onResponseValues(){
 
 function sendRequest(url) {
 
-    console.log("LOG: " + url);
     // send request to backend if 2 datasets are selected
     xmlHttp = new XMLHttpRequest();
 
-    console.log(url);
+    console.log("URL: ", url);
     xmlHttp.onreadystatechange = onResponseValues;
     xmlHttp.open("GET", url);
     xmlHttp.send();
