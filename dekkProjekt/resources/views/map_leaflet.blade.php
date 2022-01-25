@@ -48,9 +48,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
-    <!--Checkboxes style -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" />
-
     <!-- Script for dropdown and parameters -->
     <script src="js/dropdown_and_params.js"></script>
 
@@ -60,8 +57,8 @@
 </head>
 
 <body>
-    <div class="container-fluid" style="height:100%;">
-        <div style="height:100%;">
+    <div class="container-fluid" style="height:100%">
+        <div style="height:100%">
             <div class="row" id="main_row">
 
                 <!-- class="subPanel" -->
@@ -100,7 +97,7 @@
 
                     <!-- Slider (value needed for year pick) -->
                     <div class="slidercontainer" style="margin-top: 1em;">
-                        <h3>Rok: <span id="sliderYear"></span></h3>
+                        <h4 style="text-align:center; font-weight:bold">Rok datasetu: <span id="sliderYear"></span></h4>
                         <input type="range" min="1990" max="2022" value="2021" class="slider" id="myRange">
 
                         <script>
