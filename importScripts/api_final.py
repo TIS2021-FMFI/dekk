@@ -52,6 +52,19 @@ def generate_years(od):
         result.append(i)
     return result
 
+# all years available, but from URL
+def generate_years1(url,od):
+    result,result2 = [],[]
+    response = requests.get(url)
+    if (response.status_code == 200):
+        result = response.json()['category']['index'].keys()
+        for key in result:
+            result2.append(int(key))
+        result2.sort()
+    else:
+        result2 = generate_years(od)
+    return result2
+
 
 datasets = []
 
@@ -65,7 +78,7 @@ datasets.append(
               "udaje": areas},
              {"nazov": "Roky",
               "kod": "om7102rr_obd",
-              "udaje": generate_years(1993)},
+              "udaje": generate_years1('https://data.statistics.sk/api/v2/dimension/om7102rr/om7102rr_obd', 1993)},
              {"nazov": "Ukazovatele",
               "kod": "om7102rr_ukaz",
               "udaje": {
@@ -90,7 +103,7 @@ datasets.append(
               "udaje": areas},
              {"nazov": "Roky",
               "kod": "om7038rr_obd",
-              "udaje": generate_years(1993)},
+              "udaje": generate_years1('https://data.statistics.sk/api/v2/dimension/om7038rr/om7038rr_obd', 1993)},
              {"nazov": "Ukazovatele",
               "kod": "om7038rr_ukaz",
               "udaje": {
@@ -113,7 +126,7 @@ datasets.append(
               "udaje": areas},
              {"nazov": "Roky",
               "kod": "om7034rr_obd",
-              "udaje": generate_years(1993)},
+              "udaje": generate_years1('https://data.statistics.sk/api/v2/dimension/om7034rr/om7034rr_obd', 1993)},
              {"nazov": "Vek",
               "kod": "om7034rr_vek",
               "udaje": {
@@ -260,7 +273,7 @@ datasets.append(
               "udaje": areas},
              {"nazov": "Roky",
               "kod": "om7009rr_obd",
-              "udaje": generate_years(1996)},
+              "udaje": generate_years1('https://data.statistics.sk/api/v2/dimension/om7009rr/om7009rr_obd', 1996)},
              {"nazov": "Ukazovatele",
               "kod": "om7009rr_ukaz",
               "udaje": {
@@ -400,7 +413,7 @@ datasets.append(
               "udaje": areas},
              {"nazov": "Roky",
               "kod": "om7011rr_obd",
-              "udaje": generate_years(1996)},
+              "udaje": generate_years1('https://data.statistics.sk/api/v2/dimension/om7011rr/om7011rr_obd', 1996)},
              {"nazov": "Ukazovatele",
               "kod": "om7011rr_ukaz",
               "udaje": {
@@ -450,7 +463,7 @@ datasets.append(
               "udaje": areas},
              {"nazov": "Roky",
               "kod": "om7023rr_obd",
-              "udaje": generate_years(1996)},
+              "udaje": generate_years1('https://data.statistics.sk/api/v2/dimension/om7023rr/om7023rr_obd', 1996)},
              {"nazov": "Ukazovatele",
               "kod": "om7023rr_ukaz",
               "udaje": {
@@ -508,7 +521,7 @@ datasets.append(
               "udaje": areas},
              {"nazov": "Roky",
               "kod": "om7015rr_obd",
-              "udaje": generate_years(1996)},
+              "udaje": generate_years1('https://data.statistics.sk/api/v2/dimension/om7015rr/om7015rr_obd', 1996)},
              {"nazov": "Ukazovatele",
               "kod": "om7015rr_ukaz",
               "udaje": {
@@ -527,7 +540,7 @@ datasets.append(
               "udaje": areas},
              {"nazov": "Roky",
               "kod": "zd3002rr_rok",
-              "udaje": generate_years(2001)},
+              "udaje": generate_years1('https://data.statistics.sk/api/v2/dimension/zd3002rr/zd3002rr_rok', 2001)},
              {"nazov": "Ukazovatele",
               "kod": "zd3002rr_ukaz",
               "udaje": {
@@ -583,6 +596,7 @@ def download(url, year):
         response = requests.get(api_url)
         if response.status_code == 200:  # 200 HTTP status code = OK
             result = response.json()['value'][int(dictionary1[temporary_url]['json'])]
+            #print(result)
         else:
             result = 0
         if (result is None) or (result == 'null'):
@@ -594,6 +608,7 @@ def download(url, year):
         response = requests.get(api_url)
         if response.status_code == 200:
             result = response.json()['value'][0]
+            #print(result)
         else:
             result = 0
         if (result is None) or (result == 'null'):
@@ -634,7 +649,7 @@ def trigger(dataset_code, year):
     dataset = datasets[int(order[dataset_code])]
 
     # checks whether there are data for a specific year
-    if int(year) in generate_years(dataset.data_from_year):
+    if int(year) in datasets[order[dataset_code]].dimensions[1]['udaje']:
         year = str(year)
         permutations = permutations_of_parameters(dataset_code, year)
         result = []
@@ -695,4 +710,3 @@ else:
         import_dataset(code, year)
     else:
         import_dataset(code)
-
