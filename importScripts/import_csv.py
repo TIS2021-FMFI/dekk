@@ -97,13 +97,15 @@ def import_csv(file_name):
 #             'importScripts/zivotanarodeni_poradie5.csv'
 #             ]
 
-# for file in file_name:
-#     import_csv(file)
+file_name = ['volby_ds_pocet.csv', 'volby_ds_podiel.csv', 'volby_lsns_pocet.csv', 'volby_lsns_podiel.csv', 'volby_most_hid_pocet.csv', 'volby_most_hid_podiel.csv', 'volby_olano_pocet.csv', 'volby_olano_podiel.csv', 'volby_pocet.csv', 'volby_podiel.csv', 'volby_sas_pocet.csv', 'volby_sas_podiel.csv', 'volby_smer_pocet.csv', 'volby_smer_podiel.csv', 'volby_sme_rodina_pocet.csv', 'volby_sme_rodina_podiel.csv', 'volby_sns_pocet.csv', 'volby_sns_podiel.csv']
 
-input = sys.argv[1]
-print(input)
-import_csv(input)
-print('Data boli importnute do databazy.')
+for file in file_name:
+    import_csv(file)
+
+# input = sys.argv[1]
+# print(input)
+# import_csv(input)
+# print('Data boli importnute do databazy.')
 
 # d = Dataset()
 # print(d.get_district_id_from_code('SK0212 '))
