@@ -109,20 +109,20 @@ const GraphModule = (() => {
             .call(d3.axisBottom(x));
 
         // add Y axis name
-        svg.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0 - margin.left)
-            .attr("x",0 - (height / 2))
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text(dataset['ds2']);
+        svg.append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 0 - margin.left)
+            .attr('x',0 - (height / 2))
+            .attr('dy', '1em')
+            .style('text-anchor', 'middle')
+            .text('Dataset B');
 
         // add X axis name
         svg.append('text')             
             .attr('transform', `translate(${width/2},${height+margin.top+25})`)
             .attr('dx', '1em')
             .style('text-anchor', 'middle')
-            .text(dataset['ds1'])
+            .text('Dataset A')
     
         // Add Y axis
         const y = d3.scaleLinear()
@@ -194,7 +194,7 @@ const GraphModule = (() => {
             .attr('x2', x(lineCoords[2]))
             .attr('y2', y(lineCoords[3]));
     
-        // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
+        // Add a tooltip div. Here I define the general feature of the tooltip: stuff that does not depend on the data point.
         const tooltip = d3.select('#graph')
             .append('div')
             .style('display', 'block')
@@ -221,7 +221,7 @@ const GraphModule = (() => {
             .html(`Okres: ${d.name}<br>Hodnota 1: ${d.data1}<br>Hodnota 2: ${d.data2}`)
             .style('display', 'block') // in case of an overlap 
             .style('opacity', 1)
-            .style('left', (coords[0]+100) + 'px')
+            .style('left', (coords[0]) + 'px')
             .style('top', (coords[1]) + 'px');
         };
     
@@ -268,7 +268,7 @@ const GraphModule = (() => {
     const createDataArray = dataset => {
         const data = []
     
-        Object.keys(dataset.dataset1).forEach(function(key) {
+        Object.keys(dataset.dataset1).forEach(key => {
             data.push({
                 name: key,
                 data1: parseFloat(dataset.dataset1[key]),

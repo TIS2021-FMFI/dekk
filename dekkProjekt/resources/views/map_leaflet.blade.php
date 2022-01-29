@@ -1,3 +1,4 @@
+<?php Header("Cache-Control: max-age=3000, must-revalidate"); ?>
 <!DOCTYPE html>
 <html>
 
@@ -74,8 +75,8 @@
                                 data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
                                 title="Zoznam datasetov" style="background-color:#ed3833;"
                                 data-selected-text-format="static"
-                                onchange="getSelectedDatasetsParams(); getYearsIntersectionForSelectedDatasets()"
-                                onload="loadAllDataSetParams()">
+                                onchange="DropdownModule.getSelectedDatasetsParams(); DropdownModule.getYearsIntersectionForSelectedDatasets()"
+                                onload="DropdownModule.loadAllDataSetParams()">
                             </select>
 
                         </div>
@@ -116,11 +117,11 @@
 
                             <!-- Send requested datasets -->
                             <button id="refreshButton" type="button" class="btn btn-dark"
-                                onclick="sendParamsIDsAndYear(yearOutput.innerHTML)">Zobraziť</button>
+                                onclick="DropdownModule.sendParamsIDsAndYear(yearOutput.innerHTML)">Zobraziť</button>
 
                             <!-- clear button -->
                             <button id="clearButton" type="button" class="btn btn-outline-danger"
-                                onclick="clearPicked(); MapModule.clear(); GraphModule.clear();">Vymazať</button>
+                                onclick="DropdownModule.clearPicked(); MapModule.clear(); GraphModule.clear();">Vymazať</button>
 
                         </div>
                     </div>
@@ -156,6 +157,7 @@
     <script type="text/javascript">
     MapModule.init();
     GraphModule.init();
+
     // width and height of the map
     save_to_img('map', '#saveButtonMap', 770, 720);
     // width and height of the graph

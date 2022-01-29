@@ -7,7 +7,12 @@ function save_to_img(name, btn, width, height) {
     d3.select(btn).on('click', function(){
         
         if (name == 'graph') svgNode = d3.select("#graph").select("svg").node()
-        if (name == 'map') svgNode = d3.select('#map').select("svg").node()
+        if (name == 'map') {
+             svgNode = d3.select('#map').select("svg").node()
+             width = document.getElementById('map').clientWidth;
+             height = document.getElementById('map').clientHeight;
+             console.log(width, height);
+        }
 
         let svgString = getSVGString(svgNode);
         svgString2Image( svgString, 2*width, 2*height, 'png', save ); // passes Blob and filesize String to the callback
@@ -120,3 +125,4 @@ function save_to_img(name, btn, width, height) {
     }
 
 }
+
