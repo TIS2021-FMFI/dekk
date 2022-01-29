@@ -73,7 +73,8 @@ function getSelectedDatasetsParams() {
         document.getElementById("selected_dataset_params1").innerHTML = null;
     }
     else {
-        document.getElementById("selected_dataset0").innerHTML = selectedDatasetsArray[0] + '<br><span style="color: rgba(27, 21, 79, 1); font-weight: bolder; font-size: large;"> (Dataset A) </span>';
+        if(selectedDatasetsArray.length > 1) document.getElementById("selected_dataset0").innerHTML = selectedDatasetsArray[0] + '<br><span style="color: rgba(27, 21, 79, 1); font-weight: bolder; font-size: large;"> (Dataset A) </span>';
+        else document.getElementById("selected_dataset0").innerHTML = selectedDatasetsArray[0];
         document.getElementById("selected_dataset_params0").innerHTML = null;
         if(selectedDatasetsArray.length == 1) {
             document.getElementById("selected_dataset1").innerHTML = null;
@@ -130,7 +131,6 @@ function containsAnyID(checkedIDs, allIDs) {
             if(Number(allIDs[i]) == Number(checkedIDs[j])) out = true;
         }
     }
-    console.log("CHECKED: " + checkedIDs + " and ALL: " + allIDs + " = " + out);
     return out;
 }
 
