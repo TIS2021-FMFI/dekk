@@ -194,7 +194,7 @@ const GraphModule = (() => {
             .attr('x2', x(lineCoords[2]))
             .attr('y2', y(lineCoords[3]));
     
-        // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
+        // Add a tooltip div. Here I define the general feature of the tooltip: stuff that does not depend on the data point.
         const tooltip = d3.select('#graph')
             .append('div')
             .style('display', 'block')
@@ -221,7 +221,7 @@ const GraphModule = (() => {
             .html(`Okres: ${d.name}<br>Hodnota 1: ${d.data1}<br>Hodnota 2: ${d.data2}`)
             .style('display', 'block') // in case of an overlap 
             .style('opacity', 1)
-            .style('left', (coords[0]+100) + 'px')
+            .style('left', (coords[0]) + 'px')
             .style('top', (coords[1]) + 'px');
         };
     

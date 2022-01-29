@@ -5,7 +5,7 @@ import sys
 # open file in read mode
 
 def import_csv(file_name):
-    with open(file_name, 'r') as read_obj:
+    with open(file_name, 'r', encoding='utf-8') as read_obj:
         # pass the file object to reader() to get the reader object
         csv_reader = reader(read_obj)
         # Iterate over each row in the csv using reader object until you get name of dataset
