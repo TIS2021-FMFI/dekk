@@ -57,7 +57,7 @@
 </head>
 
 <body>
-    <div class="container-fluid" style="height:100%">
+    <div class="container-fluid" style="height:100%; width:100%">
         <div style="height:100%">
             <div class="row" id="main_row">
 
@@ -72,7 +72,8 @@
                             <select class="selectpicker" id="selectpicker" multiple data-live-search="true"
                                 data-max-options="2"
                                 data-max-options-text="[&quot;MAX. 2 datasety!&quot;, &quot;MAX. 2 datasety!&quot;]"
-                                title="Zoznam datasetov" style="background-color:#ed3833;" data-selected-text-format="static"
+                                title="Zoznam datasetov" style="background-color:#ed3833;"
+                                data-selected-text-format="static"
                                 onchange="getSelectedDatasetsParams(); getYearsIntersectionForSelectedDatasets()"
                                 onload="loadAllDataSetParams()">
                             </select>
@@ -95,31 +96,33 @@
                         </div>
                     </div>
 
-                    <!-- Slider (value needed for year pick) -->
-                    <div class="slidercontainer" style="margin-top: 1em;">
-                        <h4 style="text-align:center; font-weight:bold">Rok: <span id="sliderYear"></span></h4>
-                        <input type="range" min="1990" max="2022" value="2021" class="slider" id="myRange">
+                    <div id="control_buttons">
+                        <!-- Slider (value needed for year pick) -->
+                        <div class="slidercontainer" style="margin-top: 1em; display: block;">
+                            <h4 style="text-align:center; font-weight:bold">Rok: <span id="sliderYear"></span></h4>
+                            <input type="range" min="1990" max="2022" value="2021" class="slider" id="myRange">
 
-                        <script>
-                        var slider = document.getElementById("myRange");
-                        var yearOutput = document.getElementById("sliderYear");
-                        yearOutput.innerHTML = slider.value;
-                        slider.oninput = function() {
-                            yearOutput.innerHTML = this.value;
-                            console.log(yearOutput.innerHTML);
-                        }
-                        </script>
-                    </div>
-                    <div id="control_buttons" class="row">
+                            <script>
+                            var slider = document.getElementById("myRange");
+                            var yearOutput = document.getElementById("sliderYear");
+                            yearOutput.innerHTML = slider.value;
+                            slider.oninput = function() {
+                                yearOutput.innerHTML = this.value;
+                                console.log(yearOutput.innerHTML);
+                            }
+                            </script>
+                        </div>
+                        <div class="row">
 
-                        <!-- Send requested datasets -->
-                        <button id="refreshButton" type="button" class="btn btn-dark"
-                            onclick="sendParamsIDsAndYear(yearOutput.innerHTML)">Zobraziť</button>
+                            <!-- Send requested datasets -->
+                            <button id="refreshButton" type="button" class="btn btn-dark"
+                                onclick="sendParamsIDsAndYear(yearOutput.innerHTML)">Zobraziť</button>
 
-                        <!-- clear button -->
-                        <button id="clearButton" type="button" class="btn btn-outline-danger"
-                            onclick="clearPicked(); MapModule.clear(); GraphModule.clear();">Vymazať</button>
+                            <!-- clear button -->
+                            <button id="clearButton" type="button" class="btn btn-outline-danger"
+                                onclick="clearPicked(); MapModule.clear(); GraphModule.clear();">Vymazať</button>
 
+                        </div>
                     </div>
                 </div>
 

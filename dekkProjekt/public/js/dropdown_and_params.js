@@ -15,6 +15,8 @@ function loadAllDataSetParams() {
     xmlHttp.send();
 }
 
+// each dataset parameter's option (except years) has its own unique id, this function 
+// returns the highest possible dataset id
 function getMaxID() {
     var max = 0;
     for (const datasetName in window.datasetsDict) {
@@ -54,9 +56,11 @@ function onResponseAllDataSetParamas(){
         document.getElementById("selectpicker").innerHTML += "<option id="+noWhitespaceDName+"></option>";
         document.getElementById(noWhitespaceDName).innerHTML = dNames[i];
     }
+    // refresh selectpicker
     $('.selectpicker').selectpicker('refresh');
 }
 
+// gets parameters for two/one/none selected dataset/s
 function getSelectedDatasetsParams() {
     console.log("SELECTED DATASETS: " + $("#selectpicker").val());
     selectedDatasetsArray = $("#selectpicker").val();
@@ -69,31 +73,23 @@ function getSelectedDatasetsParams() {
         document.getElementById("selected_dataset_params1").innerHTML = null;
     }
     else {
-        document.getElementById("selected_dataset0").innerHTML = selectedDatasetsArray[0];
+        document.getElementById("selected_dataset0").innerHTML = selectedDatasetsArray[0] + '<br><span style="color: rgba(27, 21, 79, 1); font-weight: bolder; font-size: large;"> (Dataset A) </span>';
         document.getElementById("selected_dataset_params0").innerHTML = null;
         if(selectedDatasetsArray.length == 1) {
             document.getElementById("selected_dataset1").innerHTML = null;
             document.getElementById("selected_dataset_params1").innerHTML = null;
         }
-        else document.getElementById("selected_dataset1").innerHTML = selectedDatasetsArray[1];
+        else document.getElementById("selected_dataset1").innerHTML = selectedDatasetsArray[1] + '<br><span style="color: rgba(27, 21, 79, 1); font-weight: bolder; font-size: large;"> (Dataset B) </span>';
         document.getElementById("selected_datasets").style.display = "block";
     }
     if(selectedDatasetsArray != null) showParameters();
 };
 
-function insertParamDiv(dNum, datasetName, paramName, unique_param_id) {
-    var group = datasetName + '_' + paramName;
-    document.getElementById("selected_dataset_params"+dNum).innerHTML += '<label for="puID_'+unique_param_id+'"><input type="radio" name="'+group+'" id="puID_'+unique_param_id+'">&emsp;'+
-    String(window.datasetsDict[datasetName][paramName][unique_param_id]) +'</label><br>';
-}
-
 //shows parameters on dropdown when dataset is picked
 function showParameters() {
     var dNum = 0;
     for (const datasetName of selectedDatasetsArray) {
-        //console.log("DNAME: " + datasetName);
         for (const paramName in window.datasetsDict[datasetName]) {
-            //console.log("PNAME: " + paramName);
             if(paramName != "years" && paramName != "spolu") {
                 document.getElementById("selected_dataset_params"+dNum).innerHTML += '<div class="paramName" style="width:200px;"> '+ paramName +'</div><br>';
                 for (const unique_param_id in window.datasetsDict[datasetName][paramName]) insertParamDiv(dNum, datasetName, paramName, unique_param_id);
@@ -103,10 +99,14 @@ function showParameters() {
     }
 };
 
-function validateYear(datasetName, year) {
-    return window.datasetsDict[datasetName]["years"].includes(year);
-}
+// inserts html for parameter option (that is radiobutton with label)
+function insertParamDiv(dNum, datasetName, paramName, unique_param_id) {
+    var group = datasetName + '_' + paramName;
+    document.getElementById("selected_dataset_params"+dNum).innerHTML += '<label for="puID_'+unique_param_id+'"><input type="radio" name="'+group+'" id="puID_'+unique_param_id+'">&emsp;'+
+    String(window.datasetsDict[datasetName][paramName][unique_param_id]) +'</label><br>';
+};
 
+// returns dataset's id by its name
 function getDatasetIDs(dName) {
     IDs = [];
     for (const datasetName of selectedDatasetsArray) {
@@ -121,6 +121,7 @@ function getDatasetIDs(dName) {
     return IDs;
 }
 
+// controlls if allIDs and checkedIDs have at least one common dataset id
 function containsAnyID(checkedIDs, allIDs) {
     out = false;
     console.log(typeof(checkedIDs[0]) + " type " + typeof(allIDs[0]));
@@ -133,17 +134,19 @@ function containsAnyID(checkedIDs, allIDs) {
     return out;
 }
 
+// gets all parameters' options checked IDs and does all the logic behind 'spolu' parameter 
+// (that is not listed in parameters options because it includes all options for parameter)
+// this parameter has also its own unique id and is picked when no other radio-boxes were picked
+// for given dataset; if dataset doesn't have this parameter user gets notified via alert about
+// which dataset doesn's have this value and needs to have its radioboxes checked
 function getCheckedIDs() {
     var checkedIDs = [];
     for(let i = 1; i <= getMaxID(); i++) {
         var tmpElem = document.getElementById("puID_"+i);
         if(tmpElem != null) {
-            // console.log("puID_"+i + ": " + tmpElem.checked);
             if(tmpElem.checked) checkedIDs.push(i);
         }
     }
-
-    
     
     if(selectedDatasetsArray.length > 0) {
         d0IDs = getDatasetIDs(selectedDatasetsArray[0]);
@@ -178,6 +181,8 @@ function getCheckedIDs() {
 }
 
 
+// creates url with picked datasets' parameters' values (radiobox options) and picked year from slider
+// and sends it to sendRequest(url) function
 function sendParamsIDsAndYear(year) {
     var url = "/loadData/";
     var datasetNameToIDs = getDatasetNameByParamValsIDs(getCheckedIDs());
@@ -186,22 +191,10 @@ function sendParamsIDsAndYear(year) {
         url = url.substring(0,url.length-1) + "/";
     }
     url += year;
-    //console.log("URL: " + url);
     sendRequest(url);
 }
 
-function getSelectedDatasetsSpoluIDs() {
-    var spoluIDs = [];
-    for (const datasetName of selectedDatasetsArray) {
-        for (const paramName in window.datasetsDict[datasetName]) {
-            if(paramName == "spolu") {
-                spoluIDs.push(Object.keys(window.datasetsDict[datasetName][paramName])[0]);
-            }
-        }
-    }
-    return spoluIDs;
-}
-
+// clears picked radiobuttons
 function clearPicked() {
     for(let i = 1; i <= getMaxID(); i++) {
         try {
@@ -213,6 +206,7 @@ function clearPicked() {
     }
 }
 
+// finds owner dataset for given id and returns "dict" with key-datasetName and values-[unique_param_ids]
 function getDatasetNameByParamValsIDs(IDs) {
     var nameToID = [];
     for (const datasetName of selectedDatasetsArray) {
@@ -229,20 +223,20 @@ function getDatasetNameByParamValsIDs(IDs) {
     return nameToID;
 }
 
+// finds years intersection for both picked datasets
 function getYearsIntersectionForSelectedDatasets() { 
     var min = 3000;
     var max = 0;
     var values = [];
     if(selectedDatasetsArray.length == 1) {
-        //console.log(window.datasetsDict[selectedDatasetsArray[0]]["years"]);
         min = Math.min(...window.datasetsDict[selectedDatasetsArray[0]]["years"]);
         max = Math.max(...window.datasetsDict[selectedDatasetsArray[0]]["years"]);
         values.push(min);
         values.push(max);
     }
     if(selectedDatasetsArray.length == 2) {
-        console.log("FST-YEARS: ", window.datasetsDict[selectedDatasetsArray[0]]["years"]);
-        console.log("SND-YEARS: ", window.datasetsDict[selectedDatasetsArray[1]]["years"]);
+        //console.log("FST-YEARS: ", window.datasetsDict[selectedDatasetsArray[0]]["years"]);
+        //console.log("SND-YEARS: ", window.datasetsDict[selectedDatasetsArray[1]]["years"]);
         min = Math.min(...window.datasetsDict[selectedDatasetsArray[0]]["years"]);
         max = Math.max(...window.datasetsDict[selectedDatasetsArray[0]]["years"]);
         if(Math.min(...window.datasetsDict[selectedDatasetsArray[1]]["years"]) > min) min = Math.min(...window.datasetsDict[selectedDatasetsArray[1]]["years"]);
@@ -254,8 +248,11 @@ function getYearsIntersectionForSelectedDatasets() {
     return values;
 }
 
+// gets 2 elements in array, first is minimum year and second is maximum year 
+// for datasets' intersetcion and inputs them into html's slider and year
 function setYearRangeForSlider(vals) {
     document.getElementById("myRange").min = vals[0];
     document.getElementById("myRange").max = vals[1];
+    document.getElementById("myRange").value = vals[1];
     document.getElementById("sliderYear").innerHTML = vals[1];
 }
