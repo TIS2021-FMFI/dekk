@@ -109,20 +109,20 @@ const GraphModule = (() => {
             .call(d3.axisBottom(x));
 
         // add Y axis name
-        svg.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0 - margin.left)
-            .attr("x",0 - (height / 2))
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text(dataset['ds2']);
+        svg.append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 0 - margin.left)
+            .attr('x',0 - (height / 2))
+            .attr('dy', '1em')
+            .style('text-anchor', 'middle')
+            .text('Dataset B');
 
         // add X axis name
         svg.append('text')             
             .attr('transform', `translate(${width/2},${height+margin.top+25})`)
             .attr('dx', '1em')
             .style('text-anchor', 'middle')
-            .text(dataset['ds1'])
+            .text('Dataset A')
     
         // Add Y axis
         const y = d3.scaleLinear()
@@ -268,7 +268,7 @@ const GraphModule = (() => {
     const createDataArray = dataset => {
         const data = []
     
-        Object.keys(dataset.dataset1).forEach(function(key) {
+        Object.keys(dataset.dataset1).forEach(key => {
             data.push({
                 name: key,
                 data1: parseFloat(dataset.dataset1[key]),
