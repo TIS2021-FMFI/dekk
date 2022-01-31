@@ -7,18 +7,9 @@ const DropdownModule = (() => {
     var selectedDatasetsArray = [];
 
     function init() {
-        setTimeout(() => {  loadAllDataSetParams(); }, 400); // first, load datasets (400ms should be enough), then input into dropdown selectpicker
+        setTimeout(() => {  DataLoader.loadAllDataSetParams(); }, 400); // first, load datasets (400ms should be enough), then input into dropdown selectpicker
     }
     
-    // called onload from selectpicker
-    function loadAllDataSetParams() {
-        // load all parameters with years
-        xmlHttp = new XMLHttpRequest();
-        url = '/datasetParams';
-        xmlHttp.onreadystatechange = onResponseAllDataSetParamas;
-        xmlHttp.open("GET", url);
-        xmlHttp.send();
-    }
     
     // each dataset parameter's option (except years) has its own unique id, this function 
     // returns the highest possible dataset id
@@ -34,32 +25,24 @@ const DropdownModule = (() => {
         }
         return max;
     }
-    
-    // creates/fills datasetsDict
-    function onResponseAllDataSetParamas(){
-        // handles response
-        dNames = [];
-        if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            datasetsDict = JSON.parse(xmlHttp.responseText);
-            datasetsDictLength = Object.keys(datasetsDict).length;
-            console.log(datasetsDict);
-            for (var datasetName in datasetsDict) {
-                // needs to be sorted before inserting into dropdown
-                dNames.push(datasetName);
-            }
-        }
+
+
+    function populateDropdown(names, dict) {
+        datasetsDict = dict;
+        datasetsDictLength = Object.keys(dict).length;
+
         // sort array - function needed for capital and small leters
-        dNames.sort(function(a,b) {
+        names.sort(function(a,b) {
             a = a.toLowerCase();
             b = b.toLowerCase();
             if( a == b) return 0;
             return a < b ? -1 : 1;
         });
         // populate selectpicker with available datasets - no whitespaces for ids, so _
-        for (var i = 0; i < dNames.length; i++){
-            var noWhitespaceDName = dNames[i].replace(/\s+/g, '_');
+        for (var i = 0; i < names.length; i++){
+            var noWhitespaceDName = names[i].replace(/\s+/g, '_');
             document.getElementById("selectpicker").innerHTML += "<option id="+noWhitespaceDName+"></option>";
-            document.getElementById(noWhitespaceDName).innerHTML = dNames[i];
+            document.getElementById(noWhitespaceDName).innerHTML = names[i];
         }
         // refresh selectpicker
         $('.selectpicker').selectpicker('refresh');
@@ -265,8 +248,8 @@ const DropdownModule = (() => {
     return {
         getSelectedDatasetsParams,
         getYearsIntersectionForSelectedDatasets,
-        loadAllDataSetParams,
         sendParamsIDsAndYear,
+        populateDropdown,
         clearPicked,
         init
     }

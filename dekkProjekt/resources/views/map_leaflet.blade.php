@@ -22,8 +22,6 @@
 
     <!-- Load d3.js -->
     <script src="https://d3js.org/d3.v6.js"></script>
-    <script src="js/scripts.js"></script>
-
 
     <!-- Singleton module responsible for the graph functionality -->
     <script src="js/d3_graph_module.js"></script>
@@ -159,11 +157,10 @@
     GraphModule.init();
 
     // width and height of the map
-    save_to_img('map', '#saveButtonMap', 770, 720);
+    ImageDownloader.save_to_img('map', '#saveButtonMap', 770, 720);
     // width and height of the graph
-    save_to_img('graph', '#saveButtonGraph', 370, 360);
+    ImageDownloader.save_to_img('graph', '#saveButtonGraph', 370, 360);
     </script>
-    <script src="js/get_params.js"></script>
 
     <!-- height adjust -->
     <script>
