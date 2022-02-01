@@ -104,9 +104,15 @@ const GraphModule = (() => {
         const x = d3.scaleLinear()
             .domain([0, 1.05 * maxValueX])
             .range([ 0, width ]);
+
+        const xAxisFormat = d3.axisBottom(x)
+            .tickFormat((d, i) => {
+                return d3.format('~s')(d);
+            })
         const xAxis = svg.append('g')
             .attr('transform', `translate(0, ${height})`)
-            .call(d3.axisBottom(x));
+            .call(xAxisFormat);
+
 
         // add Y axis name
         svg.append('text')
@@ -128,8 +134,13 @@ const GraphModule = (() => {
         const y = d3.scaleLinear()
             .domain([0, 1.05 * maxValueY])
             .range([ height, 0]);
+
+        const yAxisFormat = d3.axisLeft(y)
+            .tickFormat((d, i) => {
+                return d3.format('~s')(d);
+            })
         const yAxis = svg.append('g')
-            .call(d3.axisLeft(y));
+            .call(yAxisFormat);
 
         // get coordinates for the linear regression line
         const lineCoords = lineToCoords(dataset['corr'].split(';').slice(-2), 0, 1.05 * maxValueX);

@@ -1,32 +1,11 @@
 
 
-
-function save_to_img(name, btn, width, height) {
-    // Set-up the export button
-
-    d3.select(btn).on('click', function(){
-        
-        if (name == 'graph') svgNode = d3.select("#graph").select("svg").node()
-        if (name == 'map') {
-             svgNode = d3.select('#map').select("svg").node()
-             width = document.getElementById('map').clientWidth;
-             height = document.getElementById('map').clientHeight;
-             console.log(width, height);
-        }
-
-        let svgString = getSVGString(svgNode);
-        svgString2Image( svgString, 2*width, 2*height, 'png', save ); // passes Blob and filesize String to the callback
-
-        function save( dataBlob, filesize ){
-            saveAs( dataBlob, name + '.png' ); // FileSaver.js function
-        }
-    });
-
+const ImageDownloader = (() => {
     // Below are the functions that handle actual exporting:
     // getSVGString ( svgNode ) and svgString2Image( svgString, width, height, format, callback )
-    function getSVGString( svgNode ) {
+    const getSVGString = svgNode => {
 
-        function appendCSS( cssText, element ) {
+        const appendCSS = (cssText, element) => {
             const styleElement = document.createElement("style");
             styleElement.setAttribute("type","text/css"); 
             styleElement.innerHTML = cssText;
@@ -34,19 +13,19 @@ function save_to_img(name, btn, width, height) {
             element.insertBefore( styleElement, refNode );
         }
 
-        function getCSSStyles( parentElement ) {
+        const getCSSStyles = parentElement => {
 
-            function contains(str,arr) { 
-                    return arr.indexOf( str ) === -1 ? false : true;
+            const contains = (str,arr) => { 
+                return arr.indexOf( str ) === -1 ? false : true;
             }
 
             const selectorTextArr = [];
 
             // Add Parent element Id and Classes to the list
-            selectorTextArr.push( '#'+parentElement.id );
+            selectorTextArr.push('#'+parentElement.id );
             for (let c = 0; c < parentElement.classList.length; c++)
-                    if ( !contains('.'+parentElement.classList[c], selectorTextArr) )
-                        selectorTextArr.push( '.'+parentElement.classList[c] );
+                    if (!contains('.'+parentElement.classList[c], selectorTextArr) )
+                        selectorTextArr.push('.'+parentElement.classList[c] );
 
             // Add Children element Ids and Classes to the list
             const nodes = parentElement.getElementsByTagName("*");
@@ -69,9 +48,9 @@ function save_to_img(name, btn, width, height) {
                 try {
                     if(!s.cssRules) continue;
                 } catch( e ) {
-                        if(e.name !== 'SecurityError') throw e; // for Firefox
-                        continue;
-                    }
+                    if(e.name !== 'SecurityError') throw e; // for Firefox
+                    continue;
+                }
 
                 const cssRules = s.cssRules;
                 for (let r = 0; r < cssRules.length; r++) {
@@ -79,10 +58,8 @@ function save_to_img(name, btn, width, height) {
                         extractedCSSText += cssRules[r].cssText;
                 }
             }
-            
-
             return extractedCSSText;
-        }
+        } // end of getCSSStyles
 
         svgNode.setAttribute('xlink', 'http://www.w3.org/1999/xlink');
         let cssStyleText = getCSSStyles( svgNode );
@@ -95,14 +72,13 @@ function save_to_img(name, btn, width, height) {
 
         return svgString;
         
-
     }
 
 
-    function svgString2Image( svgString, width, height, form, callback ) {
+    const svgString2Image = (svgString, width, height, form, callback) => {
         let format = form ? form : 'png';
 
-        const imgsrc = 'data:image/svg+xml;base64,'+ btoa( unescape( encodeURIComponent( svgString ) ) ); // Convert SVG string to data URL
+        const imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(svgString))); // Convert SVG string to data URL
 
         const canvas = document.createElement("canvas");
         const context = canvas.getContext("2d");
@@ -124,5 +100,30 @@ function save_to_img(name, btn, width, height) {
         image.src = imgsrc;
     }
 
-}
+    const save_to_img = (name, btn, width, height) => {
+        // Set-up the export button
+    
+        d3.select(btn).on('click', () => {
 
+            const save = (dataBlob, filesize) => {
+                saveAs(dataBlob, name + '.png' ); // FileSaver.js function
+            }
+            
+            if (name == 'graph') svgNode = d3.select("#graph").select("svg").node()
+            if (name == 'map') {
+                 svgNode = d3.select('#map').select("svg").node()
+                 width = document.getElementById('map').clientWidth;
+                 height = document.getElementById('map').clientHeight;
+                 console.log(width, height);
+            }
+    
+            let svgString = getSVGString(svgNode);
+            svgString2Image( svgString, 2*width, 2*height, 'png', save ); // passes Blob and filesize String to the callback
+    
+        });
+    }
+    
+    return {
+        save_to_img
+    }    
+})();
