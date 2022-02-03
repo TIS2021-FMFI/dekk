@@ -152,9 +152,18 @@ const GraphModule = (() => {
             const newX = event.transform.rescaleX(x);
             const newY = event.transform.rescaleY(y);
 
+            const newXAxisFormat = d3.axisBottom(newX)
+                .tickFormat((d, i) => {
+                    return d3.format('~s')(d);
+                });
+            const newYAxisFormat = d3.axisLeft(newY)
+                .tickFormat((d, i) => {
+                    return d3.format('~s')(d);
+                })
+
             // update axis with these new boundaries
-            xAxis.call(d3.axisBottom(newX))
-            yAxis.call(d3.axisLeft(newY))
+            xAxis.call(newXAxisFormat);
+            yAxis.call(newYAxisFormat);
 
             // update circle position
             scatter
