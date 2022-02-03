@@ -14,5 +14,16 @@
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14"
+    },
+    "dependencies": {
+        "@mapbox/leaflet-pip": "^1.1.0",
+        "blueimp-canvas-to-blob": "^3.29.0",
+        "bootstrap": "^4.1.1",
+        "bootstrap-select": "^1.13.18",
+        "d3": "^7.3.0",
+        "file-saver": "^2.0.5",
+        "jquery": "^3.6.0",
+        "leaflet": "^1.7.1",
+        "leaflet-easyprint": "^2.1.9"
     }
 }

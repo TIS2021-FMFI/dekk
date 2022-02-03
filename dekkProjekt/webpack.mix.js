@@ -15,3 +15,12 @@ mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         //
     ]);
+
+mix.scripts(
+    [
+        'resources/js/d3_graph_module.js',
+        'resources/js/dropdown_and_params.js',
+        'resources/js/leaflet_map_module.js',
+        'resources/js/load_data.js',
+        'resources/js/okresy.js'
+], 'public/js/main.js');
