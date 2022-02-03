@@ -399,7 +399,7 @@ const GraphModule = (() => {
     const save = (width, height) => {
         // Set-up the export button
         const save = (dataBlob, filesize) => {
-            FileSaver.saveAs(dataBlob, 'graph.png' ); // FileSaver.js function
+            saveAs(dataBlob, 'graph.png' ); // FileSaver.js function
         }
 
         svgNode = d3.select('#graph').select('svg').node()
