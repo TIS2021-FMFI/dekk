@@ -19,28 +19,18 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 
-
-    <script src="js/app.js"></script>
-    <script type="text/javascript" src="js/okresy.js"></script>
-    <script src="js/load_data.js"></script>
-    <!-- Load d3.js -->
-    <!-- <script src="https://d3js.org/d3.v6.js"></script> -->
-
-    <!-- Singleton module responsible for the graph functionality -->
-    <script src="js/d3_graph_module.js"></script>
-
-    <!-- Singleton module responsible for the map functionality -->
-    <script src="js/leaflet_map_module.js"></script>
-
-    <!-- Script for dropdown and parameters -->
-    <script src="js/dropdown_and_params.js"></script>
-
     <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. Required for graph export. -->
     <script
         src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js">
     </script>
     <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js">
     </script>
+
+    <!-- Bundled dependencies/packages  -->
+    <script src="js/app.js"></script> 
+
+    <!-- Bundled custom js -->
+    <script src="js/main.js"></script>
 
 </head>
 
