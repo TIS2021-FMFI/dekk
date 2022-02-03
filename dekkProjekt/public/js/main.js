@@ -803,6 +803,7 @@ const MapModule = (() => {
         }).addTo(map);
 
         printPlugin = L.easyPrint({
+            hidden: true,
             exportOnly: true,
             hideControlContainer: true
       }).addTo(map);
