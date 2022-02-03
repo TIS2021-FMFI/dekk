@@ -805,7 +805,7 @@ const MapModule = (() => {
         printPlugin = L.easyPrint({
             hidden: true,
             exportOnly: true,
-            hideControlContainer: true
+            hideControlContainer: false
       }).addTo(map);
         
         // required if map container size is calculated dynamically ie. 100%
