@@ -53,7 +53,8 @@ const DropdownModule = (() => {
         console.log("SELECTED DATASETS: " + $("#selectpicker").val());
         selectedDatasetsArray = $("#selectpicker").val();
     
-        if(selectedDatasetsArray === null) {
+        if(selectedDatasetsArray.length == 0) {
+            console.log('powpow');
             document.getElementById("selected_dataset0").innerHTML = null;
             document.getElementById("selected_dataset1").innerHTML = null;
             document.getElementById("selected_datasets").style.display = "none";
@@ -216,6 +217,10 @@ const DropdownModule = (() => {
         var min = 3000;
         var max = 0;
         var values = [];
+        if(selectedDatasetsArray.length == 0) {
+            console.log('powpowpow');
+            values = [1990, new Date().getFullYear()];
+        }
         if(selectedDatasetsArray.length == 1) {
             min = Math.min(...datasetsDict[selectedDatasetsArray[0]]["years"]);
             max = Math.max(...datasetsDict[selectedDatasetsArray[0]]["years"]);
