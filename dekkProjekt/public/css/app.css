@@ -74,7 +74,6 @@ div[class='filter-option-inner-inner'] {
     height: 0.5em;
     background: rgba(47, 41, 99, 1);
     outline: none;
-    -webkit-transition: 0.2s;
     transition: opacity 0.2s;
 }
 .slider::-webkit-slider-thumb {
@@ -324,3 +323,4 @@ input[type="radio"]{
         max-height: 62vh !important;
     }
 }
+

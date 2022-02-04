@@ -7,51 +7,30 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- load leaflet.js -->
+    <!-- leaflet stylesheet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
         crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
 
     <!-- other stylesheets -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 
-    <!-- Load d3.js -->
-    <script src="https://d3js.org/d3.v6.js"></script>
-
-    <!-- Singleton module responsible for the graph functionality -->
-    <script src="js/d3_graph_module.js"></script>
-
-    <!-- Singleton module responsible for the map functionality -->
-    <script src="js/leaflet_map_module.js"></script>
-
-
-    <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. -->
+    <!-- The code uses small FileSaver.js library to save generated images and Canvas-to-Blob.js library to ensure browser compatibility. Required for graph export. -->
     <script
         src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js">
     </script>
     <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js">
     </script>
 
-    <!-- Load save btn script -->
-    <script src="js/save_btn.js"></script>
+    <!-- Bundled dependencies/packages  -->
+    <script src="js/app.js"></script> 
 
-    <!-- For dropdown multiselect picklist with search (selectpicker) -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-
-    <!-- Script for dropdown and parameters -->
-    <script src="js/dropdown_and_params.js"></script>
-
-    <!-- Leaflet pip(point in polygon) used to propagate mouse events to all layers of the map -->
-    <script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
+    <!-- Bundled custom js -->
+    <script src="js/main.js"></script>
 
 </head>
 
@@ -140,26 +119,19 @@
                     </div>
                     <div id="download_buttons">
                         <!-- Graph save button -->
-                        <button id='saveButtonGraph' type="button" class="btn btn-dark">Stiahnuť graf</button>
+                        <button id='saveButtonGraph' type="button" class="btn btn-dark" onclick="GraphModule.save(370, 360);">Stiahnuť graf</button>
                         <!-- Map save button -->
-                        <button id='saveButtonMap' type="button" class="btn btn-dark">Stiahnuť mapu</button>
+                        <button id='saveButtonMap' type="button" class="btn btn-dark" onclick="MapModule.save()">Stiahnuť mapu</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script type="text/javascript" src="js/okresy.js"></script>
-    <script src="js/load_data.js"></script>
-
     <script type="text/javascript">
     MapModule.init();
     GraphModule.init();
 
-    // width and height of the map
-    ImageDownloader.save_to_img('map', '#saveButtonMap', 770, 720);
-    // width and height of the graph
-    ImageDownloader.save_to_img('graph', '#saveButtonGraph', 370, 360);
     </script>
 
     <!-- height adjust -->

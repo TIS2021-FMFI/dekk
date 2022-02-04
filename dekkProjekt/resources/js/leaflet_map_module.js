@@ -96,6 +96,7 @@ const MapModule = (() => {
     const geoLayers = [];
     let selectOverlays;
     let map;
+    let printPlugin;
 
     const init = () => {
         const bounds = new L.LatLngBounds(new L.LatLng(50.16962074944367, 16.3865741126029432), new L.LatLng(46.94733587652772, 23.45591532167501));
@@ -123,6 +124,11 @@ const MapModule = (() => {
             position: 'bottomleft'
         }).addTo(map);
 
+        printPlugin = L.easyPrint({
+            hidden: true,
+            exportOnly: true,
+            hideControlContainer: false
+      }).addTo(map);
         
         // required if map container size is calculated dynamically ie. 100%
         setTimeout(() => { map.invalidateSize() }, 30);
@@ -305,12 +311,17 @@ const MapModule = (() => {
             geoLayers.pop();
         }
     };
+
+    const save = () => {
+        printPlugin.printMap('CurrentSize', 'map');
+    }
       
     return {
         init,
         addLayers,
         calculateColorGradient,
-        clear
+        clear,
+        save
     };
 
 })();

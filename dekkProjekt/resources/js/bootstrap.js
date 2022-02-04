@@ -10,6 +10,15 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+
+window.jquery = window.$ = require('jquery');
+window.bootstrap = require('bootstrap');
+window.bootstrapSelect = require('bootstrap-select');
+window.d3 = require('d3');
+window.leaflet = require('leaflet');
+window.easyPrint = require('leaflet-easyprint');
+window.leafletPip = require('@mapbox/leaflet-pip');
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
