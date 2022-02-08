@@ -81,31 +81,9 @@ def import_csv(file_name):
     
             dataset.insert()
 
-# file_name = ['importScripts/volby.csv', 
-#             'importScripts/emise_km_tuhe.csv', 
-#             'importScripts/emisie_km_oxidsiricity.csv',
-#             'importScripts/emisie_tony_oxidsiricity.csv',
-#             'importScripts/emisie_tony_tuhe.csv',
-#             'importScripts/volby2020sas.csv',
-#             'importScripts/volby2020saspodiel.csv',
-#             'importScripts/volby2020sns.csv',
-#             'importScripts/volby2020snspodiel.csv',
-#             'importScripts/zivotanarodeni_poradie.csv',
-#             'importScripts/zivotanarodeni_poradie2.csv',
-#             'importScripts/zivotanarodeni_poradie3.csv',
-#             'importScripts/zivotanarodeni_poradie4.csv',
-#             'importScripts/zivotanarodeni_poradie5.csv'
-#             ]
 
-file_name = ['volby_ds_pocet.csv', 'volby_ds_podiel.csv', 'volby_lsns_pocet.csv', 'volby_lsns_podiel.csv', 'volby_most_hid_pocet.csv', 'volby_most_hid_podiel.csv', 'volby_olano_pocet.csv', 'volby_olano_podiel.csv', 'volby_pocet.csv', 'volby_podiel.csv', 'volby_sas_pocet.csv', 'volby_sas_podiel.csv', 'volby_smer_pocet.csv', 'volby_smer_podiel.csv', 'volby_sme_rodina_pocet.csv', 'volby_sme_rodina_podiel.csv', 'volby_sns_pocet.csv', 'volby_sns_podiel.csv']
 
-for file in file_name:
-    import_csv(file)
+input = sys.argv[1]
+import_csv(input)
+print('Data boli importnute do databazy.')
 
-# input = sys.argv[1]
-# print(input)
-# import_csv(input)
-# print('Data boli importnute do databazy.')
-
-# d = Dataset()
-# print(d.get_district_id_from_code('SK0212 '))
