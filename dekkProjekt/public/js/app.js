@@ -2104,7 +2104,11 @@ module.exports = {
   \*****************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // disable console.log for the whole project if not in debugging mode
+
+
+var DEBUG_MODE = false;
+if (!DEBUG_MODE) console.log = function () {};
 
 /***/ }),
 

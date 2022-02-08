@@ -10,7 +10,7 @@ const DataLoader = (() => {
             console.log(response);
     
             if (response == 0) {
-                alert('Nepodarilo sa načítať zvolené datasety. Pravdepodobne neexistuje jeden z datasetov pre zvolený rok.');
+                alert('Nepodarilo sa načítať zvolené datasety. Pravdepodobne neexistuje jeden z datasetov alebo parameter pre zvolený rok.');
                 return;
             }
     
