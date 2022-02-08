@@ -121,7 +121,7 @@ Do priecinka Laravel presunieme nas project (napr. pomocou Filezilla). Do prieci
   
 7. Nastavenie Nginx  
   •	sudo vim /etc/nginx/sites-available/default (alebo vymaz symlink default v sites-enabled a vytvor novy subor v sites-available a symlinkni ho do sites-enabled)  
-  
+``` 
 server {  
 	listen 80;  
 	listen [::] 80;  
@@ -137,7 +137,8 @@ server {
 	  include snippets/fastcgi-php.conf;  
 	  fastcgi_pass unix:/run/php/phpX.X-fpm.sock; // zmen X.X na verziu php  
   }  
-}  
+}
+```   
   
   •	sudo service nginx restart  
 
