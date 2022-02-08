@@ -88,82 +88,82 @@ Go to localhost:8000<br />
 
 Navod na nasadenie Laravelu do prostredia Ubuntu (AWS Lightsail)
 
-1. Prihlasenie sa do SSH konzoly - Putty alebo webova konzola ktoru ponuka sluzba AWS
+1. Prihlasenie sa do SSH konzoly - Putty alebo webova konzola ktoru ponuka sluzba AWS  
  
-2. Nainstalujeme Nginx (serverova technologia), update pociatocnych balickov
-  •	sudo apt-get update
-  •	sudo apt-get install nginx
+2. Nainstalujeme Nginx (serverova technologia), update pociatocnych balickov  
+  •	sudo apt-get update  
+  •	sudo apt-get install nginx  
+  
+3. Instalacia PHP - Instancie AWS Lightsail maju predinstalovanu verziu 7.4  
+  •	sudo apt-get update && sudo apt-get upgrade   
+  •	sudo apt-get install software-properties-common  
+  •	sudo add-apt-repository ppa:ondrej/php  
+  •	sudo apt-get update  
+  •	sudo apt-get install php7.3 php7.3-xml php7.3-gd php7.3-opcache php 7.3-mbstring  
+  
+4. Odstranenie Apache2   
+Kedze pouzivame Nginx nepotrebujeme Apache2, ktory sa nainstaloval spolu s PHP  
+  •	sudo apt-get purge apache2 apache2-utils apache2-bin apache2.2-common  
+  
+5. Instalacia MySQL  
+  •	sudo apt-get install mysql-server  
+  
+6. Nasadenie Laravelu  
+Instalacia Composer  
+  •	curl -sS https://getcomposer.org/installer | php  
+  •	mv composer.phar /usr/local/bin/composer  
+Vytvorenie priecinka pre nas projekt  
+  •	sudo mkdir /var/www/Laravel  
+  •	sudo chown www-data:www-data /var/www/Laravel  
+  •	chmod -R 775 /var/www/Laravel  
+Do priecinka Laravel presunieme nas project (napr. pomocou Filezilla). Do priecinku www presunieme ImportScripts  
 
-3. Instalacia PHP - Instancie AWS Lightsail maju predinstalovanu verziu 7.4
-  •	sudo apt-get update && sudo apt-get upgrade 
-  •	sudo apt-get install software-properties-common
-  •	sudo add-apt-repository ppa:ondrej/php
-  •	sudo apt-get update
-  •	sudo apt-get install php7.3 php7.3-xml php7.3-gd php7.3-opcache php 7.3-mbstring
+  
+7. Nastavenie Nginx  
+  •	sudo vim /etc/nginx/sites-available/default (alebo vymaz symlink default v sites-enabled a vytvor novy subor v sites-available a symlinkni ho do sites-enabled)  
+  
+server {  
+	listen 80;  
+	listen [::] 80;  
+	root /var/www/laravel/public;  
+	index index.php index.html index.htm index.nginx-debian.html  
+  server_name slovenskovdatach.digital  
+  
+  location / {  
+	  try_files $uri $uri/ /index.php?$query_string;  
+  }  
 
-4. Odstranenie Apache2 
-Kedze pouzivame Nginx nepotrebujeme Apache2, ktory sa nainstaloval spolu s PHP
-  •	sudo apt-get purge apache2 apache2-utils apache2-bin apache2.2-common
+  location ~ \.php$ {  
+	  include snippets/fastcgi-php.conf;  
+	  fastcgi_pass unix:/run/php/phpX.X-fpm.sock; // zmen X.X na verziu php  
+  }  
+}  
+  
+  •	sudo service nginx restart  
 
-5. Instalacia MySQL
-  •	sudo apt-get install mysql-server
-
-6. Nasadenie Laravelu
-Instalacia Composer
-  •	curl -sS https://getcomposer.org/installer | php
-  •	mv composer.phar /usr/local/bin/composer
-Vytvorenie priecinka pre nas projekt
-  •	sudo mkdir /var/www/Laravel
-  •	sudo chown www-data:www-data /var/www/Laravel
-  •	chmod -R 775 /var/www/Laravel
-Do priecinka Laravel presunieme nas project (napr. pomocou Filezilla). Do priecinku www presunieme ImportScripts
-
-
-7. Nastavenie Nginx
-  •	sudo vim /etc/nginx/sites-available/default (alebo vymaz symlink default v sites-enabled a vytvor novy subor v sites-available a symlinkni ho do sites-enabled)
-
-server {
-	listen 80;
-	listen [::] 80;
-	root /var/www/laravel/public;
-	index index.php index.html index.htm index.nginx-debian.html
-  server_name slovenskovdatach.digital
-
-  location / {
-	  try_files $uri $uri/ /index.php?$query_string;
-  }
-
-  location ~ \.php$ {
-	  include snippets/fastcgi-php.conf;
-	  fastcgi_pass unix:/run/php/phpX.X-fpm.sock; // zmen X.X na verziu php
-  }
-}
-
-  •	sudo service nginx restart
-
-8. Vytvorenie pouzivatela v database MySQL
-  •	sudo mysql -u root -p
-  •	CREATE USER ‘dekk_project’@’localhost’ INDENTIFIED BY ‘2810pRojecT’;
-  •	FLUSH PRIVILEGES;
-  •	GRANT SELECT ON * . * TO ‘dekk_project’@’localhost’;
-  •	CREATE DATABASE datasets;
-  •	GRANT ALL PRIVILEGES ON ‘datasets’ . * TO ‘dekk_project’@localhost’;
-  •	FLUSH PRIVILEGES;
-9. Instalacia dependencies
-  •	sudo apt install python3-pip
-  •	pip install mysql-connector-python
-  •	pip install numpy
-  •	pip install scipy
+8. Vytvorenie pouzivatela v database MySQL  
+  •	sudo mysql -u root -p  
+  •	CREATE USER ‘dekk_project’@’localhost’ INDENTIFIED BY ‘2810pRojecT’;  
+  •	FLUSH PRIVILEGES;  
+  •	GRANT SELECT ON * . * TO ‘dekk_project’@’localhost’;  
+  •	CREATE DATABASE datasets;  
+  •	GRANT ALL PRIVILEGES ON ‘datasets’ . * TO ‘dekk_project’@localhost’;  
+  •	FLUSH PRIVILEGES;  
+9. Instalacia dependencies  
+  •	sudo apt install python3-pip  
+  •	pip install mysql-connector-python  
+  •	pip install numpy  
+  •	pip install scipy  
 
 
 
-Instalacia python balickov pre pouzivatela www-data (vypocet korelacie)
-  •	sudo mkdir /var/www/.local
-  •	sudo mkdir/var/www/.cache
-  •	sudo chown www-data:www-data /var/www/.local
-  •	sudo chown www-data:www-data /var/www/.cache
-  •	sudo -H -u www-data pip install numpy
-  •	sudo -H -u www-data pip install scipy
+Instalacia python balickov pre pouzivatela www-data (vypocet korelacie)  
+  •	sudo mkdir /var/www/.local  
+  •	sudo mkdir/var/www/.cache  
+  •	sudo chown www-data:www-data /var/www/.local  
+  •	sudo chown www-data:www-data /var/www/.cache  
+  •	sudo -H -u www-data pip install numpy  
+  •	sudo -H -u www-data pip install scipy  
 
 
 
