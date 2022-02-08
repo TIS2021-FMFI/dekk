@@ -150,7 +150,7 @@ server {
   •	CREATE DATABASE datasets;  
   •	GRANT ALL PRIVILEGES ON ‘datasets’ . * TO ‘dekk_project’@localhost’;  
   •	FLUSH PRIVILEGES;  
-9. Instalacia dependencies  
+9. Instalacia dependencies    
   •	sudo apt install python3-pip  
   •	pip install mysql-connector-python  
   •	pip install numpy  
@@ -158,7 +158,7 @@ server {
 
 
 
-Instalacia python balickov pre pouzivatela www-data (vypocet korelacie)  
+10. Instalacia python balickov pre pouzivatela www-data (vypocet korelacie)  
   •	sudo mkdir /var/www/.local  
   •	sudo mkdir/var/www/.cache  
   •	sudo chown www-data:www-data /var/www/.local  
