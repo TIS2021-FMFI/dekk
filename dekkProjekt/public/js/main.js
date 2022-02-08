@@ -557,6 +557,7 @@ const DropdownModule = (() => {
     // which dataset doesn's have this value and needs to have its radioboxes checked
     function getCheckedIDs() {
         var checkedIDs = [];
+
         for(let i = 1; i <= getMaxID(); i++) {
             var tmpElem = document.getElementById("puID_"+i);
             if(tmpElem != null) {
@@ -569,24 +570,26 @@ const DropdownModule = (() => {
             
             if(!containsAnyID(checkedIDs, d0IDs)) {
                 // spolu param for d0
-                console.log("FST " + d0IDs)
-                tmpObject = datasetsDict[document.getElementById("selected_dataset0").innerHTML]["spolu"];
+                console.log("FST " + d0IDs);
+                console.log('undefined check ' + typeof datasetsDict[document.getElementById("selected_dataset0").innerHTML]);
+                tmpObject = (typeof datasetsDict[document.getElementById("selected_dataset0").innerHTML] == 'undefined') ? null : datasetsDict[document.getElementById("selected_dataset0").innerHTML]["spolu"];
                 if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
                 else {
                     console.log("Parameter 'spolu' does not exist for selected_dataset0/'"+document.getElementById("selected_dataset0").innerHTML+"'");
-                    alert("Pre dataset '"+document.getElementById("selected_dataset0").innerHTML+"' neexistuje parameter 'spolu' - vyberte si parametre.");
+                    alert("Pre dataset '"+document.getElementById("selected_dataset0").innerHTML.split("<br>")[0]+"' neexistuje parameter 'spolu' - vyberte si parametre.");
                 }
             }
             if(selectedDatasetsArray.length == 2) {
                 d1IDs = getDatasetIDs(selectedDatasetsArray[1]);
                 if(!containsAnyID(checkedIDs, d1IDs)) {
                     // spolu param for d1
-                    console.log("SND " + d1IDs)
-                    tmpObject = datasetsDict[document.getElementById("selected_dataset1").innerHTML]["spolu"];
+                    console.log("SND " + d1IDs);
+                    console.log('undefined check2' + datasetsDict);
+                    tmpObject = (typeof datasetsDict[document.getElementById("selected_dataset1").innerHTML] == 'undefined') ? null : datasetsDict[document.getElementById("selected_dataset1").innerHTML]["spolu"];
                     if(tmpObject != null) checkedIDs.push(Number(Object.keys(tmpObject)[0]));
                     else {
                         console.log("Parameter 'spolu' does not exist for selected_dataset1/'"+document.getElementById("selected_dataset1").innerHTML+"'");
-                        alert("Pre dataset '"+document.getElementById("selected_dataset1").innerHTML+"' neexistuje parameter 'spolu' - vyberte si parametre.");
+                        alert("Pre dataset '"+document.getElementById("selected_dataset1").innerHTML.split("<br>")[0]+"' neexistuje parameter 'spolu' - vyberte si parametre.");
                     }
                 }
             }
@@ -601,7 +604,8 @@ const DropdownModule = (() => {
     // and sends it to sendRequest(url) function
     function sendParamsIDsAndYear(year) {
         var url = "/loadData/";
-        var datasetNameToIDs = getDatasetNameByParamValsIDs(getCheckedIDs());
+        var ids = getCheckedIDs();
+        var datasetNameToIDs = getDatasetNameByParamValsIDs(ids);
         for(datasetName in datasetNameToIDs) {
             for(id of datasetNameToIDs[datasetName]) url += id+"_";
             url = url.substring(0,url.length-1) + "/";
@@ -1030,7 +1034,7 @@ const DataLoader = (() => {
             console.log(response);
     
             if (response == 0) {
-                alert('Nepodarilo sa načítať zvolené datasety. Pravdepodobne neexistuje jeden z datasetov pre zvolený rok.');
+                alert('Nepodarilo sa načítať zvolené datasety. Pravdepodobne neexistuje jeden z datasetov alebo parameter pre zvolený rok.');
                 return;
             }
     
